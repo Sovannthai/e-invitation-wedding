@@ -120,15 +120,17 @@ font-size:42px;
 
 .count-card{
 
-background:rgba(255,255,255,0.6);
+background:rgba(255,255,255,0.55);
 
-backdrop-filter:blur(10px);
+backdrop-filter:blur(12px);
+-webkit-backdrop-filter:blur(12px);
+border:1px solid rgba(255,255,255,0.45);
 
 padding:30px;
 
 border-radius:20px;
 
-box-shadow:0 10px 30px rgba(0,0,0,0.15);
+box-shadow:0 10px 30px rgba(0,0,0,0.18);
 
 transition:0.3s;
 

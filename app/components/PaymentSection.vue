@@ -79,7 +79,13 @@ const { t } = useLang();
 
 .payment-card {
   border-radius: 20px;
-  background: blur;
+
+  /* Frosted glass instead of solid white */
+  background: rgba(255, 255, 255, 0.6) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
 }
 
 .qr-image {

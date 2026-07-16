@@ -63,9 +63,13 @@ const { t } = useLang();
 
   border-radius: 24px;
 
-  background: white;
+  /* Frosted glass instead of solid white */
+  background: rgba(255, 255, 255, 0.55) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.45);
 
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.18);
 
   transition: 0.3s;
 }
