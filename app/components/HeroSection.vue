@@ -122,8 +122,8 @@ const { t } = useLang();
 
 .plaque-text {
   font-family: "Cormorant Garamond", "Moul", serif;
-  font-weight: 600;
-  font-size: clamp(20px, 5vw, 34px);
+  font-weight: 400;
+  font-size: clamp(20px, 5vw, 30px);
   letter-spacing: 0.5px;
   white-space: nowrap;
   line-height: 1.8;

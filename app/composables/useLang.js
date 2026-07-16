@@ -42,7 +42,7 @@ const messages = {
     "event.ics": "Apple / Outlook (.ics)",
 
     // Gallery / Location
-    "gallery.title": "វិចិត្រសាល",
+    "gallery.title": "កម្រងរូបភាព",
     "location.title": "ទីតាំង",
 
     // RSVP

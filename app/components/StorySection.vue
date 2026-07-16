@@ -106,9 +106,9 @@ const { t } = useLang();
   padding: 10px;
 
   /* Frosted glass instead of solid white */
-  background: rgba(255, 255, 255, 0.55) !important;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.38) !important;
+  backdrop-filter: blur(9px);
+  -webkit-backdrop-filter: blur(9px);
   border: 1px solid rgba(255, 255, 255, 0.45);
 
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);

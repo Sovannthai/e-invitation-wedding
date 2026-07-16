@@ -102,15 +102,15 @@ function submitRSVP() {
 /* ---- Card ---- */
 .rsvp-card {
   width: 100%;
-  max-width: 520px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 32px 28px;
   border-radius: 24px;
 
   /* Frosted glass */
-  background: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  background: rgba(255, 255, 255, 0.48);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.5);
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
 }

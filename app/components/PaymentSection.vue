@@ -81,9 +81,9 @@ const { t } = useLang();
   border-radius: 20px;
 
   /* Frosted glass instead of solid white */
-  background: rgba(255, 255, 255, 0.6) !important;
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.42) !important;
+  backdrop-filter: blur(9px);
+  -webkit-backdrop-filter: blur(9px);
   border: 1px solid rgba(255, 255, 255, 0.45);
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
 }
