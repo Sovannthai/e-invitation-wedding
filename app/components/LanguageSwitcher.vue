@@ -41,7 +41,7 @@ const { locale, setLocale } = useLang();
 }
 
 .lang-btn {
-  font-family: "Noto Sans Khmer", sans-serif;
+  font-family: "Kantumruy Pro", sans-serif;
   font-size: 14px;
   color: #f3e2b0;
   background: transparent;

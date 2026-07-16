@@ -20,13 +20,15 @@ const { t } = useLang();
 
 <template>
   <section id="gallery" class="gallery-slider">
-    <h2 class="section-title text-center text-xxl mb-4">{{ t("gallery.title") }}</h2>
+    <h2 class="section-title text-center text-xxl mb-4" data-aos="fade-up">{{ t("gallery.title") }}</h2>
 
-    <Swiper :breakpoints="breakpoints" loop>
+    <div data-aos="zoom-in-up">
+      <Swiper :breakpoints="breakpoints" loop>
       <SwiperSlide v-for="img in images" :key="img">
         <img :src="img" class="slide-img" />
       </SwiperSlide>
-    </Swiper>
+      </Swiper>
+    </div>
   </section>
 </template>
 

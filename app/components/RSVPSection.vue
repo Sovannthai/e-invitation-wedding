@@ -1,11 +1,11 @@
 <template>
   <section id="rsvp" class="rsvp-section">
     <v-container>
-      <h2 class="section-title text-center">{{ t("rsvp.title") }}</h2>
+      <h2 class="section-title text-center" data-aos="fade-up">{{ t("rsvp.title") }}</h2>
 
       <v-row justify="center">
         <v-col cols="12" md="6">
-          <v-card class="rsvp-card">
+          <v-card class="rsvp-card" data-aos="fade-up" data-aos-delay="100">
             <v-card-title class="text-center gold">
               {{ t("rsvp.confirm") }}
             </v-card-title>

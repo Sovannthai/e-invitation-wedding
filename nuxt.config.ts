@@ -27,7 +27,7 @@ export default defineNuxtConfig({
           "Great+Vibes": [400],
           "Cormorant+Garamond": [400, 500, 600, 700],
           "Moul": [400],
-          "Noto+Sans+Khmer": [400, 500, 600, 700],
+          "Kantumruy+Pro": [400, 500, 600, 700],
         },
       },
     ],

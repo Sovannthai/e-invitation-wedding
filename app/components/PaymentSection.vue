@@ -8,13 +8,13 @@ const { t } = useLang();
     <v-container class="text-center">
       <v-row justify="center">
         <v-col cols="12" md="8">
-          <h2 class="section-title">{{ t("payment.title") }}</h2>
+          <h2 class="section-title" data-aos="fade-up">{{ t("payment.title") }}</h2>
 
-          <p class="section-subtitle">
+          <p class="section-subtitle" data-aos="fade-up" data-aos-delay="100">
             {{ t("payment.text") }}
           </p>
-  
-          <v-card class="payment-card pa-6" elevation="6">
+
+          <v-card class="payment-card pa-6" elevation="6" data-aos="zoom-in-up" data-aos-delay="150">
             <div class="qr-wrap">
               <v-img
                 src="/img/aba.jpg"
@@ -79,7 +79,7 @@ const { t } = useLang();
 
 .payment-card {
   border-radius: 20px;
-  background: white;
+  background: blur;
 }
 
 .qr-image {

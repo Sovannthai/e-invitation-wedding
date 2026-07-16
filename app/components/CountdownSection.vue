@@ -43,7 +43,7 @@ onMounted(() => {
 
 <v-container class="text-center">
 
-<h2 class="countdown-title text-xxxl">
+<h2 class="countdown-title text-xxxl" data-aos="fade-up">
 {{ t("countdown.title") }}
 </h2>
 
@@ -51,7 +51,7 @@ onMounted(() => {
 
 <v-col cols="6" md="2">
 
-<div class="count-card">
+<div class="count-card" data-aos="zoom-in" data-aos-delay="0">
 <h2>{{ days }}</h2>
 <p>{{ t("countdown.days") }}</p>
 </div>
@@ -60,7 +60,7 @@ onMounted(() => {
 
 <v-col cols="6" md="2">
 
-<div class="count-card">
+<div class="count-card" data-aos="zoom-in" data-aos-delay="100">
 <h2>{{ hours }}</h2>
 <p>{{ t("countdown.hours") }}</p>
 </div>
@@ -69,7 +69,7 @@ onMounted(() => {
 
 <v-col cols="6" md="2">
 
-<div class="count-card">
+<div class="count-card" data-aos="zoom-in" data-aos-delay="200">
 <h2>{{ minutes }}</h2>
 <p>{{ t("countdown.minutes") }}</p>
 </div>
@@ -78,7 +78,7 @@ onMounted(() => {
 
 <v-col cols="6" md="2">
 
-<div class="count-card">
+<div class="count-card" data-aos="zoom-in" data-aos-delay="300">
 <h2>{{ seconds }}</h2>
 <p>{{ t("countdown.seconds") }}</p>
 </div>

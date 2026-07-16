@@ -5,24 +5,28 @@ const { t } = useLang();
 <template>
   <section id="home" class="hero">
     <!-- Top: intro line -->
-    <div class="hero-top">
+    <div class="hero-top" data-aos="fade-down">
       <p class="script-md gold-text">{{ t("hero.celebration") }}</p>
       <h1 class="khmer-names gold-text">{{ t("hero.names") }}</h1>
     </div>
 
     <!-- Middle: welcome + name plaque -->
     <div class="hero-mid">
-      <p class="script-lg gold-text welcome">{{ t("hero.warmWelcome") }}</p>
+      <p class="script-lg gold-text welcome" data-aos="fade-up" data-aos-delay="100">
+        {{ t("hero.warmWelcome") }}
+      </p>
 
-      <div class="name-plaque">
+      <div class="name-plaque" data-aos="zoom-in" data-aos-delay="200">
         <span class="plaque-text">{{ t("hero.plaqueNames") }}</span>
       </div>
 
-      <p class="hero-date gold-text">{{ t("hero.date") }}</p>
+      <p class="hero-date gold-text" data-aos="fade-up" data-aos-delay="300">
+        {{ t("hero.date") }}
+      </p>
     </div>
 
     <!-- Bottom: scroll cue -->
-    <div class="scroll-cue">
+    <div class="scroll-cue" data-aos="fade" data-aos-delay="500">
       <v-icon class="cue-icon">mdi-gesture-swipe-down</v-icon>
       <span class="cue-km">{{ t("hero.scrollDown") }}</span>
     </div>
@@ -43,7 +47,7 @@ const { t } = useLang();
   justify-content: space-between;
   text-align: center;
 
-  padding: 48px 20px 32px;
+  padding: 58px 20px 32px;
 }
 
 /* ---- Gold text shared style ---- */
@@ -155,7 +159,7 @@ const { t } = useLang();
 }
 
 .cue-km {
-  font-family: "Noto Sans Khmer", sans-serif;
+  font-family: "Kantumruy Pro", sans-serif;
   font-size: 15px;
 }
 

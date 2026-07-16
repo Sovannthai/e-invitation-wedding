@@ -5,11 +5,11 @@ const { t } = useLang();
 <template>
   <section id="event" class="event-section">
     <v-container class="text-center">
-      <h2 class="section-title">{{ t("event.title") }}</h2>
+      <h2 class="section-title" data-aos="fade-up">{{ t("event.title") }}</h2>
 
       <v-row justify="center" class="mt-10">
         <v-col cols="12" md="4">
-          <v-card class="event-card">
+          <v-card class="event-card" data-aos="fade-up" data-aos-delay="0">
             <v-card-title class="gold">{{ t("event.ceremony") }}</v-card-title>
 
             <v-card-text>
@@ -23,7 +23,7 @@ const { t } = useLang();
         </v-col>
 
         <v-col cols="12" md="4">
-          <v-card class="event-card">
+          <v-card class="event-card" data-aos="fade-up" data-aos-delay="150">
             <v-card-title class="gold">{{ t("event.reception") }}</v-card-title>
 
             <v-card-text>

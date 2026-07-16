@@ -5,14 +5,14 @@ const { t } = useLang();
 <template>
   <section id="story" class="story-section">
     <v-container>
-      <h2 class="section-title text-center">{{ t("story.title") }}</h2>
+      <h2 class="section-title text-center" data-aos="fade-up">{{ t("story.title") }}</h2>
 
       <!-- Desktop Timeline -->
 
       <div class="desktop-timeline">
         <v-timeline align="center">
           <v-timeline-item dot-color="#C8A96A" size="large">
-            <v-card class="story-card">
+            <v-card class="story-card" data-aos="fade-right">
               <v-card-title>{{ t("story.firstMeet") }}</v-card-title>
 
               <v-card-text>
@@ -22,7 +22,7 @@ const { t } = useLang();
           </v-timeline-item>
 
           <v-timeline-item dot-color="#C8A96A" size="large">
-            <v-card class="story-card">
+            <v-card class="story-card" data-aos="fade-left">
               <v-card-title>{{ t("story.fallingInLove") }}</v-card-title>
 
               <v-card-text>{{ t("story.fallingInLoveText") }}</v-card-text>
@@ -30,7 +30,7 @@ const { t } = useLang();
           </v-timeline-item>
 
           <v-timeline-item dot-color="#C8A96A" size="large">
-            <v-card class="story-card">
+            <v-card class="story-card" data-aos="fade-right">
               <v-card-title>{{ t("story.proposal") }}</v-card-title>
 
               <v-card-text>
@@ -46,7 +46,7 @@ const { t } = useLang();
       <div class="mobile-story">
         <v-row>
           <v-col cols="12">
-            <v-card class="story-card">
+            <v-card class="story-card" data-aos="fade-up">
               <v-card-title>{{ t("story.firstMeet") }}</v-card-title>
               <v-card-text>
                 {{ t("story.firstMeetText") }}
@@ -55,14 +55,14 @@ const { t } = useLang();
           </v-col>
 
           <v-col cols="12">
-            <v-card class="story-card">
+            <v-card class="story-card" data-aos="fade-up">
               <v-card-title>{{ t("story.fallingInLove") }}</v-card-title>
               <v-card-text>{{ t("story.fallingInLoveText") }}</v-card-text>
             </v-card>
           </v-col>
 
           <v-col cols="12">
-            <v-card class="story-card">
+            <v-card class="story-card" data-aos="fade-up">
               <v-card-title>{{ t("story.proposal") }}</v-card-title>
               <v-card-text>
                 {{ t("story.proposalText") }}
