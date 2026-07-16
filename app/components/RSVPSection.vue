@@ -1,44 +1,44 @@
 <template>
-  <section class="rsvp-section">
+  <section id="rsvp" class="rsvp-section">
     <v-container>
-      <h2 class="section-title text-center">RSVP</h2>
+      <h2 class="section-title text-center">{{ t("rsvp.title") }}</h2>
 
       <v-row justify="center">
         <v-col cols="12" md="6">
           <v-card class="rsvp-card">
             <v-card-title class="text-center gold">
-              Confirm Your Attendance
+              {{ t("rsvp.confirm") }}
             </v-card-title>
 
             <v-card-text>
               <v-form @submit.prevent="submitRSVP">
                 <v-text-field
                   v-model="name"
-                  label="Your Name"
+                  :label="t('rsvp.name')"
                   variant="outlined"
                 />
 
                 <v-text-field
                   v-model="phone"
-                  label="Phone Number"
+                  :label="t('rsvp.phone')"
                   variant="outlined"
                 />
 
                 <v-select
                   v-model="attendance"
-                  :items="['Attending', 'Not Attending']"
-                  label="Will you attend?"
+                  :items="[t('rsvp.attending'), t('rsvp.notAttending')]"
+                  :label="t('rsvp.willAttend')"
                   variant="outlined"
                 />
 
                 <v-textarea
                   v-model="message"
-                  label="Message"
+                  :label="t('rsvp.message')"
                   variant="outlined"
                 />
 
                 <v-btn type="submit" color="#C8A96A" size="large" block>
-                  Send RSVP
+                  {{ t("rsvp.send") }}
                 </v-btn>
               </v-form>
             </v-card-text>
@@ -51,6 +51,8 @@
 
 <script setup>
 import { ref } from "vue";
+
+const { t } = useLang();
 
 const name = ref("");
 const phone = ref("");
@@ -65,25 +67,30 @@ function submitRSVP() {
     message: message.value,
   });
 
-  alert("Thank you for your response!");
+  alert(t("rsvp.thanks"));
 }
 </script>
 
 <style scoped>
 .rsvp-section {
-  padding: 120px 20px;
+  padding: 56px 20px;
 
-  background:
-    /* linear-gradient(rgba(255, 248, 242, 0.95), rgba(255, 248, 242, 0.95)), */
-    url("/img/gallery2.jpg");
-
-  background-size: cover;
-  background-position: center;
+  /* No own background – shows the single site background */
+  background: transparent;
 }
 
 .section-title {
-  font-size: 42px;
-  margin-bottom: 60px;
+  font-size: clamp(28px, 6vw, 42px);
+  margin-bottom: 36px;
+}
+
+@media (max-width: 640px) {
+  .rsvp-section {
+    padding: 36px 16px;
+  }
+  .section-title {
+    margin-bottom: 24px;
+  }
 }
 
 .rsvp-card {

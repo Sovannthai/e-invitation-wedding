@@ -1,18 +1,21 @@
+<script setup>
+const { t } = useLang();
+</script>
+
 <template>
-  <section class="payment-section text-center">
+  <section id="gift" class="payment-section text-center">
 
     <v-container class="text-center">
       <v-row justify="center">
         <v-col cols="12" md="8">
-          <h2 class="section-title">Wedding Gift</h2>
-  
+          <h2 class="section-title">{{ t("payment.title") }}</h2>
+
           <p class="section-subtitle">
-            Your presence is the greatest gift.  
-            If you wish to bless us with a gift, you can scan the QR code below.
+            {{ t("payment.text") }}
           </p>
   
           <v-card class="payment-card pa-6" elevation="6">
-            <div class="d-flex">
+            <div class="qr-wrap">
               <v-img
                 src="/img/aba.jpg"
                 max-width="260"
@@ -26,12 +29,12 @@
             </div>
   
             <div class="mt-4">
-              <h3 class="account-name">Sovannthai & Partner</h3>
-              <p class="bank-name">KHQR Payment</p>
+              <h3 class="account-name">{{ t("payment.account") }}</h3>
+              <p class="bank-name">{{ t("payment.khqr") }}</p>
             </div>
-  
+
             <p class="thank-text mt-4">
-              Thank you for your love and support ❤️
+              {{ t("payment.thanks") }}
             </p>
           </v-card>
         </v-col>
@@ -42,22 +45,36 @@
 
 <style scoped>
 .payment-section {
-  background: url('/img/payment-bg.png');
-  background-size: cover;
-  background-position: center;
-  padding: 0px;
+  /* No own background – shows the single site background */
+  background: transparent;
+  padding: 56px 16px;
+}
+
+.qr-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
 }
 
 .section-title {
-  font-size: 36px;
-  color: #b76e79;
+  font-size: clamp(26px, 6vw, 36px);
+  color: #ffffff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
   margin-bottom: 10px;
+}
+
+@media (max-width: 640px) {
+  .payment-section {
+    padding: 36px 16px;
+  }
 }
 
 .section-subtitle {
   font-size: 16px;
-  color: #666;
-  margin-bottom: 40px;
+  color: #f5f5f5;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+  margin-bottom: 32px;
 }
 
 .payment-card {

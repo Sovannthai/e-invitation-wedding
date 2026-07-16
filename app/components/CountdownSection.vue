@@ -6,6 +6,8 @@ const hours = ref("00")
 const minutes = ref("00")
 const seconds = ref("00")
 
+const { t } = useLang()
+
 const weddingDate = new Date("2026-12-20T09:00:00")
 
 function updateCountdown() {
@@ -37,12 +39,12 @@ onMounted(() => {
 
 <template>
 
-<section class="countdown-section">
+<section id="countdown" class="countdown-section">
 
 <v-container class="text-center">
 
 <h2 class="countdown-title text-xxxl">
-Our Wedding Day
+{{ t("countdown.title") }}
 </h2>
 
 <v-row justify="center" class="mt-10">
@@ -51,7 +53,7 @@ Our Wedding Day
 
 <div class="count-card">
 <h2>{{ days }}</h2>
-<p>Days</p>
+<p>{{ t("countdown.days") }}</p>
 </div>
 
 </v-col>
@@ -60,7 +62,7 @@ Our Wedding Day
 
 <div class="count-card">
 <h2>{{ hours }}</h2>
-<p>Hours</p>
+<p>{{ t("countdown.hours") }}</p>
 </div>
 
 </v-col>
@@ -69,7 +71,7 @@ Our Wedding Day
 
 <div class="count-card">
 <h2>{{ minutes }}</h2>
-<p>Minutes</p>
+<p>{{ t("countdown.minutes") }}</p>
 </div>
 
 </v-col>
@@ -78,7 +80,7 @@ Our Wedding Day
 
 <div class="count-card">
 <h2>{{ seconds }}</h2>
-<p>Seconds</p>
+<p>{{ t("countdown.seconds") }}</p>
 </div>
 
 </v-col>
@@ -95,17 +97,17 @@ Our Wedding Day
 
 .countdown-section{
 
-padding:120px 20px;
+padding:56px 20px;
 
-background:
-url('/img/flowers-bg.png');
-/* background:
-linear-gradient(rgba(255,248,242,.95),rgba(255,248,242,.95)),
-url('/img/flowers-bg.png'); */
+/* No own background – shows the single site background */
+background: transparent;
 
-background-size:cover;
-background-position:center;
+}
 
+@media (max-width: 640px) {
+  .countdown-section {
+    padding: 36px 16px;
+  }
 }
 
 .countdown-title{

@@ -1,33 +1,37 @@
+<script setup>
+const { t } = useLang();
+</script>
+
 <template>
-  <section class="event-section">
+  <section id="event" class="event-section">
     <v-container class="text-center">
-      <h2 class="section-title">Wedding Event</h2>
+      <h2 class="section-title">{{ t("event.title") }}</h2>
 
       <v-row justify="center" class="mt-10">
         <v-col cols="12" md="4">
           <v-card class="event-card">
-            <v-card-title class="gold"> Ceremony </v-card-title>
+            <v-card-title class="gold">{{ t("event.ceremony") }}</v-card-title>
 
             <v-card-text>
-              <p>20 December 2026</p>
+              <p>{{ t("event.date") }}</p>
 
-              <p>09:00 AM</p>
+              <p>{{ t("event.timeMorning") }}</p>
 
-              <p>Phnom Penh</p>
+              <p>{{ t("event.location") }}</p>
             </v-card-text>
           </v-card>
         </v-col>
 
         <v-col cols="12" md="4">
           <v-card class="event-card">
-            <v-card-title class="gold"> Reception </v-card-title>
+            <v-card-title class="gold">{{ t("event.reception") }}</v-card-title>
 
             <v-card-text>
-              <p>20 December 2026</p>
+              <p>{{ t("event.date") }}</p>
 
-              <p>06:00 PM</p>
+              <p>{{ t("event.timeEvening") }}</p>
 
-              <p>Phnom Penh</p>
+              <p>{{ t("event.location") }}</p>
             </v-card-text>
           </v-card>
         </v-col>
@@ -38,13 +42,20 @@
 
 <style scoped>
 .event-section {
-  padding: 120px 20px;
+  padding: 56px 20px;
 
-  background: #fff8f2;
+  /* No own background – shows the single site background */
+  background: transparent;
 }
 
 .section-title {
-  font-size: 42px;
+  font-size: clamp(28px, 6vw, 42px);
+}
+
+@media (max-width: 640px) {
+  .event-section {
+    padding: 36px 16px;
+  }
 }
 
 .event-card {

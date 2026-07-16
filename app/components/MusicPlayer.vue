@@ -19,7 +19,8 @@ function toggle() {
 <style scoped>
 .music-btn {
   position: fixed;
-  bottom: 20px;
+  bottom: 78px; /* sit above the section nav pill */
   right: 20px;
+  z-index: 1500;
 }
 </style>

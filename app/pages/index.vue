@@ -8,9 +8,11 @@
     <span></span>
 
   </div>
-<EnvelopeOpen/>
+<!-- <EnvelopeOpen/> -->
 
 <!-- <WeddingCover/> -->
+
+<LanguageSwitcher/>
 
 <HeroSection/>
 
@@ -29,4 +31,6 @@
 <PaymentSection/>
 
 <MusicPlayer/>
+
+<NavMenu/>
 </template>

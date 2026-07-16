@@ -1,5 +1,24 @@
 body{
-  font-family: "Pacifico";
+  /* Latin uses Pacifico; Khmer (normal text) falls back to Noto Sans Khmer */
+  font-family: "Pacifico", "Noto Sans Khmer", sans-serif;
+}
+
+/* Bold / heading text: Khmer glyphs use Moul (Latin keeps its own font).
+   Latin display font stays first so English is unaffected; Moul only
+   catches the Khmer glyphs that the Latin font can't render. */
+h1, h2, h3, h4, h5, h6,
+b, strong,
+.section-title, .countdown-title,
+.account-name,
+.v-card-title {
+  font-family: "Pacifico", "Moul", sans-serif;
+}
+
+/* Section headings sit on the single (dark) site background – keep them light */
+.section-title,
+.countdown-title {
+  color: #ffffff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 .petals span{
 
@@ -121,7 +140,7 @@ transform:translateY(100vh)
         --font-size-md: 16px;   /* body */
         --font-size-sm: 14px;   /* small text */
         --font-size-xs: 12px;   /* captions */
-        --height-core-value: calc(var(--base-core-value-height) * 1.1.1);
+        --height-core-value: calc(var(--base-core-value-height) * 1.1);
         --height-video-section: 30%;
         --width-arrow-down: 32px;
         --height-arrow-down: 32px;
