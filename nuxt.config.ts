@@ -23,6 +23,11 @@ export default defineNuxtConfig({
         families: {
           "IBM+Plex+Sans": [400, 500, 600, 700],
           "Manrope": [400, 500, 600, 700],
+          "Pacifico": [400, 500, 600, 700],
+          "Great+Vibes": [400],
+          "Cormorant+Garamond": [400, 500, 600, 700],
+          "Moul": [400],
+          "Kantumruy+Pro": [400, 500, 600, 700],
         },
       },
     ],
@@ -46,7 +51,7 @@ export default defineNuxtConfig({
     css: {
       preprocessorOptions: {
         scss: {
-          // additionalData: '@use "@/assets/scss/_global.scss" as *;',
+          additionalData: '@use "@/assets/scss/_global.scss" as *;',
         },
       },
     },
@@ -54,7 +59,7 @@ export default defineNuxtConfig({
   css: ["@mdi/font/css/materialdesignicons.css", 'vuetify/styles', '~/assets/main.scss'],
   app: {
     head: {
-       title: "Innovation Website",
+       title: "Sovannthai&Soheng Wedding Invitation",
       meta: [
         { charset: "utf-8" },
         { name: "viewport", content: "width=device-width, initial-scale=1" },

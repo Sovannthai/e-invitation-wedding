@@ -1,37 +1,40 @@
+<script setup>
+const { t } = useLang();
+</script>
+
 <template>
-  <section class="story-section">
+  <section id="story" class="story-section">
     <v-container>
-      <h2 class="section-title text-center">Our Love Story</h2>
+      <h2 class="section-title text-center" data-aos="fade-up">{{ t("story.title") }}</h2>
 
       <!-- Desktop Timeline -->
 
       <div class="desktop-timeline">
         <v-timeline align="center">
           <v-timeline-item dot-color="#C8A96A" size="large">
-            <v-card class="story-card">
-              <v-card-title>First Meet</v-card-title>
+            <v-card class="story-card" data-aos="fade-right">
+              <v-card-title>{{ t("story.firstMeet") }}</v-card-title>
 
               <v-card-text>
-                We met for the first time and became friends.
+                {{ t("story.firstMeetText") }}
               </v-card-text>
             </v-card>
           </v-timeline-item>
 
           <v-timeline-item dot-color="#C8A96A" size="large">
-            <v-card class="story-card">
-              <v-card-title>Falling In Love</v-card-title>
+            <v-card class="story-card" data-aos="fade-left">
+              <v-card-title>{{ t("story.fallingInLove") }}</v-card-title>
 
-              <v-card-text> Our love story began beautifully. </v-card-text>
+              <v-card-text>{{ t("story.fallingInLoveText") }}</v-card-text>
             </v-card>
           </v-timeline-item>
 
           <v-timeline-item dot-color="#C8A96A" size="large">
-            <v-card class="story-card">
-              <v-card-title>Proposal</v-card-title>
+            <v-card class="story-card" data-aos="fade-right">
+              <v-card-title>{{ t("story.proposal") }}</v-card-title>
 
               <v-card-text>
-                The unforgettable moment when we decided to spend our lives
-                together.
+                {{ t("story.proposalText") }}
               </v-card-text>
             </v-card>
           </v-timeline-item>
@@ -43,27 +46,26 @@
       <div class="mobile-story">
         <v-row>
           <v-col cols="12">
-            <v-card class="story-card">
-              <v-card-title>First Meet</v-card-title>
+            <v-card class="story-card" data-aos="fade-up">
+              <v-card-title>{{ t("story.firstMeet") }}</v-card-title>
               <v-card-text>
-                We met for the first time and became friends.
+                {{ t("story.firstMeetText") }}
               </v-card-text>
             </v-card>
           </v-col>
 
           <v-col cols="12">
-            <v-card class="story-card">
-              <v-card-title>Falling In Love</v-card-title>
-              <v-card-text> Our love story began beautifully. </v-card-text>
+            <v-card class="story-card" data-aos="fade-up">
+              <v-card-title>{{ t("story.fallingInLove") }}</v-card-title>
+              <v-card-text>{{ t("story.fallingInLoveText") }}</v-card-text>
             </v-card>
           </v-col>
 
           <v-col cols="12">
-            <v-card class="story-card">
-              <v-card-title>Proposal</v-card-title>
+            <v-card class="story-card" data-aos="fade-up">
+              <v-card-title>{{ t("story.proposal") }}</v-card-title>
               <v-card-text>
-                The unforgettable moment when we decided to spend our lives
-                together.
+                {{ t("story.proposalText") }}
               </v-card-text>
             </v-card>
           </v-col>
@@ -75,20 +77,26 @@
 
 <style scoped>
 .story-section {
-  padding: 120px 20px;
+  padding: 56px 20px;
 
-  background:
-/* linear-gradient(rgba(232,220,207,0.9),rgba(232,220,207,0.9)), */ url("/img/story-bg.png");
-
-  background-size: cover;
+  /* No own background – shows the single site background */
+  background: transparent;
 }
 
 /* title */
 
 .section-title {
-  font-family: "Playfair Display";
-  font-size: 42px;
-  margin-bottom: 60px;
+  font-size: clamp(28px, 6vw, 42px);
+  margin-bottom: 36px;
+}
+
+@media (max-width: 640px) {
+  .story-section {
+    padding: 36px 16px;
+  }
+  .section-title {
+    margin-bottom: 24px;
+  }
 }
 
 /* cards */
@@ -97,7 +105,13 @@
   border-radius: 20px;
   padding: 10px;
 
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  /* Frosted glass instead of solid white */
+  background: rgba(255, 255, 255, 0.38) !important;
+  backdrop-filter: blur(9px);
+  -webkit-backdrop-filter: blur(9px);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
 }
 
 /* desktop */

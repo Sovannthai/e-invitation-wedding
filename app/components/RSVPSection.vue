@@ -1,56 +1,75 @@
 <template>
-  <section class="rsvp-section">
-    <v-container>
-      <h2 class="section-title text-center">RSVP</h2>
+  <section id="rsvp" class="rsvp-section">
+    <v-container class="pa-0">
+      <h2 class="section-title text-center" data-aos="fade-up">
+        {{ t("rsvp.title") }}
+      </h2>
 
-      <v-row justify="center">
-        <v-col cols="12" md="6">
-          <v-card class="rsvp-card">
-            <v-card-title class="text-center gold">
-              Confirm Your Attendance
-            </v-card-title>
+      <div class="rsvp-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="rsvp-head">
+          <div class="rsvp-head-icon">
+            <v-icon>mdi-email-heart-outline</v-icon>
+          </div>
+          <h3 class="rsvp-head-title">{{ t("rsvp.confirm") }}</h3>
+        </div>
 
-            <v-card-text>
-              <v-form @submit.prevent="submitRSVP">
-                <v-text-field
-                  v-model="name"
-                  label="Your Name"
-                  variant="outlined"
-                />
+        <v-form class="rsvp-form" @submit.prevent="submitRSVP">
+          <v-text-field
+            v-model="name"
+            :label="t('rsvp.name')"
+            variant="outlined"
+            density="comfortable"
+            rounded="lg"
+            hide-details="auto"
+            prepend-inner-icon="mdi-account-outline"
+          />
 
-                <v-text-field
-                  v-model="phone"
-                  label="Phone Number"
-                  variant="outlined"
-                />
+          <v-text-field
+            v-model="phone"
+            :label="t('rsvp.phone')"
+            variant="outlined"
+            density="comfortable"
+            rounded="lg"
+            hide-details="auto"
+            prepend-inner-icon="mdi-phone-outline"
+          />
 
-                <v-select
-                  v-model="attendance"
-                  :items="['Attending', 'Not Attending']"
-                  label="Will you attend?"
-                  variant="outlined"
-                />
+          <v-select
+            v-model="attendance"
+            :items="[t('rsvp.attending'), t('rsvp.notAttending')]"
+            :label="t('rsvp.willAttend')"
+            variant="outlined"
+            density="comfortable"
+            rounded="lg"
+            hide-details="auto"
+            prepend-inner-icon="mdi-calendar-check-outline"
+          />
 
-                <v-textarea
-                  v-model="message"
-                  label="Message"
-                  variant="outlined"
-                />
+          <v-textarea
+            v-model="message"
+            :label="t('rsvp.message')"
+            variant="outlined"
+            rounded="lg"
+            rows="3"
+            auto-grow
+            hide-details="auto"
+            prepend-inner-icon="mdi-message-text-outline"
+          />
 
-                <v-btn type="submit" color="#C8A96A" size="large" block>
-                  Send RSVP
-                </v-btn>
-              </v-form>
-            </v-card-text>
-          </v-card>
-        </v-col>
-      </v-row>
+          <v-btn type="submit" size="large" block rounded="lg" class="rsvp-btn">
+            <v-icon start>mdi-send-variant</v-icon>
+            {{ t("rsvp.send") }}
+          </v-btn>
+        </v-form>
+      </div>
     </v-container>
   </section>
 </template>
 
 <script setup>
 import { ref } from "vue";
+
+const { t } = useLang();
 
 const name = ref("");
 const phone = ref("");
@@ -65,39 +84,107 @@ function submitRSVP() {
     message: message.value,
   });
 
-  alert("Thank you for your response!");
+  alert(t("rsvp.thanks"));
 }
 </script>
 
 <style scoped>
 .rsvp-section {
-  padding: 120px 20px;
-
-  background:
-    linear-gradient(rgba(255, 248, 242, 0.95), rgba(255, 248, 242, 0.95)),
-    url("/images/flowers-bg.jpg");
-
-  background-size: cover;
-  background-position: center;
+  padding: 56px 20px;
+  background: transparent;
 }
 
 .section-title {
-  font-family: "Playfair Display";
-  font-size: 42px;
-  margin-bottom: 60px;
+  font-size: clamp(28px, 6vw, 42px);
+  margin-bottom: 32px;
 }
 
+/* ---- Card ---- */
 .rsvp-card {
-  padding: 30px;
-
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 32px 28px;
   border-radius: 24px;
 
-  background: rgba(255, 255, 255, 0.9);
-
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+  /* Frosted glass */
+  background: rgba(255, 255, 255, 0.48);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
 }
 
-.gold {
-  color: #c8a96a;
+/* ---- Header ---- */
+.rsvp-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.rsvp-head-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #e6c25c, #c8971f);
+  box-shadow: 0 8px 18px rgba(200, 151, 31, 0.4);
+}
+.rsvp-head-icon :deep(.v-icon) {
+  font-size: 28px;
+  color: #fff;
+}
+
+.rsvp-head-title {
+  /* Wraps instead of truncating (fixes the mobile cut-off) */
+  font-size: clamp(18px, 4.5vw, 22px);
+  line-height: 1.5;
+  color: #7a5c22;
+  font-weight: 600;
+  white-space: normal;
+  word-break: break-word;
+}
+
+/* ---- Form ---- */
+.rsvp-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* Soft white fill on the fields so they read on the glass card */
+.rsvp-form :deep(.v-field) {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.rsvp-btn {
+  margin-top: 6px;
+  color: #fff !important;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  background: linear-gradient(180deg, #e6c25c, #c8971f) !important;
+  box-shadow: 0 10px 24px rgba(200, 151, 31, 0.4);
+}
+
+/* ---- Mobile ---- */
+@media (max-width: 640px) {
+  .rsvp-section {
+    padding: 40px 16px;
+  }
+  .section-title {
+    margin-bottom: 24px;
+  }
+  .rsvp-card {
+    padding: 24px 18px;
+    border-radius: 20px;
+  }
+  .rsvp-form {
+    gap: 14px;
+  }
 }
 </style>

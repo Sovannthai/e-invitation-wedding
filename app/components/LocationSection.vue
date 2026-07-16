@@ -1,8 +1,12 @@
-<template>
-  <v-container class="py-16 text-center">
-    <h2 class="section-title">Location</h2>
+<script setup>
+const { t } = useLang();
+</script>
 
+<template>
+  <v-container id="location" class="location-wrap py-10 text-center">
+    <h2 class="section-title text-xxxl mb-4" data-aos="fade-up">{{ t("location.title") }}</h2>
     <iframe
+      data-aos="zoom-in-up"
       src="https://maps.google.com/maps?q=phnom%20penh&t=&z=13&ie=UTF8&iwloc=&output=embed"
       width="100%"
       height="350"
@@ -10,3 +14,10 @@
     ></iframe>
   </v-container>
 </template>
+
+<style scoped>
+.location-wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+</style>
