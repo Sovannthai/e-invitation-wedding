@@ -1,5 +1,60 @@
 <script setup>
 const { t } = useLang();
+
+// Wedding event details (local Cambodia time). Covers ceremony -> reception.
+const eventInfo = {
+  title: "Sovannthai & Soheng — Wedding",
+  location: "Phnom Penh, Cambodia",
+  description: "Join us to celebrate the wedding of Sovannthai & Soheng.",
+  start: "20261220T090000", // 20 Dec 2026, 09:00
+  end: "20261220T220000", // 20 Dec 2026, 22:00
+  tz: "Asia/Phnom_Penh",
+};
+
+function addToGoogle() {
+  const params = new URLSearchParams({
+    action: "TEMPLATE",
+    text: eventInfo.title,
+    dates: `${eventInfo.start}/${eventInfo.end}`,
+    details: eventInfo.description,
+    location: eventInfo.location,
+    ctz: eventInfo.tz,
+  });
+  window.open(
+    `https://calendar.google.com/calendar/render?${params.toString()}`,
+    "_blank"
+  );
+}
+
+function downloadIcs() {
+  const stamp = new Date().toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+  const ics = [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//e-invitation-wedding//EN",
+    "CALSCALE:GREGORIAN",
+    "BEGIN:VEVENT",
+    `UID:${Date.now()}@sovannthai-soheng-wedding`,
+    `DTSTAMP:${stamp}`,
+    `DTSTART:${eventInfo.start}`,
+    `DTEND:${eventInfo.end}`,
+    `SUMMARY:${eventInfo.title}`,
+    `LOCATION:${eventInfo.location}`,
+    `DESCRIPTION:${eventInfo.description}`,
+    "END:VEVENT",
+    "END:VCALENDAR",
+  ].join("\r\n");
+
+  const blob = new Blob([ics], { type: "text/calendar;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "sovannthai-soheng-wedding.ics";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
 </script>
 
 <template>
@@ -36,6 +91,31 @@ const { t } = useLang();
           </v-card>
         </v-col>
       </v-row>
+
+      <div class="mt-10" data-aos="fade-up" data-aos-delay="200">
+        <v-menu location="bottom center">
+          <template #activator="{ props }">
+            <v-btn
+              v-bind="props"
+              size="large"
+              rounded="lg"
+              class="cal-btn"
+              prepend-icon="mdi-calendar-plus"
+            >
+              {{ t("event.addToCalendar") }}
+            </v-btn>
+          </template>
+
+          <v-list class="cal-list" density="comfortable">
+            <v-list-item prepend-icon="mdi-google" @click="addToGoogle">
+              <v-list-item-title>{{ t("event.google") }}</v-list-item-title>
+            </v-list-item>
+            <v-list-item prepend-icon="mdi-calendar-export" @click="downloadIcs">
+              <v-list-item-title>{{ t("event.ics") }}</v-list-item-title>
+            </v-list-item>
+          </v-list>
+        </v-menu>
+      </div>
     </v-container>
   </section>
 </template>
@@ -82,5 +162,14 @@ const { t } = useLang();
   color: #c8a96a;
 
   font-weight: 600;
+}
+
+/* Add-to-calendar button */
+.cal-btn {
+  color: #fff !important;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  background: linear-gradient(180deg, #e6c25c, #c8971f) !important;
+  box-shadow: 0 10px 24px rgba(200, 151, 31, 0.4);
 }
 </style>

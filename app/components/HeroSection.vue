@@ -135,8 +135,8 @@ const { t } = useLang();
 }
 
 .hero-date {
-  font-family: "Cormorant Garamond", "Moul", serif;
-  font-weight: 600;
+  font-family: "Cormorant Garamond", "Kantumruy Pro", serif;
+  font-weight: 500;
   font-size: clamp(18px, 4.5vw, 26px);
   letter-spacing: 2px;
   margin-top: 4px;

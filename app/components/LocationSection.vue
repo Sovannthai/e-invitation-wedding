@@ -3,7 +3,7 @@ const { t } = useLang();
 </script>
 
 <template>
-  <v-container id="location" class="py-10 text-center">
+  <v-container id="location" class="location-wrap py-10 text-center">
     <h2 class="section-title text-xxxl mb-4" data-aos="fade-up">{{ t("location.title") }}</h2>
     <iframe
       data-aos="zoom-in-up"
@@ -14,3 +14,10 @@ const { t } = useLang();
     ></iframe>
   </v-container>
 </template>
+
+<style scoped>
+.location-wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+</style>

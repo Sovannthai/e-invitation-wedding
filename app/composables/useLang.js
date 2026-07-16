@@ -8,7 +8,8 @@ const messages = {
     "hero.names": "សុវណ្ណថៃ និង សុហេង",
     "hero.warmWelcome": "សូមគោរពអញ្ជើញ",
     "hero.plaqueNames": "សុវណ្ណថៃ និង សុហេង",
-    "hero.date": "១៩ ធ្នូ ២០២៦",
+    // "hero.date": "១៩ ធ្នូ ២០២៦",
+    "hero.date": "ថ្ងៃ ចន្ទ ទី ២៣ ខែកុម្ភៈ ឆ្នាំ២០២៦ វេលាម៉ោង ៤៖០០ ល្ងាច ទីតាំង ភូមិ សំរោង ឃុំ សំរោង ស្រុក ស្វាយអន្ទរ ខេត្ត ព្រៃវែង",
     "hero.scrollDown": "សូមអូសចុះក្រោម",
 
     // Countdown
@@ -36,6 +37,9 @@ const messages = {
     "event.timeMorning": "ម៉ោង ០៩:០០ ព្រឹក",
     "event.timeEvening": "ម៉ោង ០៦:០០ ល្ងាច",
     "event.location": "ភ្នំពេញ",
+    "event.addToCalendar": "បញ្ចូលទៅប្រតិទិន",
+    "event.google": "Google Calendar",
+    "event.ics": "Apple / Outlook (.ics)",
 
     // Gallery / Location
     "gallery.title": "វិចិត្រសាល",
@@ -102,6 +106,9 @@ const messages = {
     "event.timeMorning": "09:00 AM",
     "event.timeEvening": "06:00 PM",
     "event.location": "Phnom Penh",
+    "event.addToCalendar": "Add to Calendar",
+    "event.google": "Google Calendar",
+    "event.ics": "Apple / Outlook (.ics)",
 
     // Gallery / Location
     "gallery.title": "Gallery",
