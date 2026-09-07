@@ -1,152 +1,153 @@
 <script setup>
-import { ref, onMounted } from "vue"
+import { ref, onMounted, onBeforeUnmount } from "vue";
 
-const days = ref("00")
-const hours = ref("00")
-const minutes = ref("00")
-const seconds = ref("00")
+const { t } = useLang();
 
-const { t } = useLang()
+const weddingDate = new Date("2026-12-20T09:00:00");
 
-const weddingDate = new Date("2026-12-20T09:00:00")
+const days = ref("00");
+const hours = ref("00");
+const minutes = ref("00");
+const seconds = ref("00");
+
+let timer = null;
 
 function updateCountdown() {
+  const diff = weddingDate - new Date();
+  if (diff <= 0) {
+    days.value = hours.value = minutes.value = seconds.value = "00";
+    return;
+  }
 
-  const now = new Date()
-  const diff = weddingDate - now
-
-  if (diff <= 0) return
-
-  const d = Math.floor(diff / (1000 * 60 * 60 * 24))
-  const h = Math.floor((diff / (1000 * 60 * 60)) % 24)
-  const m = Math.floor((diff / (1000 * 60)) % 60)
-  const s = Math.floor((diff / 1000) % 60)
-
-  days.value = String(d).padStart(2, "0")
-  hours.value = String(h).padStart(2, "0")
-  minutes.value = String(m).padStart(2, "0")
-  seconds.value = String(s).padStart(2, "0")
+  days.value = String(Math.floor(diff / 86400000)).padStart(2, "0");
+  hours.value = String(Math.floor(diff / 3600000) % 24).padStart(2, "0");
+  minutes.value = String(Math.floor(diff / 60000) % 60).padStart(2, "0");
+  seconds.value = String(Math.floor(diff / 1000) % 60).padStart(2, "0");
 }
 
 onMounted(() => {
+  updateCountdown();
+  timer = setInterval(updateCountdown, 1000);
+});
 
-  updateCountdown()
-
-  setInterval(updateCountdown, 1000)
-
-})
+onBeforeUnmount(() => clearInterval(timer));
 </script>
 
 <template>
+  <section id="countdown" class="countdown-section">
+    <div class="countdown-inner">
+      <p class="k-eyebrow" data-aos="fade-up">{{ t("countdown.eyebrow") }}</p>
+      <h2 class="countdown-title" data-aos="fade-up" data-aos-delay="60">
+        {{ t("countdown.title") }}
+      </h2>
 
-<section id="countdown" class="countdown-section">
+      <!-- Four figures on one line, parted by hairlines — an inscription,
+           not four cards. The numerals carry this section on their own. -->
+      <div class="clock" data-aos="fade-up" data-aos-delay="120">
+        <div class="unit">
+          <span class="figure">{{ days }}</span>
+          <span class="unit-label">{{ t("countdown.days") }}</span>
+        </div>
+        <span class="unit-divider" aria-hidden="true"></span>
 
-<v-container class="text-center">
+        <div class="unit">
+          <span class="figure">{{ hours }}</span>
+          <span class="unit-label">{{ t("countdown.hours") }}</span>
+        </div>
+        <span class="unit-divider" aria-hidden="true"></span>
 
-<h2 class="countdown-title text-xxxl" data-aos="fade-up">
-{{ t("countdown.title") }}
-</h2>
+        <div class="unit">
+          <span class="figure">{{ minutes }}</span>
+          <span class="unit-label">{{ t("countdown.minutes") }}</span>
+        </div>
+        <span class="unit-divider" aria-hidden="true"></span>
 
-<v-row justify="center" class="mt-10">
-
-<v-col cols="6" md="2">
-
-<div class="count-card" data-aos="zoom-in" data-aos-delay="0">
-<h2>{{ days }}</h2>
-<p>{{ t("countdown.days") }}</p>
-</div>
-
-</v-col>
-
-<v-col cols="6" md="2">
-
-<div class="count-card" data-aos="zoom-in" data-aos-delay="100">
-<h2>{{ hours }}</h2>
-<p>{{ t("countdown.hours") }}</p>
-</div>
-
-</v-col>
-
-<v-col cols="6" md="2">
-
-<div class="count-card" data-aos="zoom-in" data-aos-delay="200">
-<h2>{{ minutes }}</h2>
-<p>{{ t("countdown.minutes") }}</p>
-</div>
-
-</v-col>
-
-<v-col cols="6" md="2">
-
-<div class="count-card" data-aos="zoom-in" data-aos-delay="300">
-<h2>{{ seconds }}</h2>
-<p>{{ t("countdown.seconds") }}</p>
-</div>
-
-</v-col>
-
-</v-row>
-
-</v-container>
-
-</section>
-
+        <div class="unit">
+          <span class="figure">{{ seconds }}</span>
+          <span class="unit-label">{{ t("countdown.seconds") }}</span>
+        </div>
+      </div>
+    </div>
+  </section>
 </template>
 
 <style scoped>
+.countdown-section {
+  padding: 64px 20px;
+  background: transparent;
+}
 
-.countdown-section{
+.countdown-inner {
+  width: min(100%, var(--k-measure));
+  margin: 0 auto;
+  text-align: center;
+}
 
-padding:56px 20px;
+.countdown-title {
+  margin: 6px 0 36px;
+}
 
-/* No own background – shows the single site background */
-background: transparent;
+.clock {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+}
 
+.unit {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 0 6px;
+}
+
+.figure {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 300;
+  font-size: clamp(38px, 12vw, 64px);
+  line-height: 1.15;
+  font-variant-numeric: lining-nums tabular-nums;
+  font-feature-settings: "tnum" 1;
+
+  background: var(--k-foil);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.6));
+}
+
+.unit-label {
+  font-family: "Cormorant Garamond", "Kantumruy Pro", serif;
+  font-size: clamp(11px, 3vw, 13px);
+  letter-spacing: 0.14em;
+  color: rgba(232, 220, 207, 0.7);
+  line-height: 1.9;
+}
+
+.unit-divider {
+  flex: 0 0 1px;
+  align-self: center;
+  height: clamp(34px, 9vw, 52px);
+  background: linear-gradient(
+    180deg,
+    rgba(212, 168, 67, 0) 0%,
+    rgba(212, 168, 67, 0.45) 50%,
+    rgba(212, 168, 67, 0) 100%
+  );
 }
 
 @media (max-width: 640px) {
   .countdown-section {
-    padding: 36px 16px;
+    padding: 44px 12px;
+  }
+  .countdown-title {
+    margin-bottom: 26px;
+  }
+  .unit {
+    padding: 0 2px;
   }
 }
-
-.countdown-title{
-
-font-size:42px;
-
-}
-
-/* glass cards */
-
-.count-card{
-
-background:rgba(255,255,255,0.38);
-
-backdrop-filter:blur(9px);
--webkit-backdrop-filter:blur(9px);
-border:1px solid rgba(255,255,255,0.45);
-
-padding:30px;
-
-border-radius:20px;
-
-box-shadow:0 10px 30px rgba(0,0,0,0.18);
-
-transition:0.3s;
-
-}
-
-.count-card:hover{
-
-transform:translateY(-6px);
-
-}
-
-.count-card h2{
-
-font-size:36px;
-color:#C8A96A;
-
-}
-
 </style>

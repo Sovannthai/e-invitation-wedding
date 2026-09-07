@@ -2,41 +2,35 @@ import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 
+/**
+ * Vuetify runs on a single dark theme mirroring the Royal Angkor tokens
+ * in assets/scss/_variables.scss. Setting the theme here means cards,
+ * fields, lists and timelines inherit the palette instead of painting
+ * white and being overridden component by component.
+ */
 export default defineNuxtPlugin((nuxtApp) => {
   const vuetify = createVuetify({
     components,
     directives,
     theme: {
-      defaultTheme: 'light',
+      defaultTheme: 'royalAngkor',
       themes: {
-        light: {
+        royalAngkor: {
+          dark: true,
           colors: {
-            background: '#FFFFFF',
-            surface: '#FFFFFF',
-            // 'on-background': '#FAFAFA',
-            // 'on-surface': '#FAFAFA',
-            primary: '#1976D2',
-            secondary: '#424242',
-            accent: '#82B1FF',
-            error: '#FF5252',
-            info: '#2196F3',
-            success: '#4CAF50',
-            warning: '#FB8C00',
-          },
-        },
-        dark: {
-          colors: {
-            background: '#121212',
-            surface: '#212121',
-            'on-background': '#FAFAFA',
-            'on-surface': '#FAFAFA',
-            primary: '#2196F3',
-            secondary: '#424242',
-            accent: '#FF4081',
-            error: '#FF5252',
-            info: '#2196F3',
-            success: '#4CAF50',
-            warning: '#FB8C00',
+            background: '#0A1220', // night indigo
+            surface: '#152740', // temple blue
+            'on-background': '#E8DCCF',
+            'on-surface': '#E8DCCF',
+            primary: '#D4A843', // leaf gold
+            'on-primary': '#0A1220',
+            secondary: '#8A6320', // antique gold
+            'on-secondary': '#FBEFC0',
+            accent: '#FBEFC0',
+            error: '#6E1F2A', // lacquer red
+            info: '#152740',
+            success: '#4F7A5B',
+            warning: '#C08A2E',
           },
         },
       },

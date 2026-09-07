@@ -20,15 +20,15 @@ export default defineNuxtConfig({
     [
       "@nuxtjs/google-fonts",
       {
+        // Three families, one per role. Latin display and body are both
+        // Cormorant Garamond; Moul carries Khmer headings, Kantumruy Pro
+        // Khmer prose. Everything else was dropped as unused weight.
         families: {
-          "IBM+Plex+Sans": [400, 500, 600, 700],
-          "Manrope": [400, 500, 600, 700],
-          "Pacifico": [400, 500, 600, 700],
-          "Great+Vibes": [400],
-          "Cormorant+Garamond": [400, 500, 600, 700],
+          "Cormorant+Garamond": [300, 400, 500, 600],
           "Moul": [400],
-          "Kantumruy+Pro": [400, 500, 600, 700],
+          "Kantumruy+Pro": [300, 400, 500, 600],
         },
+        display: "swap",
       },
     ],
   ],
@@ -59,21 +59,22 @@ export default defineNuxtConfig({
   css: ["@mdi/font/css/materialdesignicons.css", 'vuetify/styles', '~/assets/main.scss'],
   app: {
     head: {
-       title: "Sovannthai&Soheng Wedding Invitation",
+      title: "សិរីមង្គលអាពាហ៍ពិពាហ៍ · Sovannthai & Soheng",
+      htmlAttrs: { lang: "km" },
       meta: [
         { charset: "utf-8" },
         { name: "viewport", content: "width=device-width, initial-scale=1" },
+        { name: "theme-color", content: "#0A1220" },
+        {
+          name: "description",
+          content:
+            "សូមគោរពអញ្ជើញចូលរួមក្នុងពិធីមង្គលការ សុវណ្ណថៃ និង សុហេង · 20 December 2026, Takeo.",
+        },
       ],
       link: [
         {
           rel: "stylesheet",
           href: "https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css",
-        },
-      ],
-      script: [
-        {
-          type: "module",
-          src: "https://unpkg.com/@splinetool/viewer@1.12.42/build/spline-viewer.js",
         },
       ],
     },

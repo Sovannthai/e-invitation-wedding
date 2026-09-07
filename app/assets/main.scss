@@ -1,347 +1,266 @@
-body{
-  /* Latin uses Pacifico; Khmer (normal text) falls back to Kantumruy Pro */
-  font-family: "Pacifico", "Kantumruy Pro", sans-serif;
+/* ══════════════════════════════════════════════════════════════
+   Royal Angkor — base
+   Tokens come from scss/_variables.scss, injected via _global.scss.
+   ══════════════════════════════════════════════════════════════ */
+
+:root {
+  --k-ground: #{$ground};
+  --k-ground-2: #{$ground-2};
+  --k-gold-hi: #{$gold-hi};
+  --k-gold: #{$gold};
+  --k-gold-deep: #{$gold-deep};
+  --k-oxblood: #{$oxblood};
+  --k-silk: #{$silk};
+
+  /* Gold leaf, as it catches light across a carved surface.
+     Applied to text via background-clip, to edges via border-image. */
+  --k-foil: linear-gradient(
+    180deg,
+    #fbefc0 0%,
+    #f0d78a 28%,
+    #d4a843 52%,
+    #8a6320 74%,
+    #f4e2a6 100%
+  );
+
+  /* A hairline of gold that fades at both ends — the only rule the
+     page uses. Sections are separated by this, nothing heavier. */
+  --k-rule: linear-gradient(
+    90deg,
+    rgba(212, 168, 67, 0) 0%,
+    rgba(212, 168, 67, 0.5) 50%,
+    rgba(212, 168, 67, 0) 100%
+  );
+
+  /* An invitation is a card, not a landing page. Text sits in a
+     narrow measure; only gallery and map break out of it. */
+  --k-measure: 640px;
+  --k-measure-wide: 1040px;
+
+  --header-height: 3.5rem;
+  --z-fixed: 100;
 }
 
-/* Bold / heading text: Khmer glyphs use Moul (Latin keeps its own font).
-   Latin display font stays first so English is unaffected; Moul only
-   catches the Khmer glyphs that the Latin font can't render. */
+/* ── Typography ────────────────────────────────────────────────
+   Three families, each with one job:
+     Cormorant Garamond — Latin, display and body
+     Moul              — Khmer display (ceremonial; large sizes only)
+     Kantumruy Pro     — Khmer body
+   Latin faces are listed first so Latin renders in Cormorant; the
+   Khmer face sits behind it and catches the glyphs Cormorant can't
+   render. One family per script, no overlap.
+   ──────────────────────────────────────────────────────────── */
+
+body {
+  font-family: "Cormorant Garamond", "Kantumruy Pro", serif;
+  font-size: var(--font-size-md);
+  line-height: 1.9;
+  color: var(--k-silk);
+  background: var(--k-ground);
+  -webkit-font-smoothing: antialiased;
+}
+
 h1, h2, h3, h4, h5, h6,
-b, strong,
-.section-title, .countdown-title,
+.k-display,
+.section-title,
+.countdown-title,
 .account-name,
 .v-card-title {
-  font-family: "Pacifico", "Moul", sans-serif;
+  font-family: "Cormorant Garamond", "Moul", serif;
+  font-weight: 600;
+  line-height: 1.7;
 }
 
-/* Section headings sit on the single (dark) site background – keep them light */
+/* Khmer ceremonial display. Moul has no light weights and reads heavy
+   at small sizes, so it is reserved for headings and never for prose. */
+.k-khmer-display {
+  font-family: "Moul", "Cormorant Garamond", serif;
+  font-weight: 400;
+  line-height: 1.9;
+}
+
+.k-khmer-body {
+  font-family: "Kantumruy Pro", sans-serif;
+  font-weight: 400;
+}
+
+/* Gold leaf on text. */
+.k-foil-text {
+  background: var(--k-foil);
+  background-size: 100% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.6));
+}
+
+/* Section headings sit on the dark ground and are always foiled. */
 .section-title,
 .countdown-title {
-  color: #ffffff;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-}
-.petals span{
-
-position:fixed;
-top:-10px;
-
-width:12px;
-height:12px;
-
-background:#E8DCCF;
-
-border-radius:50%;
-
-opacity:.7;
-
-animation:fall linear infinite;
-
+  font-family: "Cormorant Garamond", "Moul", serif;
+  font-size: clamp(26px, 5.5vw, 38px);
+  letter-spacing: 0.02em;
+  background: var(--k-foil);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.6));
 }
 
-.petals span:nth-child(1){
-left:10%;
-animation-duration:8s;
+/* An eyebrow above a section title: small, spaced, antique gold. */
+.k-eyebrow {
+  font-family: "Cormorant Garamond", "Kantumruy Pro", serif;
+  font-size: 12px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(212, 168, 67, 0.75);
+  line-height: 2;
 }
 
-.petals span:nth-child(2){
-left:30%;
-animation-duration:10s;
+/* ── Surfaces ──────────────────────────────────────────────────
+   One card treatment for the whole page: lacquered temple blue with
+   a single gold hairline. No corner flourishes — ornament is spent
+   at section boundaries and on the hero medallion, nowhere else.
+   ──────────────────────────────────────────────────────────── */
+.k-panel {
+  background: linear-gradient(
+    160deg,
+    rgba(21, 39, 64, 0.86) 0%,
+    rgba(10, 18, 32, 0.9) 100%
+  );
+  border: 1px solid rgba(212, 168, 67, 0.28);
+  border-radius: 4px;
+  box-shadow:
+    0 1px 0 rgba(251, 239, 192, 0.08) inset,
+    0 18px 44px rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
-.petals span:nth-child(3){
-left:50%;
-animation-duration:9s;
+/* Keyboard focus is visible everywhere, in gold. */
+:where(a, button, [tabindex]):focus-visible,
+.v-btn:focus-visible {
+  outline: 2px solid var(--k-gold);
+  outline-offset: 3px;
+  border-radius: 2px;
 }
 
-.petals span:nth-child(4){
-left:70%;
-animation-duration:11s;
+/* ── Ambient lotus petals ──────────────────────────────────────
+   Petals shed from an offering, not confetti: gold, asymmetric,
+   turning as they fall.
+   ──────────────────────────────────────────────────────────── */
+.petals {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
 }
 
-.petals span:nth-child(5){
-left:90%;
-animation-duration:12s;
+.petals span {
+  position: absolute;
+  top: -6vh;
+  width: 9px;
+  height: 13px;
+  /* A lotus petal: rounded at one end, pointed at the other. */
+  border-radius: 62% 38% 58% 42% / 76% 72% 28% 24%;
+  background: linear-gradient(150deg, #fbefc0 0%, #d4a843 55%, #8a6320 100%);
+  opacity: 0.5;
+  animation: petal-fall linear infinite;
 }
 
-@keyframes fall{
+.petals span:nth-child(1)  { left:  6%; animation-duration: 15s; animation-delay:  0s;   }
+.petals span:nth-child(2)  { left: 18%; animation-duration: 19s; animation-delay: -6s;   }
+.petals span:nth-child(3)  { left: 31%; animation-duration: 13s; animation-delay: -2s;   }
+.petals span:nth-child(4)  { left: 44%; animation-duration: 21s; animation-delay: -11s;  }
+.petals span:nth-child(5)  { left: 57%; animation-duration: 16s; animation-delay: -4s;   }
+.petals span:nth-child(6)  { left: 69%; animation-duration: 23s; animation-delay: -14s;  }
+.petals span:nth-child(7)  { left: 81%; animation-duration: 14s; animation-delay: -8s;   }
+.petals span:nth-child(8)  { left: 93%; animation-duration: 18s; animation-delay: -17s;  }
 
-0%{
-transform:translateY(-20px)
-}
-
-100%{
-transform:translateY(100vh)
-}
-
-}
-
-
-// Additional styles for the payment section
-
-
-
-.text-xxxl {
-    font-size: 80px !important;
-    font-weight: 700;
-}
-.text-xxl {
-    font-size: 56px !important;
-    font-weight: 700;
-}
-.text-xl {
-    font-size: 40px !important;
-    font-weight: 700;
-}
-.text-lg {
-    font-size: 32px !important;
-    // font-weight: 700;
-}
-.text-md {
-    font-size: 24px !important;
-    /* font-weight: 600; */
-}
-.text-sm {
-    font-size: 16px !important;
-}
-.text-s {
-    font-size: 14px !important;
-}
-.text-xs {
-    font-size: 12px !important;
+@keyframes petal-fall {
+  0% {
+    transform: translate3d(0, -6vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+  10% { opacity: 0.5; }
+  90% { opacity: 0.5; }
+  100% {
+    transform: translate3d(-40px, 106vh, 0) rotate(420deg);
+    opacity: 0;
+  }
 }
 
-/* @font-face {
-  font-family: 'Basic Sans8';
-  src: url('/fonts/basic_sans8.otf') format('otf');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
+/* ── Type scale ────────────────────────────────────────────────
+   The .text-* classes are declared once and read their value from
+   a custom property; only the properties change per breakpoint.
+   ──────────────────────────────────────────────────────────── */
+.text-xxxl { font-size: var(--font-size-xxxl) !important; font-weight: 700; }
+.text-xxl  { font-size: var(--font-size-xxl)  !important; font-weight: 700; }
+.text-xl   { font-size: var(--font-size-xl)   !important; font-weight: 700; }
+.text-lg   { font-size: var(--font-size-lg)   !important; }
+.text-md   { font-size: var(--font-size-md)   !important; }
+.text-sm   { font-size: var(--font-size-sm)   !important; }
+.text-s    { font-size: var(--font-size-s)    !important; }
+.text-xs   { font-size: var(--font-size-xs)   !important; }
+
+@mixin type-scale($xxxl, $xxl, $xl, $lg, $md, $sm, $s, $xs) {
+  --font-size-xxxl: #{$xxxl};
+  --font-size-xxl: #{$xxl};
+  --font-size-xl: #{$xl};
+  --font-size-lg: #{$lg};
+  --font-size-md: #{$md};
+  --font-size-sm: #{$sm};
+  --font-size-s: #{$s};
+  --font-size-xs: #{$xs};
 }
-@font-face {
-  font-family: 'Kantumruy Pro';
-  src: url('/fonts/KantumruyPro-Regular.ttf') format('ttf');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-} */
 
-
-/* --------------------
-// MOBILE DEVICES
-// -------------------- */
 /* 📱 Mobile (≤ 640px) */
 @media only screen and (max-width: 640px) {
-    /* Styles for mobile phones */
-    :root {
-        --font-size-xxxl: 28px; /* hero heading */
-        --font-size-xxl: 24px;  /* h1 */
-        --font-size-xl: 20px;   /* h2 */
-        --font-size-lg: 18px;   /* h3 */
-        --font-size-md: 16px;   /* body */
-        --font-size-sm: 14px;   /* small text */
-        --font-size-xs: 12px;   /* captions */
-        --height-core-value: calc(var(--base-core-value-height) * 1.1);
-        --height-video-section: 30%;
-        --width-arrow-down: 32px;
-        --height-arrow-down: 32px;
-    }
-
-    .text-xxxl {
-        font-size: var(--font-size-xxxl) !important;
-    }
-    .text-xxl {
-        font-size: var(--font-size-xxl) !important;
-    }
-    .text-xl {
-        font-size: var(--font-size-xl) !important;
-    }
-    .text-lg {
-        font-size: var(--font-size-lg) !important;
-    }
-    .text-md {
-        font-size: var(--font-size-md) !important;
-    }
-    .text-sm {
-        font-size: var(--font-size-sm) !important;
-    }
-    .text-s {
-        font-size: var(--font-size-s) !important;
-    }
-    .text-xs {
-        font-size: var(--font-size-xs) !important;
-    }
+  :root { @include type-scale(28px, 24px, 20px, 18px, 16px, 14px, 13px, 12px); }
 }
 
-/* 📲 Tablet (641px – 1024px) */
+/* 📲 Tablet (641px +) */
 @media only screen and (min-width: 641px) {
-    /* Styles for tablets in portrait mode */
-    :root {
-        --font-size-xxxl: 36px;
-        --font-size-xxl: 30px;
-        --font-size-xl: 24px;
-        --font-size-lg: 20px;
-        --font-size-md: 16px;
-        --font-size-sm: 14px;
-        --font-size-xs: 12px;
-        --height-core-value: calc(var(--base-core-value-height) * 1.1);
-        --height-video-section: 50%;
-        --width-arrow-down: 32px;
-        --height-arrow-down: 32px;
-    }
-    .text-xxxl {
-        font-size: var(--font-size-xxxl) !important;
-    }
-    .text-xxl {
-        font-size: var(--font-size-xxl) !important;
-    }
-    .text-xl {
-        font-size: var(--font-size-xl) !important;
-    }
-    .text-lg {
-        font-size: var(--font-size-lg) !important;
-    }
-    .text-md {
-        font-size: var(--font-size-md) !important;
-    }
-    .text-sm {
-        font-size: var(--font-size-sm) !important;
-    }
-    .text-s {
-        font-size: var(--font-size-s) !important;
-    }
-    .text-xs {
-        font-size: var(--font-size-xs) !important;
-    }
-
+  :root { @include type-scale(36px, 30px, 24px, 20px, 16px, 14px, 13px, 12px); }
 }
 
-/* --------------------
-
-/* 💻 Laptop (1025px – 1440px) */
+/* 💻 Laptop (1025px +) */
 @media only screen and (min-width: 1025px) {
-    /* Styles for tablets in landscape mode */
-    :root {
-       --font-size-xxxl: 46px;
-        --font-size-xxl: 40px;
-        --font-size-xl: 32px;
-        --font-size-lg: 24px;
-        --font-size-md: 18px;
-        --font-size-sm: 14px;
-        --font-size-xs: 12px;
-        --height-core-value: calc(var(--base-core-value-height) * 1.2);
-        --height-video-section: 80%;
-        --width-arrow-down: 42px;
-        --height-arrow-down: 42px;
-    }
-    .text-xxxl {
-        font-size: var(--font-size-xxxl) !important;
-    }
-    .text-xxl {
-        font-size: var(--font-size-xxl) !important;
-    }
-    .text-xl {
-        font-size: var(--font-size-xl) !important;
-    }
-    .text-lg {
-        font-size: var(--font-size-lg) !important;
-    }
-    .text-md {
-        font-size: var(--font-size-md) !important;
-    }
-    .text-sm {
-        font-size: var(--font-size-sm) !important;
-    }
-    .text-s {
-        font-size: var(--font-size-s) !important;
-    }
-    .text-xs {
-        font-size: var(--font-size-xs) !important;
-    }
+  :root { @include type-scale(46px, 40px, 32px, 24px, 18px, 14px, 13px, 12px); }
 }
 
-/* --------------------
-// DESKTOP & LARGE SCREENS
-// -------------------- */
-/* 🖥️ Desktop (1441px – 1920px) */
+/* 🖥️ Desktop (1441px +) */
 @media only screen and (min-width: 1441px) {
-    /* Styles for small laptops and desktops */
-    :root {
-         --font-size-xxxl: 56px;
-        --font-size-xxl: 48px;
-        --font-size-xl: 36px;
-        --font-size-lg: 28px;
-        --font-size-md: 18px;
-        --font-size-sm: 16px;
-        --font-size-xs: 14px;
-        --height-core-value: calc(var(--base-core-value-height) * 1.2);
-        --height-video-section: 80%;
-        --width-arrow-down: 42px;
-        --height-arrow-down: 42px;
-    }
-     .text-xxxl {
-        font-size: var(--font-size-xxxl) !important;
-    }
-    .text-xxl {
-        font-size: var(--font-size-xxl) !important;
-    }
-    .text-xl {
-        font-size: var(--font-size-xl) !important;
-    }
-    .text-lg {
-        font-size: var(--font-size-lg) !important;
-    }
-    .text-md {
-        font-size: var(--font-size-md) !important;
-    }
-    .text-sm {
-        font-size: var(--font-size-sm) !important;
-    }
-    .text-s {
-        font-size: var(--font-size-s) !important;
-    }
-    .text-xs {
-        font-size: var(--font-size-xs) !important;
-    }
+  :root { @include type-scale(56px, 48px, 36px, 28px, 18px, 16px, 14px, 14px); }
 }
 
-/* 🖥️💡 Large Screens (1921px+) */
+/* 🖥️💡 Large screens (1921px +) */
 @media only screen and (min-width: 1921px) {
-    /* Styles for large desktops and TVs */
-    :root {
-        --font-size-xxxl: 64px;
-        --font-size-xxl: 56px;
-        --font-size-xl: 40px;
-        --font-size-lg: 32px;
-        --font-size-md: 20px;
-        --font-size-sm: 16px;
-        --font-size-xs: 14px;
-        --height-core-value: calc(var(--base-core-value-height) * 1);
-        --height-video-section: 80%;
-        --width-arrow-down: 42px;
-        --height-arrow-down: 42px;
-    }
-     .text-xxxl {
-        font-size: var(--font-size-xxxl) !important;
-    }
-    .text-xxl {
-        font-size: var(--font-size-xxl) !important;
-    }
-    .text-xl {
-        font-size: var(--font-size-xl) !important;
-    }
-    .text-lg {
-        font-size: var(--font-size-lg) !important;
-    }
-    .text-md {
-        font-size: var(--font-size-md) !important;
-    }
-    .text-sm {
-        font-size: var(--font-size-sm) !important;
-    }
-    .text-s {
-        font-size: var(--font-size-s) !important;
-    }
-    .text-xs {
-        font-size: var(--font-size-xs) !important;
-    }
+  :root { @include type-scale(64px, 56px, 40px, 32px, 20px, 16px, 14px, 14px); }
+}
+
+/* ── Reduced motion ───────────────────────────────────────────
+   Ambient drift, the medallion's rotation and every scroll reveal
+   stop; nothing that carries meaning depends on movement.
+   ──────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .petals { display: none; }
+
+  /* AOS hides elements until scroll; with motion off, show them all. */
+  [data-aos] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }

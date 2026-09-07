@@ -1,140 +1,97 @@
 <script setup>
 const { t } = useLang();
+
+/* One list, rendered once. The section previously carried two full copies
+   of this content — one for desktop, one for mobile — kept in sync by hand. */
+const chapters = [
+  { titleKey: "story.firstMeet", textKey: "story.firstMeetText" },
+  { titleKey: "story.fallingInLove", textKey: "story.fallingInLoveText" },
+  { titleKey: "story.proposal", textKey: "story.proposalText" },
+];
 </script>
 
 <template>
   <section id="story" class="story-section">
-    <v-container>
-      <h2 class="section-title text-center" data-aos="fade-up">{{ t("story.title") }}</h2>
+    <div class="story-inner">
+      <p class="k-eyebrow" data-aos="fade-up">{{ t("story.eyebrow") }}</p>
+      <h2 class="section-title" data-aos="fade-up" data-aos-delay="60">
+        {{ t("story.title") }}
+      </h2>
 
-      <!-- Desktop Timeline -->
-
-      <div class="desktop-timeline">
-        <v-timeline align="center">
-          <v-timeline-item dot-color="#C8A96A" size="large">
-            <v-card class="story-card" data-aos="fade-right">
-              <v-card-title>{{ t("story.firstMeet") }}</v-card-title>
-
-              <v-card-text>
-                {{ t("story.firstMeetText") }}
-              </v-card-text>
-            </v-card>
-          </v-timeline-item>
-
-          <v-timeline-item dot-color="#C8A96A" size="large">
-            <v-card class="story-card" data-aos="fade-left">
-              <v-card-title>{{ t("story.fallingInLove") }}</v-card-title>
-
-              <v-card-text>{{ t("story.fallingInLoveText") }}</v-card-text>
-            </v-card>
-          </v-timeline-item>
-
-          <v-timeline-item dot-color="#C8A96A" size="large">
-            <v-card class="story-card" data-aos="fade-right">
-              <v-card-title>{{ t("story.proposal") }}</v-card-title>
-
-              <v-card-text>
-                {{ t("story.proposalText") }}
-              </v-card-text>
-            </v-card>
-          </v-timeline-item>
-        </v-timeline>
+      <div class="chapters">
+        <article
+          v-for="(chapter, i) in chapters"
+          :key="chapter.titleKey"
+          class="k-panel chapter"
+          data-aos="fade-up"
+          :data-aos-delay="80 + i * 90"
+        >
+          <h3 class="chapter-title">{{ t(chapter.titleKey) }}</h3>
+          <p class="chapter-text">{{ t(chapter.textKey) }}</p>
+        </article>
       </div>
-
-      <!-- Mobile Layout -->
-
-      <div class="mobile-story">
-        <v-row>
-          <v-col cols="12">
-            <v-card class="story-card" data-aos="fade-up">
-              <v-card-title>{{ t("story.firstMeet") }}</v-card-title>
-              <v-card-text>
-                {{ t("story.firstMeetText") }}
-              </v-card-text>
-            </v-card>
-          </v-col>
-
-          <v-col cols="12">
-            <v-card class="story-card" data-aos="fade-up">
-              <v-card-title>{{ t("story.fallingInLove") }}</v-card-title>
-              <v-card-text>{{ t("story.fallingInLoveText") }}</v-card-text>
-            </v-card>
-          </v-col>
-
-          <v-col cols="12">
-            <v-card class="story-card" data-aos="fade-up">
-              <v-card-title>{{ t("story.proposal") }}</v-card-title>
-              <v-card-text>
-                {{ t("story.proposalText") }}
-              </v-card-text>
-            </v-card>
-          </v-col>
-        </v-row>
-      </div>
-    </v-container>
+    </div>
   </section>
 </template>
 
 <style scoped>
 .story-section {
-  padding: 56px 20px;
-
-  /* No own background – shows the single site background */
+  padding: 64px 20px;
   background: transparent;
 }
 
-/* title */
+.story-inner {
+  width: min(100%, var(--k-measure));
+  margin: 0 auto;
+  text-align: center;
+}
 
 .section-title {
-  font-size: clamp(28px, 6vw, 42px);
-  margin-bottom: 36px;
+  margin: 6px 0 34px;
+}
+
+.chapters {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.chapter {
+  padding: 24px 26px;
+  text-align: center;
+}
+
+.chapter-title {
+  font-family: "Cormorant Garamond", "Moul", serif;
+  font-weight: 500;
+  font-size: clamp(16px, 4vw, 21px);
+  line-height: 1.9;
+  margin: 0 0 8px;
+
+  background: var(--k-foil);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}
+
+.chapter-text {
+  font-family: "Cormorant Garamond", "Kantumruy Pro", serif;
+  font-size: clamp(14px, 3.6vw, 17px);
+  line-height: 2.05;
+  color: rgba(232, 220, 207, 0.82);
+  margin: 0;
 }
 
 @media (max-width: 640px) {
   .story-section {
-    padding: 36px 16px;
+    padding: 44px 18px;
   }
   .section-title {
-    margin-bottom: 24px;
+    margin-bottom: 26px;
   }
-}
-
-/* cards */
-
-.story-card {
-  border-radius: 20px;
-  padding: 10px;
-
-  /* Frosted glass instead of solid white */
-  background: rgba(255, 255, 255, 0.38) !important;
-  backdrop-filter: blur(9px);
-  -webkit-backdrop-filter: blur(9px);
-  border: 1px solid rgba(255, 255, 255, 0.45);
-
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
-}
-
-/* desktop */
-
-.desktop-timeline {
-  display: block;
-}
-
-/* mobile */
-
-.mobile-story {
-  display: none;
-}
-
-/* responsive */
-
-@media (max-width: 960px) {
-  .desktop-timeline {
-    display: none;
-  }
-
-  .mobile-story {
-    display: block;
+  .chapter {
+    padding: 20px 20px;
   }
 }
 </style>

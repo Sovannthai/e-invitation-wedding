@@ -4,31 +4,28 @@ const { t } = useLang();
 
 <template>
   <section id="home" class="hero">
-    <!-- Top: intro line -->
-    <div class="hero-top" data-aos="fade-down">
-      <p class="script-md gold-text">{{ t("hero.celebration") }}</p>
-      <h1 class="khmer-names gold-text">{{ t("hero.names") }}</h1>
-    </div>
+    <p class="hero-celebration rise" style="--delay: 0.1s">
+      {{ t("hero.celebration") }}
+    </p>
 
-    <!-- Middle: welcome + name plaque -->
-    <div class="hero-mid">
-      <p class="script-lg gold-text welcome" data-aos="fade-up" data-aos-delay="100">
+    <PopilMedallion class="hero-medallion">
+      <p class="hero-welcome rise" style="--delay: 1.5s">
         {{ t("hero.warmWelcome") }}
       </p>
+      <h1 class="hero-names rise" style="--delay: 1.7s">
+        {{ t("hero.plaqueNames") }}
+      </h1>
+    </PopilMedallion>
 
-      <div class="name-plaque" data-aos="zoom-in" data-aos-delay="200">
-        <span class="plaque-text">{{ t("hero.plaqueNames") }}</span>
-      </div>
-
-      <p class="hero-date gold-text" data-aos="fade-up" data-aos-delay="300">
-        {{ t("hero.date") }}
-      </p>
+    <div class="hero-when">
+      <p class="hero-date rise" style="--delay: 2.2s">{{ t("hero.date") }}</p>
+      <p class="hero-lunar rise" style="--delay: 2.35s">{{ t("hero.dateLunar") }}</p>
+      <p class="hero-venue rise" style="--delay: 2.5s">{{ t("hero.venue") }}</p>
     </div>
 
-    <!-- Bottom: scroll cue -->
-    <div class="scroll-cue" data-aos="fade" data-aos-delay="500">
-      <v-icon class="cue-icon">mdi-gesture-swipe-down</v-icon>
-      <span class="cue-km">{{ t("hero.scrollDown") }}</span>
+    <div class="scroll-cue rise" style="--delay: 2.9s">
+      <span class="cue-label">{{ t("hero.scrollDown") }}</span>
+      <v-icon class="cue-icon">mdi-chevron-down</v-icon>
     </div>
   </section>
 </template>
@@ -37,8 +34,6 @@ const { t } = useLang();
 .hero {
   min-height: 100vh;
   min-height: 100svh;
-
-  /* Keep the existing site-wide background – no own background here */
   background: transparent;
 
   display: flex;
@@ -46,100 +41,85 @@ const { t } = useLang();
   align-items: center;
   justify-content: space-between;
   text-align: center;
+  gap: 18px;
 
-  padding: 58px 20px 32px;
+  padding: 72px 20px 28px;
 }
 
-/* ---- Gold text shared style ---- */
-.gold-text {
-  background: linear-gradient(
-    180deg,
-    #fdf3c4 0%,
-    #f4d97e 30%,
-    #d9ad46 55%,
-    #b8862b 75%,
-    #f7e6a0 100%
-  );
+/* Shared foil, used on the three pieces of type that carry the page. */
+.hero-celebration,
+.hero-names,
+.hero-date {
+  background: var(--k-foil);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.55));
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.65));
 }
 
-.script-md {
-  font-family: "Great Vibes", "Moul", cursive;
-  font-size: clamp(26px, 6vw, 44px);
-  line-height: 2;
-  margin-bottom: 6px;
-}
-
-.script-lg {
-  font-family: "Great Vibes", "Moul", cursive;
-  font-size: clamp(24px, 5.5vw, 40px);
-}
-
-.khmer-names {
+.hero-celebration {
   font-family: "Cormorant Garamond", "Moul", serif;
-  font-weight: 600;
-  font-size: clamp(22px, 5.5vw, 40px);
+  font-size: clamp(17px, 4.4vw, 26px);
+  letter-spacing: 0.06em;
+  line-height: 2.1;
+  margin: 0;
+  max-width: 22ch;
+}
+
+.hero-medallion {
+  flex: 0 0 auto;
+}
+
+.hero-welcome {
+  font-family: "Cormorant Garamond", "Kantumruy Pro", serif;
+  font-size: clamp(13px, 3.1vw, 16px);
+  letter-spacing: 0.16em;
+  color: rgba(212, 168, 67, 0.85);
+  margin: 0 0 6px;
+  line-height: 1.9;
+}
+
+.hero-names {
+  font-family: "Cormorant Garamond", "Moul", serif;
+  font-weight: 500;
+  font-size: clamp(19px, 5vw, 30px);
   line-height: 2;
   margin: 0;
 }
 
-/* ---- Middle block ---- */
-.hero-mid {
+.hero-when {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
-}
-
-.welcome {
-  margin-bottom: 2px;
-  line-height: 1.8;
-}
-
-/* Gold-framed name plaque (cartouche) */
-.name-plaque {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  padding: 16px 40px;
-  border-radius: 999px;
-
-  background: linear-gradient(160deg, #16273c 0%, #22405c 100%);
-
-  /* Layered gold rings around the pill */
-  box-shadow:
-    0 0 0 2px #0d1a2b,
-    0 0 0 5px #d8ae46,
-    0 0 0 7px #8a6a20,
-    0 14px 34px rgba(0, 0, 0, 0.5);
-}
-
-.plaque-text {
-  font-family: "Cormorant Garamond", "Moul", serif;
-  font-weight: 400;
-  font-size: clamp(20px, 5vw, 30px);
-  letter-spacing: 0.5px;
-  white-space: nowrap;
-  line-height: 1.8;
-  background: linear-gradient(180deg, #fdf3c4 0%, #e9c766 50%, #c8971f 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  -webkit-text-fill-color: transparent;
+  gap: 4px;
+  max-width: 34ch;
 }
 
 .hero-date {
   font-family: "Cormorant Garamond", "Kantumruy Pro", serif;
   font-weight: 500;
-  font-size: clamp(18px, 4.5vw, 26px);
-  letter-spacing: 2px;
-  margin-top: 4px;
+  font-size: clamp(16px, 4vw, 22px);
+  letter-spacing: 0.05em;
+  line-height: 1.9;
+  margin: 0;
+}
+
+/* The lunar reckoning, set quieter than the civil date beside it. */
+.hero-lunar {
+  font-family: "Cormorant Garamond", "Kantumruy Pro", serif;
+  font-size: clamp(12px, 3.2vw, 15px);
+  color: rgba(212, 168, 67, 0.72);
+  line-height: 1.9;
+  margin: 0;
+}
+
+.hero-venue {
+  font-family: "Cormorant Garamond", "Kantumruy Pro", serif;
+  font-size: clamp(12px, 3.3vw, 15px);
+  color: rgba(232, 220, 207, 0.72);
+  line-height: 1.9;
+  margin: 4px 0 0;
 }
 
 /* ---- Scroll cue ---- */
@@ -147,26 +127,41 @@ const { t } = useLang();
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
-  color: #ffffff;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
-  animation: cue-bounce 1.8s ease-in-out infinite;
+  gap: 0;
+  color: rgba(232, 220, 207, 0.8);
+}
+
+.cue-label {
+  font-family: "Cormorant Garamond", "Kantumruy Pro", serif;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  line-height: 1.8;
 }
 
 .cue-icon {
-  font-size: 34px;
-  color: #f4d97e;
+  font-size: 26px;
+  color: var(--k-gold);
+  animation: cue-bounce 2.2s ease-in-out infinite;
 }
 
-.cue-km {
-  font-family: "Kantumruy Pro", sans-serif;
-  font-size: 15px;
+/* ---- Load sequence ----
+   The page arrives in order: the blessing, then the ring drawing itself,
+   then the names inside it, then when and where. One orchestrated moment
+   rather than scattered effects. */
+.rise {
+  opacity: 0;
+  animation: rise-in 0.9s cubic-bezier(0.22, 0.61, 0.36, 1) var(--delay, 0s) forwards;
 }
 
-.cue-en {
-  font-size: 12px;
-  letter-spacing: 1px;
-  opacity: 0.9;
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes cue-bounce {
@@ -175,7 +170,21 @@ const { t } = useLang();
     transform: translateY(0);
   }
   50% {
-    transform: translateY(8px);
+    transform: translateY(7px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero {
+    padding: 64px 18px 20px;
+    gap: 10px;
   }
 }
 </style>
