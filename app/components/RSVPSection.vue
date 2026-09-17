@@ -95,7 +95,6 @@ function submitRSVP() {
 }
 
 .section-title {
-  font-size: clamp(28px, 6vw, 42px);
   margin-bottom: 32px;
 }
 
@@ -108,11 +107,11 @@ function submitRSVP() {
   border-radius: 24px;
 
   /* Frosted glass */
-  background: rgba(255, 255, 255, 0.48);
+  background: var(--surface);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--surface-edge);
+  box-shadow: 0 8px 22px rgba(80, 90, 70, 0.12);
 }
 
 /* ---- Header ---- */
@@ -144,7 +143,7 @@ function submitRSVP() {
   /* Wraps instead of truncating (fixes the mobile cut-off) */
   font-size: clamp(18px, 4.5vw, 22px);
   line-height: 1.5;
-  color: #7a5c22;
+  color: var(--heading);
   font-weight: 600;
   white-space: normal;
   word-break: break-word;

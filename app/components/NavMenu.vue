@@ -6,8 +6,7 @@ const { t } = useLang();
 const items = [
   { id: "home", icon: "mdi-home-variant", labelKey: "nav.home" },
   { id: "countdown", icon: "mdi-timer-sand", labelKey: "countdown.title" },
-  { id: "story", icon: "mdi-heart", labelKey: "story.title" },
-  { id: "event", icon: "mdi-calendar-heart", labelKey: "event.title" },
+  { id: "agenda", icon: "mdi-script-text-outline", labelKey: "agenda.title" },
   { id: "gallery", icon: "mdi-camera", labelKey: "gallery.title" },
   { id: "location", icon: "mdi-map-marker", labelKey: "location.title" },
   { id: "rsvp", icon: "mdi-email-outline", labelKey: "rsvp.title" },
@@ -89,10 +88,11 @@ onBeforeUnmount(() => {
   padding: 6px 8px;
 
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.92);
+  /* On the pale ground a white pill needs a real edge to separate from it. */
+  background: rgba(255, 255, 255, 0.88);
   backdrop-filter: blur(8px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25),
-    0 0 0 1px rgba(216, 174, 70, 0.5);
+  box-shadow: 0 8px 24px rgba(80, 90, 70, 0.18),
+    0 0 0 1px var(--surface-edge);
 
   overflow-x: auto;
   scrollbar-width: none;
@@ -112,7 +112,7 @@ onBeforeUnmount(() => {
   border: none;
   border-radius: 50%;
   background: transparent;
-  color: #7a6a3a;
+  color: var(--ink-soft);
   cursor: pointer;
   transition: all 0.25s ease;
 }

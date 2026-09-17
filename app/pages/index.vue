@@ -8,7 +8,7 @@
     <span></span>
 
   </div>
-<!-- <EnvelopeOpen/> -->
+<EnvelopeOpen/>
 
 <!-- <WeddingCover/> -->
 
@@ -18,9 +18,7 @@
 
 <CountdownSection/>
 
-<StorySection/>
-
-<EventSection/>
+<AgendaSection/>
 
 <GallerySection/>
 

@@ -1,24 +1,81 @@
-body{
-  /* Latin uses Pacifico; Khmer (normal text) falls back to Kantumruy Pro */
-  font-family: "Pacifico", "Kantumruy Pro", sans-serif;
+/* ── Palette ───────────────────────────────────────────────────
+   The site sits on a pale watercolour ground, so everything is dark
+   type on light rather than the reverse. Sage greens are drawn from
+   the foliage in the background image; the gold is deepened from the
+   old accent so it still holds contrast on cream.
+   ──────────────────────────────────────────────────────────── */
+:root {
+  --paper: #eef0e9;
+  --ink: #46503f;
+  --ink-soft: #5f6a5b;
+  --heading: #44523f;
+  --gold: #9c7f3f;
+  --gold-soft: #b8974f;
+  --sage: #8a9a80;
+  /* Every section title takes the hero title's brown-gold. Kept separate
+     from --heading so body-level headings can move independently. */
+  --title: #7d5a2e;
+  --surface: rgba(255, 255, 255, 0.58);
+  --surface-edge: rgba(120, 132, 110, 0.28);
 }
 
-/* Bold / heading text: Khmer glyphs use Moul (Latin keeps its own font).
-   Latin display font stays first so English is unaffected; Moul only
-   catches the Khmer glyphs that the Latin font can't render. */
+/* ── Self-hosted faces ─────────────────────────────────────────
+   Kh Baphnom SatraSlekrith — the សត្រាស្លឹករឹត palm-leaf manuscript hand,
+   a third-party Khmer face that is not on Google Fonts. Drop the file into
+   public/fonts (see the README there); until it exists this src simply
+   fails and the stack falls through to Fasthand, so nothing breaks.
+
+   unicode-range confines it to Khmer, so Latin never requests it.
+   ──────────────────────────────────────────────────────────── */
+@font-face {
+  font-family: "Kh Baphnom SatraSlekrith";
+  src:
+    url("/fonts/KhBaphnom-SatraSlekrith.woff2") format("woff2"),
+    url("/fonts/KhBaphnom-SatraSlekrith.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+1780-17FF, U+19E0-19FF, U+200C-200D, U+25CC;
+}
+
+body{
+  /* Latin uses Nunito; Khmer (normal text) falls back to Kantumruy Pro */
+  font-family: "Nunito", "Kantumruy Pro", sans-serif;
+
+  color: var(--ink);
+
+  /* The site background is a fixed layer, so it only ever covers the
+     viewport. Painting the ground here too keeps overscroll bounce from
+     flashing the browser's white. */
+  background: var(--paper);
+}
+
+/* Heading text: English gets Playfair Display, Khmer gets Moul.
+   The Latin face stays first so English renders in it; Moul only catches
+   the Khmer glyphs Playfair Display can't render. */
 h1, h2, h3, h4, h5, h6,
 b, strong,
 .section-title, .countdown-title,
 .account-name,
 .v-card-title {
-  font-family: "Pacifico", "Moul", sans-serif;
+  font-family: "Playfair Display", "Moul", serif;
+  font-weight: 700;
 }
 
-/* Section headings sit on the single (dark) site background – keep them light */
+/* ── Section titles ────────────────────────────────────────────
+   One rule for every title on the page, the hero's included, so they
+   share a size and colour instead of each section setting its own.
+   No shadow: a dark halo behind dark type on a pale ground reads as a
+   printing fault rather than depth.
+   ──────────────────────────────────────────────────────────── */
 .section-title,
-.countdown-title {
-  color: #ffffff;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+.countdown-title,
+.card-title {
+  font-family: "Playfair Display", "Moul", serif;
+  font-weight: 700;
+  font-size: clamp(21px, 5.4vw, 32px);
+  line-height: 1.75;
+  color: var(--title);
 }
 .petals span{
 
@@ -28,7 +85,7 @@ top:-10px;
 width:12px;
 height:12px;
 
-background:#E8DCCF;
+background: rgba(138, 154, 128, 0.55);
 
 border-radius:50%;
 
@@ -344,4 +401,45 @@ transform:translateY(100vh)
     .text-xs {
         font-size: var(--font-size-xs) !important;
     }
+}
+
+/* ── English heading treatment ────────────────────────────────
+   Caps and a little tracking, matching the printed card. Applied only
+   under [data-locale="en"] — Khmer is caseless, and tracking would pull
+   its diacritic clusters apart.
+   ──────────────────────────────────────────────────────────── */
+html[data-locale="en"] .section-title,
+html[data-locale="en"] .countdown-title,
+html[data-locale="en"] .card-title,
+html[data-locale="en"] .card-honour {
+  text-transform: uppercase;
+  letter-spacing: 0.045em;
+}
+
+/* ── Desktop and laptop type scale (≥1025px) ──────────────────
+   Below this the clamps above already fit phone and tablet, and are left
+   exactly as they are. From here up the maxima were capping out, so the
+   page kept phone-sized text on a large screen; these let it keep growing
+   with the viewport instead, settling at a ceiling on very wide displays.
+   ──────────────────────────────────────────────────────────── */
+@media only screen and (min-width: 1025px) {
+  .section-title,
+  .countdown-title,
+  .card-title {
+    font-size: clamp(32px, 2.5vw, 50px);
+  }
+
+  .k-eyebrow {
+    font-size: clamp(13px, 0.9vw, 17px);
+  }
+}
+
+/* Short laptop and desktop screens step the titles back down, matching the
+   hero's own height-aware rule so the two never diverge. */
+@media only screen and (min-width: 1025px) and (max-height: 1100px) {
+  .section-title,
+  .countdown-title,
+  .card-title {
+    font-size: clamp(28px, 2.1vw, 40px);
+  }
 }

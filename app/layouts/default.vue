@@ -1,6 +1,8 @@
 <template>
   <v-app>
-    <!-- Single site-wide background (shared by every section) -->
+    <!-- One ground for the whole site: the watercolour meadow, held behind
+         every section. It is a fixed layer, so it stays put as you scroll
+         rather than sliding the florals up past the content. -->
     <div class="site-bg" aria-hidden="true"></div>
 
     <v-main class="default-layout">
@@ -10,26 +12,28 @@
 </template>
 
 <style scoped>
-/* ------------------------------------------------------------------
-   ONE background for the whole website.
-   - Fixed layer sitting behind all content (z-index: 0, content is above).
-   - Desktop / laptop: landscape crop.
-   - Mobile: same image re-cropped to fit a portrait screen.
-     To use a dedicated portrait image, drop it in /public/img and
-     change --site-bg-mobile below (e.g. url('/img/bg-mobile.png')).
-   ------------------------------------------------------------------ */
 .site-bg {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
 
+  /* A light wash over the image. The painting is pale enough to carry dark
+     type almost everywhere, so this stays near-transparent through the top
+     and only gathers over the foliage at the foot, where the stems are
+     dark enough to break up a line of text. */
   background-image:
-    linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.45)),
-    url("/img/hero.png");
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
+    linear-gradient(
+      180deg,
+      rgba(244, 246, 241, 0.1) 0%,
+      rgba(244, 246, 241, 0.18) 58%,
+      rgba(244, 246, 241, 0.46) 100%
+    ),
+    url("/img/bg-floral.png");
+  background-size: cover, cover;
+  background-position: center, center bottom;
+  background-repeat: no-repeat, no-repeat;
+  background-color: var(--paper);
 }
 
 /* Content sits above the background layer */
@@ -47,15 +51,23 @@
   background: transparent !important;
 }
 
-/* 📱 Mobile: re-crop the background to follow the portrait screen */
-@media only screen and (max-width: 640px) {
+/* ── Any landscape viewport ───────────────────────────────────
+   The painting is portrait and very tall. `cover` on a landscape screen
+   scales it by width, which magnifies the meadow and shows only the bottom
+   third of the composition. Fitting it to the viewport height instead shows
+   the whole painting — misty top, meadow at the foot — and repeating across
+   restores the full width as one continuous meadow.
+
+   Keyed on aspect, not width: a phone held sideways (844x390) and an iPad in
+   landscape (1024x768) have exactly the same problem as a desktop, and a
+   width breakpoint misses both. Portrait screens keep `cover` from the rule
+   above, where the viewport already matches the artwork.
+   ──────────────────────────────────────────────────────────── */
+@media (min-aspect-ratio: 1/1) {
   .site-bg {
-    /* Swap this to a portrait image if you add one, e.g.
-       background-image: url('/img/bg-mobile.png'); */
-    background-image:
-      linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.45)),
-      url("/img/hero.png");
-    background-position: center top;
+    background-size: cover, auto 100%;
+    background-position: center, center bottom;
+    background-repeat: no-repeat, repeat-x;
   }
 }
 </style>

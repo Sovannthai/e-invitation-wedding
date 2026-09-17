@@ -9,13 +9,14 @@ import "swiper/css/pagination";
 
 const { t } = useLang();
 
+/* Pre-wedding photographs. These point at the web copies in
+   /img/pre-wedding/web (1600px long edge, ~300KB each) rather than the
+   camera originals beside them, which run 4.5–9.8MB apiece — about 138MB
+   for the set, far too heavy for guests opening the invitation on a phone. */
 const images = [
-  "/img/gallery1.jpg",
-  "/img/gallery2.jpg",
-  "/img/envelop.jpg",
-  "/img/hero.png",
-  "/img/wedding.png",
-];
+  1172, 1175, 1177, 1180, 1184, 1186, 1189, 1190, 1192, 1196,
+  1202, 1203, 1206, 1209, 1211, 1216, 1217, 1218, 1219, 1220,
+].map((n) => `/img/pre-wedding/web/img_${n}.jpg`);
 
 const modules = [EffectCoverflow, Navigation, Pagination];
 
@@ -37,7 +38,7 @@ function next() {
 
 <template>
   <section id="gallery" class="gallery-slider">
-    <h2 class="section-title text-center text-xxl mb-6" data-aos="fade-up">
+    <h2 class="section-title text-center mb-6" data-aos="fade-up">
       {{ t("gallery.title") }}
     </h2>
 

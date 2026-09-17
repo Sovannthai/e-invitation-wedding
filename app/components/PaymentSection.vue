@@ -58,9 +58,6 @@ const { t } = useLang();
 }
 
 .section-title {
-  font-size: clamp(26px, 6vw, 36px);
-  color: #ffffff;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
   margin-bottom: 10px;
 }
 
@@ -72,8 +69,7 @@ const { t } = useLang();
 
 .section-subtitle {
   font-size: 16px;
-  color: #f5f5f5;
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.5);
+  color: var(--ink-soft);
   margin-bottom: 32px;
 }
 
@@ -81,11 +77,11 @@ const { t } = useLang();
   border-radius: 20px;
 
   /* Frosted glass instead of solid white */
-  background: rgba(255, 255, 255, 0.42) !important;
+  background: var(--surface) !important;
   backdrop-filter: blur(9px);
   -webkit-backdrop-filter: blur(9px);
-  border: 1px solid rgba(255, 255, 255, 0.45);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--surface-edge);
+  box-shadow: 0 8px 22px rgba(80, 90, 70, 0.12);
 }
 
 .qr-image {
@@ -98,7 +94,7 @@ const { t } = useLang();
 }
 
 .bank-name {
-  color: #888;
+  color: var(--ink-soft);
 }
 
 .thank-text {

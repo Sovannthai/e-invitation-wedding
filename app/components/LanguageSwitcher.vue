@@ -27,7 +27,10 @@ const { locale, setLocale } = useLang();
   position: fixed;
   top: 16px;
   right: 16px;
-  z-index: 2000;
+  /* Above the envelope (9999). The envelope's own wording is already
+     translated; without this the switcher sat underneath it, so a guest
+     could not choose a language until after opening. */
+  z-index: 10001;
 
   display: flex;
   align-items: center;
