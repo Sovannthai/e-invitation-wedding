@@ -24,8 +24,6 @@
 
 <LocationSection/>
 
-<RSVPSection/>
-
 <PaymentSection/>
 
 <MusicPlayer/>

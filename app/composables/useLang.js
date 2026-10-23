@@ -61,18 +61,24 @@ const messages = {
     // Gallery / Location
     "gallery.title": "កម្រងរូបភាព",
     "location.title": "ទីតាំង",
+    "location.hint": "ចុចប៊ូតុងខាងក្រោម ដើម្បីបើកផែនទីទៅកាន់ទីតាំងកម្មវិធី",
+    "location.open": "បើកក្នុង Google Maps",
 
-    // RSVP
-    "rsvp.title": "បញ្ជាក់ការចូលរួម",
-    "rsvp.confirm": "សូមបញ្ជាក់ការចូលរួមរបស់អ្នក",
-    "rsvp.name": "ឈ្មោះរបស់អ្នក",
-    "rsvp.phone": "លេខទូរស័ព្ទ",
-    "rsvp.willAttend": "តើអ្នកនឹងចូលរួមទេ?",
-    "rsvp.attending": "ចូលរួម",
-    "rsvp.notAttending": "មិនចូលរួម",
-    "rsvp.message": "សារ",
-    "rsvp.send": "ផ្ញើការបញ្ជាក់",
-    "rsvp.thanks": "សូមអរគុណសម្រាប់ការឆ្លើយតបរបស់អ្នក!",
+    // Wishes
+    "wish.cta": "ផ្ញើពរជ័យ",
+    "wish.title": "ស្រោមសំបុត្រ & សៀវភៅពរជ័យ",
+    "wish.subtitle": "ផ្ញើសារជូនពរដ៏កក់ក្តៅជូនដល់គូស្វាមីភរិយាថ្មី សុវណ្ណថៃ & សុហេង",
+    "wish.empty": "មិនទាន់មានពរជ័យនៅឡើយទេ — សូមក្លាយជាអ្នកដំបូង!",
+    "wish.quickLabel": "ពាក្យជូនពរគំរូ",
+    "wish.quick1": "សូមជូនពរឱ្យស្រឡាញ់គ្នារហូតដល់ចាស់កោងខ្នង និងមានសុភមង្គលពេញមួយជីវិត! ❤️",
+    "wish.quick2": "សូមឱ្យចំណងអាពាហ៍ពិពាហ៍នេះ ពោរពេញដោយសេចក្តីស្រឡាញ់ និងការយោគយល់គ្នា 💐",
+    "wish.quick3": "សូមប្រសិទ្ធពរជ័យឱ្យក្មួយទាំងពីរ ស្រឡាញ់គ្នាលុះក្ស័យ មានសុខភាពល្អ និងសុភមង្គលរហូត! 💖",
+    "wish.quick4": "សូមឱ្យជួបតែលាភសំណាង សុខភាពល្អបរិបូរណ៍ និងរកស៊ីមានបាន 🎉",
+    "wish.name": "ឈ្មោះរបស់លោកអ្នក",
+    "wish.message": "សរសេរពាក្យជូនពរមង្គលការ...",
+    "wish.close": "បិទ",
+    "wish.send": "ផ្ញើពរជ័យ",
+    "wish.thanks": "សូមអរគុណសម្រាប់ពរជ័យរបស់លោកអ្នក! 💛",
 
     // Payment
     "payment.title": "អំណោយមង្គលការ",
@@ -81,6 +87,13 @@ const messages = {
     "payment.account": "សុវណ្ណថៃ និង សុហេង",
     "payment.khqr": "ការទូទាត់តាម KHQR",
     "payment.thanks": "សូមអរគុណសម្រាប់សេចក្តីស្រឡាញ់ និងការគាំទ្ររបស់លោកអ្នក ❤️",
+    "payment.eyebrow": "អំណោយ និងពរជ័យមង្គល",
+    "payment.namesKhmer": "សុវណ្ណថៃ និង សុហេង",
+    "payment.namesLatin": "Sovannthai & Soheng",
+    "payment.chipKhqr": "ការទូទាត់តាម KHQR",
+    "payment.chipCurrency": "KHR (៛) ⇄ USD",
+    "payment.chipWishes": "ស្រោមសំបុត្រឌីជីថល",
+    "payment.scanLine": "ស្កេន · ទូទាត់ · រួចរាល់",
 
     // Nav
     "nav.home": "ទំព័រដើម",
@@ -149,18 +162,24 @@ const messages = {
     // Gallery / Location
     "gallery.title": "Gallery",
     "location.title": "Location",
+    "location.hint": "Tap below for directions to the venue",
+    "location.open": "Open in Google Maps",
 
-    // RSVP
-    "rsvp.title": "RSVP",
-    "rsvp.confirm": "Confirm Your Attendance",
-    "rsvp.name": "Your Name",
-    "rsvp.phone": "Phone Number",
-    "rsvp.willAttend": "Will you attend?",
-    "rsvp.attending": "Attending",
-    "rsvp.notAttending": "Not Attending",
-    "rsvp.message": "Message",
-    "rsvp.send": "Send RSVP",
-    "rsvp.thanks": "Thank you for your response!",
+    // Wishes
+    "wish.cta": "Send a Wish",
+    "wish.title": "Wishes & Guestbook",
+    "wish.subtitle": "Send your warm wishes to the newlyweds, Sovannthai & Soheng",
+    "wish.empty": "No wishes yet — be the first!",
+    "wish.quickLabel": "Quick wishes",
+    "wish.quick1": "Wishing Sovannthai & Soheng a lifetime of love and happiness! ❤️",
+    "wish.quick2": "Congratulations! May your marriage be filled with love and understanding 💐",
+    "wish.quick3": "Wishing you a blessed and joyous marriage filled with endless love! 🥂✨",
+    "wish.quick4": "May your life together bring good health, fortune and joy 🎉",
+    "wish.name": "Your Name",
+    "wish.message": "Write your blessing...",
+    "wish.close": "Close",
+    "wish.send": "Send Wish",
+    "wish.thanks": "Thank you for your blessing! 💛",
 
     // Payment
     "payment.title": "Wedding Gift",
@@ -169,6 +188,13 @@ const messages = {
     "payment.account": "THAI & HENG",
     "payment.khqr": "KHQR Payment",
     "payment.thanks": "Thank you for your love and support ❤️",
+    "payment.eyebrow": "Wedding Gift & Blessings",
+    "payment.namesKhmer": "សុវណ្ណថៃ និង សុហេង",
+    "payment.namesLatin": "Sovannthai & Soheng",
+    "payment.chipKhqr": "Pay by KHQR",
+    "payment.chipCurrency": "KHR (៛) ⇄ USD",
+    "payment.chipWishes": "Digital Envelope",
+    "payment.scanLine": "Scan. Pay. Done.",
 
     // Nav
     "nav.home": "Home",

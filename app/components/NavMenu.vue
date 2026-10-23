@@ -9,7 +9,6 @@ const items = [
   { id: "agenda", icon: "mdi-script-text-outline", labelKey: "agenda.title" },
   { id: "gallery", icon: "mdi-camera", labelKey: "gallery.title" },
   { id: "location", icon: "mdi-map-marker", labelKey: "location.title" },
-  { id: "rsvp", icon: "mdi-email-outline", labelKey: "rsvp.title" },
   { id: "gift", icon: "mdi-qrcode", labelKey: "payment.title" },
 ];
 
