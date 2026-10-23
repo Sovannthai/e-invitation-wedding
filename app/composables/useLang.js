@@ -86,7 +86,7 @@ const messages = {
       "វត្តមានរបស់លោកអ្នកគឺជាអំណោយដ៏មានតម្លៃបំផុត។ ប្រសិនបើលោកអ្នកមានបំណងជូនអំណោយ សូមស្កេន QR កូដខាងក្រោម។",
     "payment.account": "សុវណ្ណថៃ និង សុហេង",
     "payment.khqr": "ការទូទាត់តាម KHQR",
-    "payment.thanks": "សូមអរគុណសម្រាប់សេចក្តីស្រឡាញ់ និងការគាំទ្ររបស់លោកអ្នក ❤️",
+    "payment.thanks": "សូមអរគុណសម្រាប់សេចក្តីស្រឡាញ់❤️",
     "payment.eyebrow": "អំណោយ និងពរជ័យមង្គល",
     "payment.namesKhmer": "សុវណ្ណថៃ និង សុហេង",
     "payment.namesLatin": "Sovannthai & Soheng",
