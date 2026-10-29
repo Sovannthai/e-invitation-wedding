@@ -53,8 +53,8 @@ onBeforeUnmount(() => {
 /* Top-left, aligned on the same line as the language switcher (top-right) */
 .music-btn {
   position: fixed;
-  top: 16px;
-  left: 16px;
+  top: calc(16px + env(safe-area-inset-top));
+  left: calc(16px + env(safe-area-inset-left));
   /* Above the envelope (9999) so the same single player is reachable on the
      sealed envelope as well as the invitation behind it. One button, one
      audio element, one play state. */

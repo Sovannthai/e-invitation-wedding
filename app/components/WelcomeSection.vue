@@ -153,7 +153,29 @@ function onKeydown(e) {
   if (SCROLL_KEYS.includes(e.key)) scrollOn();
 }
 
+/* While the cover is up, the phone's status bar and browser chrome take its
+   dark instead of the page's pale ground, so the photo reads edge to edge.
+   The page's own colour goes back when the cover leaves. */
+let themeMeta = null;
+let pageTheme = "";
+
+function setTheme() {
+  themeMeta = document.querySelector('meta[name="theme-color"]');
+  if (!themeMeta) {
+    themeMeta = document.createElement("meta");
+    themeMeta.name = "theme-color";
+    document.head.appendChild(themeMeta);
+  }
+  pageTheme = themeMeta.content;
+  themeMeta.content = "#1e1d14";
+}
+
+function restoreTheme() {
+  if (themeMeta) themeMeta.content = pageTheme || "#eef0e9";
+}
+
 onMounted(() => {
+  setTheme();
   timer = setInterval(advance, HOLD_MS);
   window.addEventListener("scroll", onScroll, { passive: true });
   window.addEventListener("wheel", onWheel, { passive: false });
@@ -163,6 +185,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
+  restoreTheme();
   clearInterval(timer);
   clearTimeout(settleTimer);
   cancelAnimationFrame(frame);
@@ -230,12 +253,18 @@ onBeforeUnmount(() => {
 
 <style scoped>
 /* A full-screen section at the top of the page, in the normal flow, so the
-   invitation scrolls up into view directly beneath it. */
+   invitation scrolls up into view directly beneath it.
+
+   Phones: the section takes the *large* viewport (100lvh) — the screen
+   with the browser's bars tucked away — so the photo runs right to the
+   bottom edge even where Safari's toolbar floats over the page or slides
+   away, and no strip of the invitation ever shows beneath it. The text
+   and controls are laid out in the *dynamic* viewport (100dvh, what is
+   actually visible right now) so nothing sits behind a toolbar. */
 .welcome {
   position: relative;
   height: 100vh;
-  height: 100svh;
-  min-height: 520px;
+  height: 100lvh;
   overflow: hidden;
   background: #1e1d14;
   color: #fff;
@@ -303,8 +332,15 @@ onBeforeUnmount(() => {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  height: 100%;
-  padding: clamp(56px, 11vh, 96px) 20px clamp(72px, 12vh, 104px);
+  height: 100vh;
+  height: 100dvh;
+  /* Clear of the notch / status bar above and the home indicator below,
+     and of the camera cut-out at the sides when a phone is turned. */
+  padding:
+    calc(clamp(64px, 11vh, 96px) + env(safe-area-inset-top))
+    max(20px, env(safe-area-inset-right))
+    calc(clamp(64px, 12vh, 104px) + env(safe-area-inset-bottom))
+    max(20px, env(safe-area-inset-left));
   text-align: center;
   font-family: "Lobster", cursive;
   text-shadow: 0 2px 14px rgba(0, 0, 0, 0.45);
@@ -316,7 +352,7 @@ onBeforeUnmount(() => {
 
 .welcome-top {
   margin: 0;
-  font-size: clamp(20px, 5.4vw, 34px);
+  font-size: clamp(18px, min(5.4vw, 6vh), 34px);
   letter-spacing: 0.02em;
   color: #fff6e2;
   animation: rise 1.2s 0.3s ease backwards;
@@ -333,7 +369,7 @@ onBeforeUnmount(() => {
   margin: 0;
   font-family: "Lobster", cursive;
   font-weight: 400;
-  font-size: clamp(40px, 11vw, 92px);
+  font-size: clamp(34px, min(11vw, 13vh), 92px);
   line-height: 1.15;
   color: #fff;
 }
@@ -356,7 +392,7 @@ onBeforeUnmount(() => {
   justify-content: center;
   gap: 14px;
   margin: clamp(10px, 2vh, 18px) 0 0;
-  font-size: clamp(18px, 4.6vw, 28px);
+  font-size: clamp(16px, min(4.6vw, 5vh), 28px);
   letter-spacing: 0.04em;
   color: #f6e3b4;
 }
@@ -388,11 +424,14 @@ onBeforeUnmount(() => {
 }
 
 /* ---- Scroll cue ---- */
+/* Pinned to the foot of the *visible* screen (see .welcome), above the home
+   indicator, rather than to the foot of the taller section. */
 .welcome-cue {
   position: absolute;
   z-index: 1;
   left: 50%;
-  bottom: clamp(16px, 3vh, 28px);
+  top: calc(100vh - 54px - clamp(10px, 2.5vh, 24px));
+  top: calc(100dvh - 54px - clamp(10px, 2.5vh, 24px) - env(safe-area-inset-bottom));
   display: inline-flex;
   padding: 6px;
   border: none;
@@ -416,6 +455,25 @@ onBeforeUnmount(() => {
 @keyframes bob {
   0%, 100% { transform: translate(-50%, 0); }
   50% { transform: translate(-50%, 8px); }
+}
+
+/* Phones turned sideways: barely 400px of height. The words move up to the
+   top edge (between the music and language buttons, which sit in the
+   corners), the gaps close up, and everything sizes off the height. */
+@media (orientation: landscape) and (max-height: 520px) {
+  .welcome-content {
+    padding-top: calc(18px + env(safe-area-inset-top));
+    padding-bottom: calc(64px + env(safe-area-inset-bottom));
+  }
+  .welcome-date {
+    margin-top: 4px;
+  }
+  .welcome-dots {
+    margin-top: 12px;
+  }
+  .welcome-cue :deep(.v-icon) {
+    font-size: 26px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

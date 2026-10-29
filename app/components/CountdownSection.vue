@@ -114,6 +114,14 @@ background: transparent;
   margin-inline: auto;
 }
 
+/* Phones turned sideways: the 3:4 tiles are sized from the screen height
+   too, so all four figures sit in view under the title at once. */
+@media (orientation: landscape) and (max-height: 600px) {
+  .count-grid {
+    max-width: min(880px, calc((100vh - 200px) * 3 + 30px));
+  }
+}
+
 .count-card {
   position: relative;
   aspect-ratio: 3 / 4;

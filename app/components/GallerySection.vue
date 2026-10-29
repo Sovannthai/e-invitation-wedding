@@ -318,8 +318,10 @@ function onTouchEnd(e) {
   color: var(--ink-soft);
 }
 
-/* Boards stack in one column on phones and tablets; from laptop width they
-   pair up two to a row. Each keeps its 4:5 shape. */
+/* Boards stack in one column on upright screens (phones, tablets held
+   tall). On any wide screen — laptops, tablets on their side, phones turned
+   — they pair up two to a row, and the row is sized from the window height
+   as well, so a whole 4:5 board always fits on screen. */
 .gallery-list {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -328,10 +330,10 @@ function onTouchEnd(e) {
   margin: 0 auto;
 }
 
-@media (min-width: 1025px) {
+@media (orientation: landscape) {
   .gallery-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    width: min(100%, 1040px);
+    width: min(100%, 1040px, calc((100vh - 40px) * 1.6 + 22px));
   }
 }
 

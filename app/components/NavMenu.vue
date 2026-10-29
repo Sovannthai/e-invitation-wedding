@@ -74,7 +74,7 @@ onBeforeUnmount(() => {
 <style scoped>
 .nav-pill {
   position: fixed;
-  bottom: 18px;
+  bottom: calc(18px + env(safe-area-inset-bottom));
   left: 50%;
   transform: translateX(-50%);
   z-index: 1500;

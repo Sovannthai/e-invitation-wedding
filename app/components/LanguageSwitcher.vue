@@ -25,8 +25,8 @@ const { locale, setLocale } = useLang();
 <style scoped>
 .lang-switch {
   position: fixed;
-  top: 16px;
-  right: 16px;
+  top: calc(16px + env(safe-area-inset-top));
+  right: calc(16px + env(safe-area-inset-right));
   /* Above the envelope (9999). The envelope's own wording is already
      translated; without this the switcher sat underneath it, so a guest
      could not choose a language until after opening. */

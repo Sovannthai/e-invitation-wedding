@@ -73,7 +73,13 @@ export default defineNuxtConfig({
        title: "Sovannthai&Soheng Wedding Invitation",
       meta: [
         { charset: "utf-8" },
-        { name: "viewport", content: "width=device-width, initial-scale=1" },
+        // viewport-fit=cover lets the page paint under the notch and the
+        // home indicator; fixed controls step clear of them with
+        // env(safe-area-inset-*).
+        { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
+        // Tints the phone's status bar / browser chrome to the page. The
+        // welcome cover swaps it for its own dark while it is showing.
+        { name: "theme-color", content: "#eef0e9" },
       ],
       link: [
         {
