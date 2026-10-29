@@ -6,6 +6,13 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   ssr: false,
 
+  // Server-only: read by server/api, never shipped to the browser. Set them
+  // with NUXT_DIRECTUS_URL / NUXT_DIRECTUS_TOKEN (see .env.example).
+  runtimeConfig: {
+    directusUrl: "http://localhost:8055",
+    directusToken: "",
+  },
+
   build: {
     transpile: ['vuetify'],
   },

@@ -13,9 +13,11 @@ const slides = [
   { src: "/img/welcome/welcome-6-web.jpg", pos: "50% 50%" },
   { src: "/img/welcome/welcome-7.jpg", pos: "70% 35%" },
   { src: "/img/welcome/welcome-8.jpg", pos: "52% 50%" },
-  // A designed collage with its own lettering: shown whole on the dark
-  // ground rather than cropped to fill, which would cut its edges off.
-  { src: "/img/welcome/welcome-9.jpg", pos: "50% 50%", fit: "contain" },
+  // A designed collage with its own lettering: shown whole rather than
+  // cropped to fill, which would cut its edges off. `ground` is its paper
+  // colour, carried out to the screen edges round it so a tall phone shows
+  // one white page top to bottom instead of a card between dark bands.
+  { src: "/img/welcome/welcome-9.jpg", pos: "50% 50%", fit: "contain", ground: "#fff" },
 ];
 
 /* The page tells this cover to go once it has faded out; it is only ever
@@ -198,7 +200,7 @@ onBeforeUnmount(() => {
         class="welcome-slide"
         :class="{ 'is-active': i === current }"
         :src="loaded.has(i) ? s.src : undefined"
-        :style="{ objectPosition: s.pos, objectFit: s.fit || 'cover' }"
+        :style="{ objectPosition: s.pos, objectFit: s.fit || 'cover', backgroundColor: s.ground }"
         :fetchpriority="i === 0 ? 'high' : 'auto'"
         alt=""
       />
@@ -309,6 +311,22 @@ onBeforeUnmount(() => {
   opacity: 0;
 }
 
+/* The collage is on white paper, so the dots and the arrow go dark to stay
+   readable over it. */
+.welcome.is-bare .welcome-content,
+.welcome.is-bare .welcome-cue {
+  text-shadow: none;
+  color: #3b3a2c;
+}
+
+.welcome.is-bare .welcome-dot {
+  background: rgba(59, 58, 44, 0.3);
+}
+
+.welcome.is-bare .welcome-dot.is-active {
+  background: #b08d3e;
+}
+
 /* ---- Text ---- */
 .welcome-content {
   position: relative;
@@ -400,7 +418,7 @@ onBeforeUnmount(() => {
   height: 6px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.45);
-  transition: width 0.5s ease, background 0.5s ease;
+  transition: width 0.5s ease, background 0.9s ease;
 }
 
 .welcome-dot.is-active {
@@ -425,6 +443,7 @@ onBeforeUnmount(() => {
   color: #fff;
   cursor: pointer;
   transform: translateX(-50%);
+  transition: color 0.9s ease;
   animation: bob 2.2s ease-in-out infinite;
 }
 
