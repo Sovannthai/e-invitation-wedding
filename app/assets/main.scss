@@ -38,9 +38,14 @@
   unicode-range: U+1780-17FF, U+19E0-19FF, U+200C-200D, U+25CC;
 }
 
-body{
-  /* Latin uses Nunito; Khmer (normal text) falls back to Kantumruy Pro */
-  font-family: "Nunito", "Kantumruy Pro", sans-serif;
+/* English text is set in Lexend Medium (the couple's names and the
+   envelope take Pacifico in their own rules); Khmer has no glyphs
+   there and falls through to Kantumruy Pro (body) or Moul (headings).
+   .v-application is included because Vuetify sets Roboto on it, which
+   would otherwise win for anything inside <v-app> without its own font. */
+body,
+.v-application {
+  font-family: "Lexend", "Kantumruy Pro", sans-serif;
 
   color: var(--ink);
 
@@ -50,15 +55,15 @@ body{
   background: var(--paper);
 }
 
-/* Heading text: English gets Playfair Display, Khmer gets Moul.
+/* Heading text: English gets Lexend, Khmer gets Moul.
    The Latin face stays first so English renders in it; Moul only catches
-   the Khmer glyphs Playfair Display can't render. */
+   the Khmer glyphs Lexend can't render. */
 h1, h2, h3, h4, h5, h6,
 b, strong,
 .section-title, .countdown-title,
 .account-name,
 .v-card-title {
-  font-family: "Playfair Display", "Moul", serif;
+  font-family: "Lexend", "Moul", serif;
   font-weight: 700;
 }
 
@@ -71,11 +76,19 @@ b, strong,
 .section-title,
 .countdown-title,
 .card-title {
-  font-family: "Playfair Display", "Moul", serif;
+  font-family: "Lexend", "Moul", serif;
   font-weight: 700;
   font-size: clamp(21px, 5.4vw, 32px);
   line-height: 1.75;
   color: var(--title);
+}
+
+/* Elements given tabindex="-1" only so script can move focus to them —
+   the envelope hands focus to the invitation heading once it opens — are
+   not reachable by Tab, so the browser's focus ring there is just a stray
+   box around the title. Real controls keep their focus rings. */
+[tabindex="-1"]:focus {
+  outline: none;
 }
 .petals span{
 
@@ -403,17 +416,22 @@ transform:translateY(100vh)
     }
 }
 
-/* ── English heading treatment ────────────────────────────────
-   Caps and a little tracking, matching the printed card. Applied only
-   under [data-locale="en"] — Khmer is caseless, and tracking would pull
-   its diacritic clusters apart.
+/* ── English type treatment ───────────────────────────────────
+   English headings stay in natural case with no extra spacing. Only
+   Lexend Medium is loaded, and the browser's faked bold is turned off in
+   English so every line stays Medium rather than smeared heavier. Scoped
+   to [data-locale="en"] so Khmer headings in Moul keep their weight.
    ──────────────────────────────────────────────────────────── */
 html[data-locale="en"] .section-title,
 html[data-locale="en"] .countdown-title,
 html[data-locale="en"] .card-title,
 html[data-locale="en"] .card-honour {
-  text-transform: uppercase;
-  letter-spacing: 0.045em;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+html[data-locale="en"] body {
+  font-synthesis-weight: none;
 }
 
 /* ── Desktop and laptop type scale (≥1025px) ──────────────────

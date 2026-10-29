@@ -74,7 +74,7 @@ const MAP_URL = "https://www.google.com/maps/search/?api=1&query=Phnom%20Penh";
 .location-hint {
   margin: 0;
   max-width: 34ch;
-  font-family: "Nunito", "Kantumruy Pro", sans-serif;
+  font-family: "Lexend", "Kantumruy Pro", sans-serif;
   font-size: clamp(13px, 3.3vw, 15px);
   line-height: 1.9;
   color: var(--ink-soft);
@@ -89,7 +89,7 @@ const MAP_URL = "https://www.google.com/maps/search/?api=1&query=Phnom%20Penh";
   min-height: 52px;
   padding: 0 24px;
   border-radius: 999px;
-  font-family: "Nunito", "Kantumruy Pro", sans-serif;
+  font-family: "Lexend", "Kantumruy Pro", sans-serif;
   font-size: clamp(15px, 3.6vw, 16px);
   font-weight: 700;
   color: #fff;

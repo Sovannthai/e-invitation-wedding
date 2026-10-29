@@ -23,16 +23,17 @@ export default defineNuxtConfig({
         // Latin and Khmer are paired per role, Latin first in every stack so
         // English renders in the Latin face and Khmer falls through to Moul
         // or Kantumruy Pro behind it.
-        //   Playfair Display — English headings (bold serif caps)
-        //   Nunito          — English body
+        //   Lexend          — English text across the invitation, Medium only
+        //   Pacifico        — the envelope, and the couple's names everywhere
+        //   Lobster         — the welcome slideshow only
         //   Moul            — Khmer headings
         //   Kantumruy Pro   — Khmer body
-        //   Cormorant / Parisienne — the envelope only
         families: {
-          "Playfair+Display": [400, 500, 600, 700],
-          "Nunito": [300, 400, 600, 700],
-          "Cormorant+Garamond": [400, 500, 600, 700],
-          "Parisienne": [400],
+          // Only Medium is loaded, so every English line resolves to it
+          // whatever weight its rule asks for.
+          "Lexend": [500],
+          "Pacifico": [400],
+          "Lobster": [400],
           "Moul": [400],
           // Khmer calligraphic hand, used only for the envelope monogram
           "Fasthand": [400],

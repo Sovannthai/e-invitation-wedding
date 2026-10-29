@@ -77,7 +77,7 @@ const agenda = [
   margin: 0 0 34px;
   text-align: center;
 
-  font-family: "Nunito", "Kantumruy Pro", sans-serif;
+  font-family: "Lexend", "Kantumruy Pro", sans-serif;
   font-size: clamp(14px, 3.6vw, 17px);
   line-height: 1.9;
   color: var(--ink);
@@ -158,7 +158,7 @@ const agenda = [
 
 .item-time {
   margin: 0;
-  font-family: "Nunito", "Kantumruy Pro", sans-serif;
+  font-family: "Lexend", "Kantumruy Pro", sans-serif;
   font-weight: 700;
   font-size: clamp(15px, 4vw, 19px);
   line-height: 1.7;
@@ -167,7 +167,7 @@ const agenda = [
 
 .item-text {
   margin: 0;
-  font-family: "Nunito", "Kantumruy Pro", sans-serif;
+  font-family: "Lexend", "Kantumruy Pro", sans-serif;
   font-size: clamp(14px, 3.6vw, 17px);
   line-height: 1.95;
   color: var(--ink-soft);

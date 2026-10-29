@@ -156,7 +156,7 @@ onMounted(load);
   background: #fff;
   border: 1px solid rgba(216, 174, 70, 0.35);
   box-shadow: 0 24px 60px rgba(40, 40, 30, 0.25);
-  font-family: "Nunito", "Kantumruy Pro", sans-serif;
+  font-family: "Lexend", "Kantumruy Pro", sans-serif;
   color: var(--ink);
 }
 
@@ -187,7 +187,7 @@ onMounted(load);
   align-items: center;
   gap: 10px;
   margin: 0;
-  font-family: "Playfair Display", "Moul", serif;
+  font-family: "Lexend", "Moul", serif;
   font-size: clamp(18px, 4.4vw, 24px);
   line-height: 1.6;
   color: var(--heading);
@@ -258,8 +258,7 @@ onMounted(load);
 
 .wish-time {
   flex: 0 0 auto;
-  font-family: "Playfair Display", serif;
-  font-style: italic;
+  font-family: "Lexend", serif;
   font-size: 12px;
   color: var(--ink-soft);
 }

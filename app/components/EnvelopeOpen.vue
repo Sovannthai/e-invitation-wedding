@@ -243,7 +243,7 @@ onBeforeUnmount(() => {
         <p class="guest-plate">{{ addressee }}</p>
       </footer>
 
-      <p class="envelope__hint">{{ t("envelope.hint") }}</p>
+      <!-- <p class="envelope__hint">{{ t("envelope.hint") }}</p> -->
     </div>
   </div>
 </template>
@@ -344,7 +344,7 @@ onBeforeUnmount(() => {
   perspective-origin: 50% 50%;
   transition: opacity 500ms ease;
   color: var(--paper);
-  font-family: "Cormorant Garamond", "Iowan Old Style", Palatino, Georgia, serif;
+  font-family: "Pacifico", cursive;
   line-height: 1.7;
 }
 
@@ -510,7 +510,7 @@ onBeforeUnmount(() => {
   right: 0;
   width: 100%;
   margin: 0;
-  font-family: "Playfair Display", "Kantumruy Pro", serif;
+  font-family: "Pacifico", "Kantumruy Pro", serif;
   font-size: var(--t-xs);
   color: var(--paper);
   text-align: center;
@@ -588,28 +588,34 @@ html[data-locale="en"] .envelope__hint {
   gap: clamp(7px, 2vw, 13px);
 }
 
+/* Formal copperplate rather than a casual script; the gold runs light to
+   deep down each name like foil catching the light. */
 .mono-latin-line {
-  font-family: Parisienne, "Snell Roundhand", "Apple Chancery", cursive;
-  font-size: clamp(17px, 5vw, 24px);
-  line-height: 1.4;
-  color: #f0dcae;
+  font-family: "Pacifico", cursive;
+  font-size: clamp(22px, 6.4vw, 32px);
+  line-height: 1.5;
   white-space: nowrap;
-  text-shadow: 0 2px 8px rgba(30, 29, 20, 0.5);
+  color: #f0dcae;
+  background: linear-gradient(180deg, #fff4d8 0%, #f3dca0 45%, #dcb768 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 6px rgba(30, 29, 20, 0.45));
 }
 
 .mono-tie {
-  font-family: "Cormorant Garamond", serif;
-  font-style: italic;
-  font-size: clamp(15px, 4vw, 20px);
+  font-family: "Pacifico", serif;
+  font-weight: 500;
+  font-size: clamp(18px, 5vw, 26px);
   line-height: 1.1;
   color: var(--gold-light);
-  opacity: 0.9;
+  opacity: 0.85;
 }
 
 /* The occasion, in the ceremonial face, under the monogram. */
 .envelope__title {
   margin: 0;
-  font-family: "Playfair Display", "Moul", serif;
+  font-family: "Pacifico", "Moul", serif;
   font-size: clamp(13px, 3.7vw, 18px);
   line-height: 1.7;
   color: var(--paper);
@@ -635,7 +641,7 @@ html[data-locale="en"] .envelope__hint {
 
 .guest-invite {
   margin: 0 0 0.5rem;
-  font-family: "Playfair Display", "Moul", serif;
+  font-family: "Pacifico", "Moul", serif;
   font-size: clamp(11px, 3vw, 14px);
   line-height: 1.8;
   color: var(--paper);
@@ -651,7 +657,7 @@ html[data-locale="en"] .envelope__hint {
   border-top: 1px solid rgba(227, 203, 154, 0.55);
   border-bottom: 1px solid rgba(227, 203, 154, 0.55);
 
-  font-family: "Playfair Display", "Moul", serif;
+  font-family: "Pacifico", "Moul", serif;
   font-size: clamp(12px, 3.3vw, 16px);
   line-height: 1.9;
   color: var(--gold-light);
@@ -785,7 +791,7 @@ html[data-locale="en"] .envelope__hint {
 @media (max-height: 460px) {
   .envelope__seal { width: clamp(84px, 22vh, 116px); }
   .mono-art { width: min(100%, 52vh); }
-  .mono-latin-line { font-size: clamp(13px, 4.5vh, 17px); }
+  .mono-latin-line { font-size: clamp(17px, 5.6vh, 23px); }
   .monogram { margin-bottom: 0.5rem; }
 }
 

@@ -211,10 +211,11 @@ const FRAME = [
 
 /* Both lines of the name block are set in the script, the way the printed
    card sets them — the label smaller and in ink, the name larger and gilt.
-   Latin takes Parisienne; Khmer falls through to Kantumruy Pro behind it. */
+   The label takes Lexend and the name Pacifico, as the couple's names do
+   throughout; Khmer falls through to Kantumruy Pro / Moul behind them. */
 .person-label {
   margin: 0;
-  font-family: "Parisienne", "Kantumruy Pro", cursive;
+  font-family: "Lexend", "Kantumruy Pro", cursive;
   font-size: clamp(14px, 3.6vw, 17px);
   line-height: 1.8;
   color: var(--body);
@@ -222,7 +223,7 @@ const FRAME = [
 
 .person-value {
   margin: 0;
-  font-family: "Parisienne", "Moul", cursive;
+  font-family: "Pacifico", "Moul", cursive;
   /* The script runs small for its point size, and its swashes need the
      extra leading, so this is set larger and looser than the sans was. */
   font-size: clamp(18px, 5.1vw, 28px);
@@ -252,8 +253,7 @@ const FRAME = [
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-family: "Playfair Display", serif;
-  font-style: italic;
+  font-family: "Pacifico", serif;
   font-size: clamp(26px, 7vw, 40px);
   line-height: 1;
   color: var(--ornament);
@@ -262,7 +262,7 @@ const FRAME = [
 /* ---- The request ---- */
 .card-honour {
   margin: 0;
-  font-family: "Playfair Display", "Moul", serif;
+  font-family: "Lexend", "Moul", serif;
   font-size: clamp(16px, 4.3vw, 23px);
   line-height: 1.85;
   color: var(--heading);
@@ -271,7 +271,7 @@ const FRAME = [
 .card-body {
   margin: 0 auto;
   max-width: 46ch;
-  font-family: "Nunito", "Kantumruy Pro", sans-serif;
+  font-family: "Lexend", "Kantumruy Pro", sans-serif;
   font-size: clamp(13px, 3.5vw, 16px);
   line-height: 2.05;
   color: var(--body);
@@ -284,7 +284,7 @@ const FRAME = [
 
 .when-month {
   margin: 0;
-  font-family: "Playfair Display", "Moul", serif;
+  font-family: "Lexend", "Moul", serif;
   font-size: clamp(15px, 4vw, 20px);
   line-height: 1.8;
   color: var(--heading);
@@ -304,7 +304,7 @@ const FRAME = [
   padding: 3px 0;
   border-top: 1px solid var(--ornament);
   border-bottom: 1px solid var(--ornament);
-  font-family: "Nunito", "Kantumruy Pro", sans-serif;
+  font-family: "Lexend", "Kantumruy Pro", sans-serif;
   font-size: clamp(11px, 3vw, 14px);
   line-height: 1.8;
   color: var(--body);
@@ -313,7 +313,7 @@ const FRAME = [
 
 .when-day {
   flex: 0 0 auto;
-  font-family: "Playfair Display", "Moul", serif;
+  font-family: "Lexend", "Moul", serif;
   font-size: clamp(30px, 9vw, 46px);
   line-height: 1.3;
   color: var(--name);
@@ -321,7 +321,7 @@ const FRAME = [
 
 .when-year {
   margin: 0;
-  font-family: "Playfair Display", "Moul", serif;
+  font-family: "Lexend", "Moul", serif;
   font-size: clamp(16px, 4.4vw, 22px);
   line-height: 1.7;
   color: var(--heading);
@@ -337,9 +337,8 @@ const FRAME = [
 }
 
 .cue-label {
-  font-family: "Nunito", "Kantumruy Pro", sans-serif;
+  font-family: "Lexend", "Kantumruy Pro", sans-serif;
   font-size: 13px;
-  letter-spacing: 0.12em;
 }
 
 .cue-icon {

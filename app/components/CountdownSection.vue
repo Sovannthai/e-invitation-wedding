@@ -150,7 +150,7 @@ background: transparent;
 .count-card h2 {
   margin: 0;
   /* Moul catches the Khmer numerals, as it does for the date on the hero. */
-  font-family: "Playfair Display", "Moul", serif;
+  font-family: "Lexend", "Moul", serif;
   font-weight: 500;
   font-size: clamp(28px, 7vw, 44px);
   line-height: 1;

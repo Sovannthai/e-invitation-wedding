@@ -60,6 +60,9 @@ const messages = {
 
     // Gallery / Location
     "gallery.title": "កម្រងរូបភាព",
+    "gallery.hint": "ចុចលើរូបភាព ដើម្បីមើលពេញអេក្រង់",
+    "gallery.more": "មើលរូបភាពបន្ថែម",
+    "gallery.less": "បង្ហាញតិចវិញ",
     "location.title": "ទីតាំង",
     "location.hint": "ចុចប៊ូតុងខាងក្រោម ដើម្បីបើកផែនទីទៅកាន់ទីតាំងកម្មវិធី",
     "location.open": "បើកក្នុង Google Maps",
@@ -161,6 +164,9 @@ const messages = {
 
     // Gallery / Location
     "gallery.title": "Gallery",
+    "gallery.hint": "Tap a photo to view it full screen",
+    "gallery.more": "See more photos",
+    "gallery.less": "Show less",
     "location.title": "Location",
     "location.hint": "Tap below for directions to the venue",
     "location.open": "Open in Google Maps",

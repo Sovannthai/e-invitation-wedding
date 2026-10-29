@@ -141,11 +141,8 @@ const wishOpen = ref(false);
 /* ---- Heading ---- */
 .gift-eyebrow {
   margin: 0 0 6px;
-  font-family: "Playfair Display", "Kantumruy Pro", serif;
-  font-style: italic;
+  font-family: "Lexend", "Kantumruy Pro", serif;
   font-size: clamp(12px, 2.8vw, 15px);
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
   color: var(--gold);
 }
 
@@ -155,8 +152,7 @@ const wishOpen = ref(false);
 
 .gift-latin {
   margin: 2px 0 0;
-  font-family: "Playfair Display", serif;
-  font-style: italic;
+  font-family: "Pacifico", serif;
   font-size: clamp(14px, 3.4vw, 19px);
   color: var(--ink-soft);
 }
@@ -182,7 +178,7 @@ const wishOpen = ref(false);
   border: 1px solid var(--surface-edge);
   box-shadow: 0 4px 12px rgba(80, 90, 70, 0.08);
 
-  font-family: "Nunito", "Kantumruy Pro", sans-serif;
+  font-family: "Lexend", "Kantumruy Pro", sans-serif;
   font-size: clamp(12px, 2.9vw, 14px);
   line-height: 1.7;
   color: var(--ink);
@@ -208,7 +204,7 @@ const wishOpen = ref(false);
 .gift-thanks {
   margin: 20px auto 0;
   max-width: 46ch;
-  font-family: "Nunito", "Kantumruy Pro", sans-serif;
+  font-family: "Lexend", "Kantumruy Pro", sans-serif;
   font-size: clamp(13px, 3.3vw, 16px);
   line-height: 2;
   color: var(--ink-soft);
@@ -242,7 +238,7 @@ const wishOpen = ref(false);
 
 .bank-name {
   margin: 0;
-  font-family: "Playfair Display", serif;
+  font-family: "Lexend", serif;
   font-weight: 700;
   font-size: clamp(17px, 3.6vw, 23px);
   letter-spacing: 0.04em;
@@ -251,7 +247,7 @@ const wishOpen = ref(false);
 
 .bank-scan {
   margin: 4px 0 16px;
-  font-family: "Nunito", "Kantumruy Pro", sans-serif;
+  font-family: "Lexend", "Kantumruy Pro", sans-serif;
   font-size: clamp(12px, 2.8vw, 14px);
   letter-spacing: 0.04em;
   color: var(--ink-soft);
@@ -288,9 +284,8 @@ const wishOpen = ref(false);
 
 .bank-holder {
   margin: 14px 0 0;
-  font-family: "Nunito", sans-serif;
+  font-family: "Lexend", sans-serif;
   font-size: clamp(11px, 2.7vw, 13px);
-  letter-spacing: 0.1em;
   color: var(--ink-soft);
 }
 
@@ -303,7 +298,7 @@ const wishOpen = ref(false);
   padding: 14px 30px;
   border: none;
   border-radius: 999px;
-  font-family: "Nunito", "Kantumruy Pro", sans-serif;
+  font-family: "Lexend", "Kantumruy Pro", sans-serif;
   font-size: clamp(14px, 3.4vw, 16px);
   font-weight: 700;
   letter-spacing: 0.03em;
