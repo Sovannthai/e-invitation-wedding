@@ -73,6 +73,7 @@ function finish() {
   clearTimers();
   removed.value = true;
   unlockScroll();
+  releaseEdge?.();
 
   // Hand focus to the invitation. Without this the seal button unmounts and
   // keyboard and screen-reader users are dropped at the top of the document
@@ -128,8 +129,14 @@ function unlockScroll() {
   document.documentElement.style.overflow = "";
 }
 
+/* While the envelope fills the screen, the phone's status bar and the
+   browser's toolbar strip take the flap olive (--olive below) rather than
+   the page's pale ground. */
+let releaseEdge = null;
+
 onMounted(() => {
   lockScroll();
+  releaseEdge = claimScreenEdge("#6f6e59");
   window.addEventListener("keydown", onKeydown);
 });
 
@@ -137,6 +144,7 @@ onBeforeUnmount(() => {
   clearTimers();
   window.removeEventListener("keydown", onKeydown);
   unlockScroll();
+  releaseEdge?.();
 });
 </script>
 

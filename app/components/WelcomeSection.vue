@@ -153,29 +153,14 @@ function onKeydown(e) {
   if (SCROLL_KEYS.includes(e.key)) scrollOn();
 }
 
-/* While the cover is up, the phone's status bar and browser chrome take its
-   dark instead of the page's pale ground, so the photo reads edge to edge.
-   The page's own colour goes back when the cover leaves. */
-let themeMeta = null;
-let pageTheme = "";
-
-function setTheme() {
-  themeMeta = document.querySelector('meta[name="theme-color"]');
-  if (!themeMeta) {
-    themeMeta = document.createElement("meta");
-    themeMeta.name = "theme-color";
-    document.head.appendChild(themeMeta);
-  }
-  pageTheme = themeMeta.content;
-  themeMeta.content = "#1e1d14";
-}
-
-function restoreTheme() {
-  if (themeMeta) themeMeta.content = pageTheme || "#eef0e9";
-}
+/* While the cover is up, the phone's status bar and the strip round the
+   browser's toolbar take its dark instead of the page's pale ground, so the
+   photo reads edge to edge. The page's own colour goes back when the cover
+   leaves. */
+let releaseEdge = null;
 
 onMounted(() => {
-  setTheme();
+  releaseEdge = claimScreenEdge("#1e1d14");
   timer = setInterval(advance, HOLD_MS);
   window.addEventListener("scroll", onScroll, { passive: true });
   window.addEventListener("wheel", onWheel, { passive: false });
@@ -185,7 +170,7 @@ onMounted(() => {
 });
 
 onBeforeUnmount(() => {
-  restoreTheme();
+  releaseEdge?.();
   clearInterval(timer);
   clearTimeout(settleTimer);
   cancelAnimationFrame(frame);
