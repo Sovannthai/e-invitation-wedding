@@ -99,7 +99,7 @@ const FRAME = [
           </svg>
         </div>
 
-        <span class="amp" aria-hidden="true">&amp;</span>
+        <span class="amp welcome-amp" aria-hidden="true">&amp;</span>
       </div>
 
       <h2 class="card-honour">{{ t("hero.honour") }}</h2>
@@ -288,6 +288,12 @@ const FRAME = [
   font-size: clamp(15px, 4vw, 20px);
   line-height: 1.8;
   color: var(--heading);
+}
+
+.welcome-amp {
+  font-family: "Lobster", cursive;
+  display: inline-block;
+  margin: 0 0.12em 0 0;
 }
 
 .when-row {
