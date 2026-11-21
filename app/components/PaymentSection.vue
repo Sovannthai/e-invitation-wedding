@@ -3,16 +3,13 @@ import { ref } from "vue";
 
 const { t } = useLang();
 
-/* The two accounts, each with its own KHQR image. Bank names are plain text
-   rather than logo artwork — they identify the account without reproducing
-   anyone's mark. */
+/* The two accounts, each with its own KHQR image and the holder's name as
+   printed on the bank's card. Bank names are plain text rather than logo
+   artwork — they identify the account without reproducing anyone's mark. */
 const accounts = [
-  { id: "aba", name: "ABA Bank", qr: "/img/qr/aba-qr.jpg" },
-  { id: "acleda", name: "ACLEDA Bank", qr: "/img/qr/acleda-qr.jpg" },
+  { id: "aba", name: "ABA Bank", holder: "SOVANNTHAI NEANG", qr: "/img/qr/aba-qr.jpg" },
+  { id: "sathapana", name: "Sathapana Bank", holder: "CHHUM SOHENG", qr: "/img/qr/sathapana-qr.jpg" },
 ];
-
-/* Whose account the codes belong to, as printed on the bank cards. */
-const holder = "NEANG SOVANNTHAI";
 
 const wishOpen = ref(false);
 </script>
@@ -76,7 +73,7 @@ const wishOpen = ref(false);
             <span class="qr-corner qr-br"></span>
           </div>
 
-          <p class="bank-holder">{{ holder }}</p>
+          <p class="bank-holder">{{ acct.holder }}</p>
         </article>
       </div>
 
