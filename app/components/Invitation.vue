@@ -36,13 +36,17 @@
 </template>
 
 <script setup>
-import { ref, nextTick } from "vue";
+import { ref, nextTick, provide, toRef } from "vue";
 
 /* The whole invitation. pages/index.vue shows it addressed to no one in
    particular; pages/[id].vue addresses the envelope to one guest. */
-defineProps({
+const props = defineProps({
   guest: { type: String, default: "" },
 });
+
+/* The invited guest's name as Directus has it, for parts deeper in the page
+   (the wish dialog signs their wish with it). Empty on the general link. */
+provide("guestName", toRef(props, "guest"));
 
 const showWelcome = ref(false);
 

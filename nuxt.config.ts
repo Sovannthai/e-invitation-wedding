@@ -42,8 +42,6 @@ export default defineNuxtConfig({
           "Pacifico": [400],
           "Lobster": [400],
           "Moul": [400],
-          // Khmer calligraphic hand, used only for the envelope monogram
-          "Fasthand": [400],
           "Kantumruy+Pro": [400, 500, 600, 700],
         },
         display: "swap",

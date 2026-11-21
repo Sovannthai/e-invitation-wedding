@@ -3,7 +3,7 @@ const { t } = useLang();
 
 /* Opens the Google Maps app on phones, the website on desktop.
    Paste the venue's share link (maps.app.goo.gl/…) here. */
-const MAP_URL = "https://www.google.com/maps/search/?api=1&query=Phnom%20Penh";
+const MAP_URL = "https://maps.app.goo.gl/3crTcagyMq4ckK9F8";
 </script>
 
 <template>

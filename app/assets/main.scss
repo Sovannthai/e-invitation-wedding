@@ -19,25 +19,6 @@
   --surface-edge: rgba(120, 132, 110, 0.28);
 }
 
-/* ── Self-hosted faces ─────────────────────────────────────────
-   Kh Baphnom SatraSlekrith — the សត្រាស្លឹករឹត palm-leaf manuscript hand,
-   a third-party Khmer face that is not on Google Fonts. Drop the file into
-   public/fonts (see the README there); until it exists this src simply
-   fails and the stack falls through to Fasthand, so nothing breaks.
-
-   unicode-range confines it to Khmer, so Latin never requests it.
-   ──────────────────────────────────────────────────────────── */
-@font-face {
-  font-family: "Kh Baphnom SatraSlekrith";
-  src:
-    url("/fonts/KhBaphnom-SatraSlekrith.woff2") format("woff2"),
-    url("/fonts/KhBaphnom-SatraSlekrith.ttf") format("truetype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-  unicode-range: U+1780-17FF, U+19E0-19FF, U+200C-200D, U+25CC;
-}
-
 /* English text is set in Lexend Medium (the couple's names and the
    envelope take Pacifico in their own rules); Khmer has no glyphs
    there and falls through to Kantumruy Pro (body) or Moul (headings).

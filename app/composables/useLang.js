@@ -37,10 +37,10 @@ const messages = {
     "countdown.seconds": "វិនាទី",
 
     // Story
-    "agenda.title": "របៀបវារះកម្មវិធី",
+    "agenda.title": "របៀបវារៈកម្មវិធី",
     // The lunar day and month still need to be filled in; the animal year,
     // sak and Buddhist era below are correct for December 2026.
-    "agenda.dateLunar": "ថ្ងៃសៅរ៏ «១០កើត ខែមិគសិរ» ឆ្នាំមមី អដ្ឋស័ក",
+    "agenda.dateLunar": "ថ្ងៃសៅរ៍ «១០កើត ខែមិគសិរ» ឆ្នាំមមី អដ្ឋស័ក",
     "agenda.dateGregorian": "ព.ស. ២៥៧០ ត្រូវនឹងថ្ងៃទី១៩ ខែធ្នូ ឆ្នាំ២០២៦",
 
     "agenda.t1": "ម៉ោង ០៦:៣០ ព្រឹក",
@@ -82,6 +82,7 @@ const messages = {
     "wish.close": "បិទ",
     "wish.send": "ផ្ញើពរជ័យ",
     "wish.thanks": "សូមអរគុណសម្រាប់ពរជ័យរបស់លោកអ្នក! 💛",
+    "wish.error": "មិនអាចផ្ញើពរជ័យបានទេ សូមព្យាយាមម្តងទៀត។",
 
     // Payment
     "payment.title": "អំណោយមង្គលការ",
@@ -186,6 +187,7 @@ const messages = {
     "wish.close": "Close",
     "wish.send": "Send Wish",
     "wish.thanks": "Thank you for your blessing! 💛",
+    "wish.error": "Your wish couldn't be sent. Please try again.",
 
     // Payment
     "payment.title": "Wedding Gift",

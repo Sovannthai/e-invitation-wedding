@@ -42,20 +42,44 @@ const progress = ref(0);
 let timer = null;
 let frame = 0;
 let settleTimer = null;
+/* Set once the guest steps through the photos by hand. */
+let steered = false;
 
 /* Plays through once. After the last photo has had its turn, the page
-   glides on to the invitation by itself. */
+   glides on to the invitation by itself — unless the guest has taken over
+   the photos, in which case it rests on the last one and leaves scrolling
+   on to them, so stepping back from the first photo never throws them
+   into the invitation a few seconds later. */
 function advance() {
   if (current.value === slides.length - 1) {
     clearInterval(timer);
-    scrollOn();
+    if (!steered) scrollOn();
     return;
   }
-  current.value += 1;
-  const next = current.value + 1;
-  if (next < slides.length && !loaded.value.has(next)) {
-    loaded.value = new Set([...loaded.value, next]);
-  }
+  show(current.value + 1);
+}
+
+function show(i) {
+  current.value = i;
+  const want = [i, (i + 1) % slides.length].filter((n) => !loaded.value.has(n));
+  if (want.length) loaded.value = new Set([...loaded.value, ...want]);
+}
+
+/* A guest stepping through by hand: wraps round at either end, and the
+   autoplay clock starts again so the photo they chose gets its full turn.
+   However the photo is changed — autoplay, arrows, dots, keys or a swipe —
+   it is the same cross-fade: the old photo fades out as the new fades in. */
+function go(dir) {
+  const n = slides.length;
+  goTo((current.value + dir + n) % n);
+}
+
+function goTo(i) {
+  if (i === current.value) return;
+  steered = true;
+  show(i);
+  clearInterval(timer);
+  timer = setInterval(advance, HOLD_MS);
 }
 
 /* The cover is an ordinary section at the top of the page, so the browser's
@@ -120,6 +144,9 @@ const SCROLL_KEYS = ["ArrowDown", "PageDown", " ", "Spacebar", "End"];
 const BLOCKED_KEYS = [...SCROLL_KEYS, "ArrowUp", "PageUp", "Home"];
 
 let touchY = null;
+let touchX = null;
+let swiped = false;
+const SIDE_SWIPE_PX = 50;
 
 function onWelcome() {
   const h = root.value?.offsetHeight || window.innerHeight;
@@ -134,21 +161,49 @@ function onWheel(e) {
 
 function onTouchStart(e) {
   touchY = e.touches[0]?.clientY ?? null;
+  touchX = e.touches[0]?.clientX ?? null;
+  swiped = false;
+}
+
+/* A sideways swipe flips the photo; an upward one still goes on to the
+   invitation (handled in onTouchMove). */
+function onTouchEnd(e) {
+  if (!onWelcome() || swiped || touchX === null) return;
+  const t = e.changedTouches[0];
+  if (!t) return;
+  const dx = t.clientX - touchX;
+  const dy = touchY === null ? 0 : t.clientY - touchY;
+  if (Math.abs(dx) > SIDE_SWIPE_PX && Math.abs(dx) > Math.abs(dy) * 1.2) {
+    go(dx < 0 ? 1 : -1);
+  }
+  touchX = null;
 }
 
 function onTouchMove(e) {
   if (!onWelcome()) return;
   e.preventDefault();
   const y = e.touches[0]?.clientY;
+  const x = e.touches[0]?.clientX;
+  const sideways = touchX !== null && touchY !== null && x !== undefined && Math.abs(x - touchX) > Math.abs(touchY - y);
   // Finger moving up the screen = scrolling down the page.
-  if (touchY !== null && y !== undefined && touchY - y > SWIPE_PX) {
+  if (touchY !== null && y !== undefined && !sideways && touchY - y > SWIPE_PX) {
     touchY = null;
+    swiped = true;
     scrollOn();
   }
 }
 
 function onKeydown(e) {
-  if (!onWelcome() || !BLOCKED_KEYS.includes(e.key)) return;
+  if (!onWelcome()) return;
+  // Leave browser shortcuts (Alt/Cmd+Left = Back) and text fields alone.
+  if (e.altKey || e.metaKey || e.ctrlKey) return;
+  if (e.target instanceof Element && e.target.closest("input, textarea, [contenteditable]")) return;
+  if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+    e.preventDefault();
+    go(e.key === "ArrowRight" ? 1 : -1);
+    return;
+  }
+  if (!BLOCKED_KEYS.includes(e.key)) return;
   // Leave Space alone on the arrow button so it still presses it.
   if (e.target instanceof HTMLButtonElement && e.key !== "ArrowDown" && e.key !== "PageDown") return;
   e.preventDefault();
@@ -168,6 +223,7 @@ onMounted(() => {
   window.addEventListener("wheel", onWheel, { passive: false });
   window.addEventListener("touchstart", onTouchStart, { passive: true });
   window.addEventListener("touchmove", onTouchMove, { passive: false });
+  window.addEventListener("touchend", onTouchEnd, { passive: true });
   window.addEventListener("keydown", onKeydown);
 });
 
@@ -181,6 +237,7 @@ onBeforeUnmount(() => {
   window.removeEventListener("wheel", onWheel);
   window.removeEventListener("touchstart", onTouchStart);
   window.removeEventListener("touchmove", onTouchMove);
+  window.removeEventListener("touchend", onTouchEnd);
   window.removeEventListener("keydown", onKeydown);
 });
 </script>
@@ -222,13 +279,27 @@ onBeforeUnmount(() => {
         </p>
       </div>
 
-      <div class="welcome-dots" aria-hidden="true">
-        <span
-          v-for="(s, i) in slides"
-          :key="s.src"
-          class="welcome-dot"
-          :class="{ 'is-active': i === current }"
-        ></span>
+      <div class="welcome-nav">
+        <button class="welcome-arrow is-prev" aria-label="Previous photo" @click="go(-1)">
+          <v-icon>mdi-chevron-left</v-icon>
+        </button>
+
+        <div class="welcome-dots">
+          <button
+            v-for="(s, i) in slides"
+            :key="s.src"
+            class="welcome-dot"
+            :class="{ 'is-active': i === current }"
+            :style="{ '--hold': HOLD_MS + 'ms' }"
+            :aria-label="`Photo ${i + 1} of ${slides.length}`"
+            :aria-current="i === current ? 'true' : undefined"
+            @click="goTo(i)"
+          ></button>
+        </div>
+
+        <button class="welcome-arrow is-next" aria-label="Next photo" @click="go(1)">
+          <v-icon>mdi-chevron-right</v-icon>
+        </button>
       </div>
     </div>
 
@@ -323,8 +394,14 @@ onBeforeUnmount(() => {
   background: rgba(59, 58, 44, 0.3);
 }
 
-.welcome.is-bare .welcome-dot.is-active {
+.welcome.is-bare .welcome-dot.is-active::after {
   background: #b08d3e;
+}
+
+.welcome.is-bare .welcome-arrow {
+  color: #3b3a2c;
+  background: rgba(59, 58, 44, 0.06);
+  border-color: rgba(59, 58, 44, 0.25);
 }
 
 /* ---- Text ---- */
@@ -406,24 +483,138 @@ onBeforeUnmount(() => {
   background: linear-gradient(90deg, transparent, rgba(246, 227, 180, 0.9), transparent);
 }
 
-/* ---- Progress dots ---- */
-.welcome-dots {
+/* ---- Prev / next and progress dots ---- */
+.welcome-nav {
   display: flex;
-  gap: 7px;
+  align-items: center;
+  gap: clamp(12px, 3vw, 20px);
   margin-top: clamp(22px, 4vh, 36px);
 }
 
+/* Frosted-glass rounds: the photo shows through blurred, so they sit on
+   any picture without a hard dark disc. */
+.welcome-arrow {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  backdrop-filter: blur(10px) saturate(140%);
+  color: #fff;
+  cursor: pointer;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    background 0.35s ease,
+    border-color 0.35s ease,
+    color 0.9s ease;
+}
+
+.welcome-arrow :deep(.v-icon) {
+  font-size: 26px;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* A gold ring that sweeps out on hover. */
+.welcome-arrow::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle, rgba(240, 213, 149, 0.45) 0%, transparent 70%);
+  opacity: 0;
+  transform: scale(0.4);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+@media (hover: hover) {
+  .welcome-arrow:hover {
+    transform: scale(1.1);
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(240, 213, 149, 0.8);
+  }
+  .welcome-arrow:hover::before {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .welcome-arrow.is-prev:hover :deep(.v-icon) { transform: translateX(-3px); }
+  .welcome-arrow.is-next:hover :deep(.v-icon) { transform: translateX(3px); }
+}
+
+.welcome-arrow:active {
+  transform: scale(0.9);
+}
+
+.welcome-arrow:focus-visible,
+.welcome-dot:focus-visible {
+  outline: 2px solid #f0d595;
+  outline-offset: 3px;
+}
+
+/* Phones and tablets flip the photos by swiping, so the arrows only show on
+   large screens (lg, 1024px and up), where there's a mouse to click with. */
+@media (max-width: 1023.98px) {
+  .welcome-arrow {
+    display: none;
+  }
+}
+
+.welcome-dots {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+/* The active dot stretches into a bar that fills with gold over the time
+   the photo is held, so it doubles as the autoplay countdown. */
 .welcome-dot {
+  position: relative;
   width: 6px;
   height: 6px;
+  padding: 0;
+  border: none;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.45);
-  transition: width 0.5s ease, background 0.9s ease;
+  cursor: pointer;
+  overflow: hidden;
+  transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.9s ease;
+}
+
+/* A bigger invisible target for fingers than the 6px dot itself. */
+.welcome-dot::before {
+  content: "";
+  position: absolute;
+  inset: -10px -3px;
+}
+
+.welcome-dot::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: #f0d595;
+  transform: scaleX(0);
+  transform-origin: left;
 }
 
 .welcome-dot.is-active {
-  width: 22px;
-  background: #f0d595;
+  width: 28px;
+}
+
+.welcome-dot.is-active::after {
+  animation: dot-fill var(--hold, 5.5s) linear forwards;
+}
+
+@keyframes dot-fill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
 }
 
 /* ---- Scroll cue ---- */
@@ -472,8 +663,12 @@ onBeforeUnmount(() => {
   .welcome-date {
     margin-top: 4px;
   }
-  .welcome-dots {
+  .welcome-nav {
     margin-top: 12px;
+  }
+  .welcome-arrow {
+    width: 36px;
+    height: 36px;
   }
   .welcome-cue :deep(.v-icon) {
     font-size: 26px;
@@ -490,6 +685,10 @@ onBeforeUnmount(() => {
   .welcome-center,
   .welcome-cue {
     animation: none;
+  }
+  .welcome-dot.is-active::after {
+    animation: none;
+    transform: scaleX(1);
   }
 }
 </style>

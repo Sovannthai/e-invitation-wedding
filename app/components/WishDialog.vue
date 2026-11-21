@@ -1,70 +1,88 @@
 <script setup>
-import { ref, computed, onMounted } from "vue";
+import { ref, computed, watch, inject } from "vue";
 
 const open = defineModel({ type: Boolean, default: false });
 
 const { t, locale } = useLang();
+const route = useRoute();
 
-/* There is no backend yet, so wishes live in this browser only. Swap
-   load/save for an API call to share them between guests. */
-const STORAGE_KEY = "wedding-wishes";
-
+/* Wishes are kept in Directus and shared by every guest; the browser talks
+   to this site's own /api/wishes (server/api/wishes), never to Directus. */
 const wishes = ref([]);
 const name = ref("");
+
+/* A guest on their personal link is already known by name: the field shows
+   it and is locked, and the server signs the wish with the name on their
+   invitation whatever the browser sends. On the general link it is theirs
+   to type. */
+const guestName = inject("guestName", ref(""));
+const named = computed(() => guestName.value.trim().length > 0);
+watch(guestName, (n) => n && (name.value = n), { immediate: true });
 const message = ref("");
 const sent = ref(false);
+const sending = ref(false);
+const failed = ref(false);
 
 const quickWishes = computed(() =>
   [1, 2, 3, 4].map((n) => t(`wish.quick${n}`))
 );
 
 const canSend = computed(
-  () => name.value.trim().length > 0 && message.value.trim().length > 0
+  () => !sending.value && name.value.trim().length > 0 && message.value.trim().length > 0
 );
 
-function load() {
+/* A failed load leaves whatever is already showing: the guestbook being
+   unreachable shouldn't stop a guest reading or writing. */
+async function load() {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    wishes.value = raw ? JSON.parse(raw) : [];
+    wishes.value = await $fetch("/api/wishes");
   } catch {
-    wishes.value = [];
+    /* keep the current list */
   }
 }
 
-function save() {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(wishes.value));
-  } catch {
-    /* storage blocked — the wish still shows for this visit */
-  }
-}
-
+/* Today's wishes show the time; older ones the date as well. */
 function formatTime(ts) {
-  return new Date(ts).toLocaleTimeString(locale.value === "km" ? "km-KH" : "en-US", {
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+  const date = new Date(ts);
+  const lang = locale.value === "km" ? "km-KH" : "en-US";
+  const time = { hour: "2-digit", minute: "2-digit" };
+  return date.toDateString() === new Date().toDateString()
+    ? date.toLocaleTimeString(lang, time)
+    : date.toLocaleString(lang, { day: "numeric", month: "short", ...time });
 }
 
 function pickQuick(text) {
   message.value = text;
 }
 
-function send() {
+async function send() {
   if (!canSend.value) return;
-  wishes.value.unshift({
-    id: Date.now(),
-    name: name.value.trim(),
-    message: message.value.trim(),
-    at: Date.now(),
-  });
-  save();
-  message.value = "";
-  sent.value = true;
-  setTimeout(() => (sent.value = false), 2400);
+  sending.value = true;
+  failed.value = false;
+  try {
+    const wish = await $fetch("/api/wishes", {
+      method: "POST",
+      body: {
+        name: name.value.trim(),
+        message: message.value.trim(),
+        // On a personal link, lets the couple see whose invitation it came from.
+        guest: typeof route.params.id === "string" ? route.params.id : undefined,
+      },
+    });
+    wishes.value.unshift(wish);
+    message.value = "";
+    sent.value = true;
+    setTimeout(() => (sent.value = false), 2400);
+  } catch {
+    failed.value = true;
+  } finally {
+    sending.value = false;
+  }
 }
 
-onMounted(load);
+/* Fetched each time the guestbook is opened, so it shows what others have
+   written since. */
+watch(open, (isOpen) => isOpen && load(), { immediate: true });
 </script>
 
 <template>
@@ -89,7 +107,7 @@ onMounted(load);
           <div class="wish-item-head">
             <span class="wish-dot" aria-hidden="true"></span>
             <strong class="wish-name">{{ w.name }}</strong>
-            <time class="wish-time">{{ formatTime(w.at) }}</time>
+            <time class="wish-time">{{ formatTime(w.date_created) }}</time>
           </div>
           <p class="wish-text">{{ w.message }}</p>
         </article>
@@ -121,6 +139,8 @@ onMounted(load);
           type="text"
           maxlength="60"
           :placeholder="t('wish.name')"
+          :aria-label="t('wish.name')"
+          :disabled="named"
         />
         <textarea
           v-model="message"
@@ -130,7 +150,8 @@ onMounted(load);
           :placeholder="t('wish.message')"
         ></textarea>
 
-        <p v-if="sent" class="wish-sent">{{ t("wish.thanks") }}</p>
+        <p v-if="sent" class="wish-sent" role="status">{{ t("wish.thanks") }}</p>
+        <p v-if="failed" class="wish-sent wish-failed" role="alert">{{ t("wish.error") }}</p>
 
         <div class="wish-actions">
           <button type="button" class="wish-btn wish-btn--ghost" @click="open = false">
@@ -337,6 +358,14 @@ onMounted(load);
   outline: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
+.wish-input:disabled {
+  background: rgba(157, 128, 70, 0.08);
+  color: var(--ink-soft);
+  /* iOS Safari fades disabled text unless told otherwise */
+  -webkit-text-fill-color: var(--ink-soft);
+  opacity: 1;
+  cursor: not-allowed;
+}
 .wish-input:focus {
   border-color: #d8ae46;
   box-shadow: 0 0 0 3px rgba(216, 174, 70, 0.2);
@@ -352,6 +381,9 @@ onMounted(load);
   text-align: center;
   font-size: 14px;
   color: #4f8a5b;
+}
+.wish-failed {
+  color: #b3473f;
 }
 
 .wish-actions {

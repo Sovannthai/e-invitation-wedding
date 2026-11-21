@@ -23,7 +23,9 @@ const units = computed(() => [
   { key: "countdown.seconds", value: localizeDigits(seconds.value), photo: "/img/countdown/groom-details.jpg" },
 ])
 
-const weddingDate = new Date("2026-12-20T09:00:00")
+// Sat 19 Dec 2026, 5:00 PM (hero.time) in Cambodia, so guests abroad count
+// down to the same moment.
+const weddingDate = new Date("2026-12-19T17:00:00+07:00")
 
 function updateCountdown() {
 
