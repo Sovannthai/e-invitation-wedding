@@ -74,3 +74,10 @@ bun run preview
 
 Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
 # e-invitation-wedding
+
+## Docker
+
+Pushing to `develop` builds `ghcr.io/sovannthai/e-invitation-wedding:develop`
+(`.github/workflows/docker.yml`). The image reads `NUXT_DIRECTUS_URL` and
+`NUXT_DIRECTUS_TOKEN` at run time. The production stack and deploy steps are
+in the API repo: `api-e-wedding/deploy`.

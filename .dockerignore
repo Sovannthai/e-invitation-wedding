@@ -1,0 +1,20 @@
+# Keep the build context small and secrets out of the image
+.git
+.github
+.claude
+.playwright-mcp
+node_modules
+.nuxt
+.output
+.data
+.nitro
+.cache
+dist
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+Dockerfile
+.dockerignore
+README.md
