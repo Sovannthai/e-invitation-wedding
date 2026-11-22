@@ -7,7 +7,7 @@ const { t } = useLang();
    printed on the bank's card. Bank names are plain text rather than logo
    artwork — they identify the account without reproducing anyone's mark. */
 const accounts = [
-  { id: "aba", name: "ABA Bank", holder: "SOVANNTHAI NEANG", qr: "/img/qr/aba-qr.jpg" },
+  { id: "aba", name: "ABA Bank", holder: "NEANG SOVANNTHAI & CHHUM SOHENG", qr: "/img/qr/aba-qr.jpg" },
   { id: "sathapana", name: "Sathapana Bank", holder: "CHHUM SOHENG", qr: "/img/qr/sathapana-qr.jpg" },
 ];
 
