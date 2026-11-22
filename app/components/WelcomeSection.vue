@@ -396,9 +396,10 @@ onBeforeUnmount(() => {
   transform: scale(1);
 }
 
-/* A photo the guest chose themselves fades in fast. */
+/* A photo the guest chose themselves fades in sooner than the autoplay's
+   slow cross-fade, but still gently. */
 .welcome-slides.is-quick .welcome-slide {
-  transition: opacity 0.45s ease, transform 7.5s linear;
+  transition: opacity 0.9s ease, transform 7.5s linear;
 }
 
 /* Dark at the top and bottom for the text, clear through the middle so
@@ -607,13 +608,11 @@ onBeforeUnmount(() => {
   outline-offset: 3px;
 }
 
-/* Phones and tablets can swipe, but the arrows stay as well: a button is
-   the obvious thing to tap, and it works where a browser keeps sideways
-   swipes for itself. A touch smaller there, still a full-size target. */
-@media (max-width: 1023.98px) {
+/* Arrows on large screens only (Vuetify's lg and up, 1280px+). Phones,
+   tablets and small laptops step through the photos by swipe or the dots. */
+@media (max-width: 1279.98px) {
   .welcome-arrow {
-    width: 42px;
-    height: 42px;
+    display: none;
   }
 }
 

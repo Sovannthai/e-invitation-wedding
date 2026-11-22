@@ -35,6 +35,9 @@ const messages = {
     "countdown.hours": "ម៉ោង",
     "countdown.minutes": "នាទី",
     "countdown.seconds": "វិនាទី",
+    "calendar.add": "បញ្ចូលក្នុងប្រតិទិន",
+    "calendar.google": "Google Calendar",
+    "calendar.apple": "Apple / Outlook",
 
     // Story
     "agenda.title": "របៀបវារៈកម្មវិធី",
@@ -142,6 +145,9 @@ const messages = {
     "countdown.hours": "Hours",
     "countdown.minutes": "Minutes",
     "countdown.seconds": "Seconds",
+    "calendar.add": "Add to calendar",
+    "calendar.google": "Google Calendar",
+    "calendar.apple": "Apple / Outlook",
 
     // Story
     "agenda.title": "Wedding Programme",

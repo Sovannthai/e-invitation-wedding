@@ -8,6 +8,22 @@ const seconds = ref("00")
 
 const { t, locale } = useLang()
 
+/* "Add to calendar": Google Calendar opens in a new tab; everything else
+   (iPhone, Mac, Outlook) takes the .ics file from server/routes, which
+   Safari on iPhone opens straight into its "Add to Calendar" sheet. A guest
+   on their personal link gets that link in the event's notes. */
+const route = useRoute()
+const guestId = computed(() => (typeof route.params.id === "string" ? route.params.id : ""))
+const inviteUrl = computed(() =>
+  typeof window === "undefined" ? "" : `${window.location.origin}/${guestId.value}`.replace(/\/$/, "")
+)
+const googleUrl = computed(() => googleCalendarUrl(locale.value, inviteUrl.value))
+const icsUrl = computed(() => {
+  const q = new URLSearchParams({ lang: locale.value })
+  if (guestId.value) q.set("g", guestId.value)
+  return `/wedding.ics?${q}`
+})
+
 /* In Khmer the figures are written in Khmer numerals (០–៩), matching the
    dates on the rest of the invitation; English keeps 0–9. */
 const KHMER_DIGITS = "០១២៣៤៥៦៧៨៩"
@@ -81,6 +97,23 @@ onMounted(() => {
   </div>
 </div>
 
+<v-menu location="bottom center" :offset="8">
+  <template #activator="{ props: menu }">
+    <button class="calendar-btn" type="button" v-bind="menu" data-aos="fade-up">
+      <v-icon>mdi-calendar-plus</v-icon>{{ t("calendar.add") }}
+    </button>
+  </template>
+
+  <div class="calendar-menu">
+    <a class="calendar-option" :href="googleUrl" target="_blank" rel="noopener">
+      <v-icon>mdi-google</v-icon>{{ t("calendar.google") }}
+    </a>
+    <a class="calendar-option" :href="icsUrl">
+      <v-icon>mdi-apple</v-icon>{{ t("calendar.apple") }}
+    </a>
+  </div>
+</v-menu>
+
 </v-container>
 
 </section>
@@ -122,6 +155,65 @@ background: transparent;
   .count-grid {
     max-width: min(880px, calc((100vh - 200px) * 3 + 30px));
   }
+}
+
+/* Same gold pill as the map button further down. */
+.calendar-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 52px;
+  margin-top: clamp(24px, 4vw, 36px);
+  padding: 0 28px;
+  border: none;
+  border-radius: 999px;
+  font-family: "Lexend", "Kantumruy Pro", sans-serif;
+  font-size: clamp(15px, 3.6vw, 16px);
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(180deg, #e6c25c, #c8971f);
+  box-shadow: 0 10px 24px rgba(200, 151, 31, 0.4);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.calendar-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(200, 151, 31, 0.5);
+}
+.calendar-btn :deep(.v-icon) {
+  font-size: 22px;
+}
+
+.calendar-menu {
+  display: flex;
+  flex-direction: column;
+  min-width: 220px;
+  padding: 6px;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 14px 34px rgba(60, 55, 40, 0.22);
+}
+
+.calendar-option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 48px;
+  padding: 0 14px;
+  border-radius: 12px;
+  font-family: "Lexend", "Kantumruy Pro", sans-serif;
+  font-size: 15px;
+  color: var(--ink);
+  text-decoration: none;
+}
+.calendar-option:hover,
+.calendar-option:focus-visible {
+  background: rgba(200, 151, 31, 0.1);
+}
+.calendar-option :deep(.v-icon) {
+  font-size: 22px;
+  color: #b8892a;
 }
 
 .count-card {
