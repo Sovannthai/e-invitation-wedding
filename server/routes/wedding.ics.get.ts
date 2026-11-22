@@ -1,6 +1,6 @@
-/* The wedding as an .ics calendar file, for Apple Calendar (iPhone, Mac),
-   Outlook and anything else that isn't Google. Served as text/calendar so
-   Safari on iPhone opens its "Add to Calendar" sheet straight away.
+/* The wedding as an .ics calendar file, behind the "Add to calendar" button:
+   it puts the event in the phone's own calendar app, on iPhone and Android
+   alike (and Mac or Outlook on a computer).
 
    ?lang=en|km picks the language (Khmer by default); ?g=<guest id> puts the
    guest's own invitation link in the notes. */
@@ -68,7 +68,12 @@ export default defineEventHandler((event) => {
   ];
 
   setHeader(event, "Content-Type", "text/calendar; charset=utf-8");
-  setHeader(event, "Content-Disposition", 'inline; filename="sovannthai-soheng-wedding.ics"');
+  // Apple devices open an inline calendar file straight into Calendar's
+  // "Add to Calendar" sheet. Android can't show one inline, so it gets it as
+  // a download, which opens in the phone's calendar app.
+  const apple = /iPhone|iPad|iPod|Macintosh/.test(getHeader(event, "user-agent") ?? "");
+  const disposition = apple ? "inline" : "attachment";
+  setHeader(event, "Content-Disposition", `${disposition}; filename="sovannthai-soheng-wedding.ics"`);
   setHeader(event, "Cache-Control", "no-store");
   return lines.map(fold).join("\r\n") + "\r\n";
 });

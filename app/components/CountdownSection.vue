@@ -8,19 +8,15 @@ const seconds = ref("00")
 
 const { t, locale } = useLang()
 
-/* "Add to calendar": Google Calendar opens in a new tab; everything else
-   (iPhone, Mac, Outlook) takes the .ics file from server/routes, which
-   Safari on iPhone opens straight into its "Add to Calendar" sheet. A guest
-   on their personal link gets that link in the event's notes. */
+/* "Add to calendar" puts the wedding in the phone's own calendar: the
+   button is a link to the event file from server/routes/wedding.ics.get.ts.
+   iPhone opens it straight into Calendar's "Add to Calendar" sheet; Android
+   downloads it and opens it in the phone's calendar app. A guest on their
+   personal link gets that link in the event's notes. */
 const route = useRoute()
-const guestId = computed(() => (typeof route.params.id === "string" ? route.params.id : ""))
-const inviteUrl = computed(() =>
-  typeof window === "undefined" ? "" : `${window.location.origin}/${guestId.value}`.replace(/\/$/, "")
-)
-const googleUrl = computed(() => googleCalendarUrl(locale.value, inviteUrl.value))
 const icsUrl = computed(() => {
   const q = new URLSearchParams({ lang: locale.value })
-  if (guestId.value) q.set("g", guestId.value)
+  if (typeof route.params.id === "string") q.set("g", route.params.id)
   return `/wedding.ics?${q}`
 })
 
@@ -97,22 +93,9 @@ onMounted(() => {
   </div>
 </div>
 
-<v-menu location="bottom center" :offset="8">
-  <template #activator="{ props: menu }">
-    <button class="calendar-btn" type="button" v-bind="menu" data-aos="fade-up">
-      <v-icon>mdi-calendar-plus</v-icon>{{ t("calendar.add") }}
-    </button>
-  </template>
-
-  <div class="calendar-menu">
-    <a class="calendar-option" :href="googleUrl" target="_blank" rel="noopener">
-      <v-icon>mdi-google</v-icon>{{ t("calendar.google") }}
-    </a>
-    <a class="calendar-option" :href="icsUrl">
-      <v-icon>mdi-apple</v-icon>{{ t("calendar.apple") }}
-    </a>
-  </div>
-</v-menu>
+<a class="calendar-btn" :href="icsUrl" data-aos="fade-up">
+  <v-icon>mdi-calendar-plus</v-icon>{{ t("calendar.add") }}
+</a>
 
 </v-container>
 
@@ -172,6 +155,7 @@ background: transparent;
   font-size: clamp(15px, 3.6vw, 16px);
   font-weight: 700;
   color: #fff;
+  text-decoration: none;
   background: linear-gradient(180deg, #e6c25c, #c8971f);
   box-shadow: 0 10px 24px rgba(200, 151, 31, 0.4);
   cursor: pointer;
@@ -183,37 +167,6 @@ background: transparent;
 }
 .calendar-btn :deep(.v-icon) {
   font-size: 22px;
-}
-
-.calendar-menu {
-  display: flex;
-  flex-direction: column;
-  min-width: 220px;
-  padding: 6px;
-  border-radius: 16px;
-  background: #fff;
-  box-shadow: 0 14px 34px rgba(60, 55, 40, 0.22);
-}
-
-.calendar-option {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-height: 48px;
-  padding: 0 14px;
-  border-radius: 12px;
-  font-family: "Lexend", "Kantumruy Pro", sans-serif;
-  font-size: 15px;
-  color: var(--ink);
-  text-decoration: none;
-}
-.calendar-option:hover,
-.calendar-option:focus-visible {
-  background: rgba(200, 151, 31, 0.1);
-}
-.calendar-option :deep(.v-icon) {
-  font-size: 22px;
-  color: #b8892a;
 }
 
 .count-card {

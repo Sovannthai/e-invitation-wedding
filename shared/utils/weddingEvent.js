@@ -1,7 +1,6 @@
 /* The wedding as a calendar event: the evening reception the invitation asks
-   guests to (5:00 PM on Saturday 19 December 2026, Cambodia time). Shared by
-   the "Add to calendar" button and the .ics file in server/routes; Nuxt
-   auto-imports it on both sides. */
+   guests to (5:00 PM on Saturday 19 December 2026, Cambodia time). Used by the
+   .ics file in server/routes (auto-imported by Nuxt). */
 
 export const WEDDING_EVENT = {
   // 17:00–21:00 in Cambodia (UTC+7), written in UTC for calendars.
@@ -21,18 +20,3 @@ export const WEDDING_EVENT = {
     en: "Invitation",
   },
 };
-
-/** A Google Calendar "add event" link, in the guest's language. */
-export function googleCalendarUrl(lang, inviteUrl) {
-  const l = lang === "en" ? "en" : "km";
-  const e = WEDDING_EVENT;
-  const params = new URLSearchParams({
-    action: "TEMPLATE",
-    text: e.title[l],
-    dates: `${e.start}/${e.end}`,
-    details: `${e.details[l]}\n\n${e.linkLabel[l]}: ${inviteUrl}\n${e.mapUrl}`,
-    location: e.mapUrl,
-    ctz: "Asia/Phnom_Penh",
-  });
-  return `https://calendar.google.com/calendar/render?${params}`;
-}
