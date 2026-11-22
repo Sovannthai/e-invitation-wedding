@@ -222,10 +222,6 @@ onBeforeUnmount(() => {
         </button>
       </div>
 
-      <!-- Melts the top and bottom of the envelope into the phone's status
-           bar and browser toolbar strips; see .envelope__edge. -->
-      <div class="envelope__edge" aria-hidden="true"></div>
-
       <header class="envelope__to">
         <!-- The couple's names as one piece of gold Khmer calligraphy,
              with the Latin reading set in script beneath it. The artwork is
@@ -388,32 +384,35 @@ onBeforeUnmount(() => {
   transition: transform 700ms cubic-bezier(0.4, 0, 0.2, 1) 300ms;
 }
 
-/* A phone's browser paints its status bar strip and toolbar strip in one
-   flat colour — the page cannot draw its pattern there. So the envelope
-   meets them halfway: its top and bottom edges fade into that same flat
-   olive, and the screen reads as one sheet from the very top to the very
-   bottom instead of a card between two bands. Phones only; on wider screens
-   the envelope is a card standing on a darker ground and keeps its edges. */
-.envelope__edge {
-  display: none;
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(to bottom, var(--olive) 0, rgba(111, 110, 89, 0) 64px),
-    linear-gradient(to top, var(--olive) 0, rgba(111, 110, 89, 0) 64px);
-  transition: opacity 250ms ease;
-}
+/* Phones: Safari on iOS 26 never draws a fixed layer under its status bar
+   or toolbar, only a flat colour, so there the envelope and its ground are
+   laid out as page content that reaches down under the toolbar and holds
+   still on screen through a scroll-driven animation (see .screen-layer in
+   main.scss for the why). The envelope starts at the top of the page so its
+   names stay where they are; the words anchored to its foot are lifted by
+   the same amount it grows, so they stay clear of the toolbar. */
+@supports (animation-timeline: scroll()) {
+  @media (hover: none) and (pointer: coarse) and (max-width: 600px) {
+    .envelope,
+    .envelope-ground {
+      position: absolute;
+      top: 0;
+      bottom: auto;
+      height: calc(100lvh + var(--bleed-b));
+      animation: screen-follow linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0px 100000px;
+    }
 
-@media (max-width: 480px) {
-  .envelope__edge {
-    display: block;
+    /* Prefixed with .envelope to outrank the base rules further down. */
+    .envelope .envelope__hint {
+      bottom: calc(clamp(2.5rem, 9vh, 4.5rem) + var(--bleed-b));
+    }
+
+    .envelope .envelope__guest {
+      bottom: calc(clamp(5rem, 17vh, 8rem) + var(--bleed-b));
+    }
   }
-}
-
-/* Gone as soon as the flaps start to open, so it never veils the page. */
-.envelope.is-open .envelope__edge {
-  opacity: 0;
 }
 
 /* What the opening flaps reveal, and what the camera pushes into: the same

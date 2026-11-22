@@ -3,7 +3,12 @@
     <!-- One ground for the whole site: the watercolour meadow, held behind
          every section. It is a fixed layer, so it stays put as you scroll
          rather than sliding the florals up past the content. -->
-    <div class="site-bg" aria-hidden="true"></div>
+    <!-- On phones the art moves inside a page-sized frame instead of being
+         fixed, so it runs under the status bar and toolbar too; see
+         .screen-layer in main.scss. -->
+    <div class="site-bg screen-frame" aria-hidden="true">
+      <div class="site-bg__art screen-layer"></div>
+    </div>
 
     <v-main class="default-layout">
       <slot />
@@ -17,6 +22,11 @@
   inset: 0;
   z-index: 0;
   pointer-events: none;
+}
+
+.site-bg__art {
+  position: absolute;
+  inset: 0;
 
   /* A light wash over the image. The painting is pale enough to carry dark
      type almost everywhere, so this stays near-transparent through the top
@@ -64,7 +74,7 @@
    above, where the viewport already matches the artwork.
    ──────────────────────────────────────────────────────────── */
 @media (min-aspect-ratio: 1/1) {
-  .site-bg {
+  .site-bg__art {
     background-size: cover, auto 100%;
     background-position: center, center bottom;
     background-repeat: no-repeat, repeat-x;

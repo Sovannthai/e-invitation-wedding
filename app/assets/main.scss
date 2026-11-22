@@ -17,6 +17,70 @@
   --title: #7d5a2e;
   --surface: rgba(255, 255, 255, 0.58);
   --surface-edge: rgba(120, 132, 110, 0.28);
+
+  /* How far a full-screen layer reaches past the layout viewport on a
+     phone, to run under the status bar (top) and Safari's toolbar
+     (bottom). See .screen-layer. */
+  --bleed-t: 0px;
+  --bleed-b: 0px;
+}
+
+/* ── Full-screen layers on phones ───────────────────────────────
+   Safari on iOS 26 never draws a position: fixed (or sticky) layer under
+   its status bar or its floating toolbar: it clips the layer at the
+   visible area and paints those strips one flat colour. Only content that
+   scrolls with the page is drawn there. So on touch screens a full-screen
+   background is laid out as scrolling content instead, reaching past the
+   screen edges, and a scroll-driven animation moves it down exactly as far
+   as the page has scrolled, so it still holds still like a fixed layer.
+   The range is in pixels (0 to 100000px of scroll, 0 to 100000px of
+   travel), so it moves 1:1 with the scroll without measuring the page.
+
+   Browsers without scroll-driven animations keep the fixed layer. */
+@keyframes screen-follow {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(0, 100000px, 0); }
+}
+
+@supports (animation-timeline: scroll()) {
+  @media (hover: none) and (pointer: coarse) {
+    :root {
+      --bleed-t: 120px;
+      --bleed-b: 140px;
+    }
+
+    .screen-layer {
+      position: absolute !important;
+      inset: auto 0 auto 0 !important;
+      top: calc(-1 * var(--bleed-t)) !important;
+      height: calc(100lvh + var(--bleed-t) + var(--bleed-b)) !important;
+      animation: screen-follow linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0px 100000px;
+    }
+
+    /* For a layer whose content is anchored to the screen's top edge (the
+       envelope): it starts at the top of the page rather than above it,
+       and reaches only down under the toolbar. */
+    .screen-layer--top {
+      top: 0 !important;
+      height: calc(100lvh + var(--bleed-b)) !important;
+    }
+
+    /* The page background's frame: covers the whole page and clips the
+       moving art to it, so the art never pushes the page longer. */
+    .screen-frame {
+      position: absolute !important;
+      inset: 0 !important;
+      overflow: clip;
+    }
+
+    /* The frame measures itself against the app's wrapper, which runs the
+       full length of the page. */
+    .v-application__wrap {
+      position: relative;
+    }
+  }
 }
 
 /* English text is set in Lexend Medium (the couple's names and the

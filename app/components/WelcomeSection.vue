@@ -226,7 +226,7 @@ let releaseEdge = null;
 
 /* The colour the screen edges take: the cover's dark, or the paper of a
    photo shown whole (the white collage), so the bars never frame it in
-   black. The photo edges fade into the same colour on phones. */
+   black. */
 const DARK = "#1e1d14";
 const edge = computed(() => slides[current.value].ground || DARK);
 
@@ -271,7 +271,7 @@ onBeforeUnmount(() => {
     ref="root"
     class="welcome"
     :class="{ 'is-bare': slides[current].fit === 'contain' }"
-    :style="{ '--p': progress, '--edge': edge }"
+    :style="{ '--p': progress }"
   >
     <div class="welcome-slides" :class="{ 'is-quick': quick }" aria-hidden="true">
       <img
@@ -286,9 +286,6 @@ onBeforeUnmount(() => {
       />
     </div>
     <div class="welcome-shade" aria-hidden="true"></div>
-    <!-- Phones: fades the photo's top and bottom into the colour Safari
-         paints its status bar and toolbar strips; see .welcome-edge. -->
-    <div class="welcome-edge" aria-hidden="true"></div>
 
     <div class="welcome-content">
       <p class="welcome-top">Welcome to our Special Day</p>
@@ -354,6 +351,14 @@ onBeforeUnmount(() => {
   color: #fff;
 }
 
+/* Phones: Safari on iOS 26 draws page content under its floating toolbar,
+   so the cover reaches that far down too (--bleed-b, set in main.scss) and
+   the photo runs to the very bottom of the screen. The text and controls
+   keep to the visible height (--app-h below), clear of the toolbar. */
+.welcome {
+  height: calc(100lvh + var(--bleed-b, 0px));
+}
+
 /* ---- Slideshow: cross-fade with a slow push-in ---- */
 /* Parallax: the photo travels at about half the scroll speed and dims as
    it goes, so the cover recedes rather than simply sliding away. */
@@ -400,37 +405,6 @@ onBeforeUnmount(() => {
       rgba(20, 18, 12, 0.72) 100%
     );
   transition: opacity 0.9s ease;
-}
-
-/* Safari paints the status bar and the strip round its toolbar one flat
-   colour (the --edge claimed above), and a page cannot draw the photo
-   there. So on phones the photo fades into that colour over its top and
-   bottom 64px instead of stopping at a hard line under each bar. --edge is
-   registered as a colour so it eases with the cross-fade into the collage. */
-@property --edge {
-  syntax: "<color>";
-  inherits: true;
-  initial-value: #1e1d14;
-}
-
-.welcome {
-  transition: --edge 1.6s ease;
-}
-
-.welcome-edge {
-  display: none;
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(to bottom, var(--edge) 0, transparent 64px),
-    linear-gradient(to top, var(--edge) 0, transparent 64px);
-}
-
-@media (max-width: 480px) {
-  .welcome-edge {
-    display: block;
-  }
 }
 
 /* A designed slide (the collage) carries its own lettering, so the
