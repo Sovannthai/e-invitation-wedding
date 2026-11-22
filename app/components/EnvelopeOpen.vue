@@ -230,7 +230,15 @@ onBeforeUnmount(() => {
         <div class="envelope__tap" aria-hidden="true">
           <span class="tap-ring"></span>
           <span class="tap-ring tap-ring--late"></span>
-          <v-icon class="tap-hand">mdi-hand-pointing-up</v-icon>
+          <!-- Drawn like the rest of the stationery: paper-cream hand, gold
+               line. The fingertip is at (24, 4). -->
+          <svg class="tap-hand" viewBox="0 0 64 80" focusable="false">
+            <path
+              class="tap-hand__fill"
+              d="M24 4C27.3 4 30 6.7 30 10L30 34C30 31 32.2 29 35 29C37.8 29 40 31 40 34L40 36C40 33.2 42.2 31 45 31C47.8 31 50 33.2 50 36L50 39C50 36.8 51.8 35 54 35C56.2 35 58 36.8 58 39L58 54C58 64 52 72 44 74L44 79L20 79L20 74C14 71 10 66 8 60L4 50C2.8 47 4.5 44 7.5 43.5C10 43 12 44.5 13.5 47L18 54L18 10C18 6.7 20.7 4 24 4Z"
+            />
+            <path class="tap-hand__line" d="M30 34L30 45M40 36L40 46M50 39L50 47M20 74L44 74M21.5 11C22.5 9.6 25.5 9.6 26.5 11" />
+          </svg>
         </div>
       </div>
 
@@ -592,8 +600,9 @@ onBeforeUnmount(() => {
   position: absolute;
   inset: 8%;
   border-radius: 50%;
-  border: 3px solid rgba(255, 255, 255, 0.95);
-  box-shadow: 0 0 16px rgba(255, 244, 210, 0.8), inset 0 0 10px rgba(255, 244, 210, 0.5);
+  /* paper cream with a gold glow, like the names above */
+  border: 2px solid var(--paper);
+  box-shadow: 0 0 14px rgba(227, 203, 154, 0.9), inset 0 0 8px rgba(227, 203, 154, 0.6);
   opacity: 0;
   animation: tap-ring 2.4s ease-out 1.2s infinite;
 }
@@ -601,19 +610,31 @@ onBeforeUnmount(() => {
   animation-delay: 1.45s;
 }
 
-.tap-hand.v-icon {
+.tap-hand {
   position: absolute;
-  /* the glyph's fingertip sits ~40% across its top edge */
   top: 50%;
   left: 50%;
-  margin: -8px 0 0 -30px;
-  font-size: clamp(62px, 17vw, 80px);
-  width: auto;
-  height: auto;
-  color: #fff;
-  filter: drop-shadow(0 4px 8px rgba(30, 24, 10, 0.5));
-  transform-origin: 40% 0;
+  --hand-w: clamp(38px, 10vw, 48px);
+  width: var(--hand-w);
+  height: calc(var(--hand-w) * 1.25);
+  /* the fingertip, at (24, 4) of the 64x80 drawing, on the seal's centre */
+  margin: calc(var(--hand-w) * -0.0625) 0 0 calc(var(--hand-w) * -0.375);
+  overflow: visible;
+  filter: drop-shadow(0 4px 7px rgba(40, 32, 12, 0.45));
+  transform-origin: 37.5% 5%;
   animation: tap-hand 2.4s ease-in-out 1.2s infinite;
+}
+.tap-hand__fill {
+  fill: var(--paper);
+  stroke: var(--gold);
+  stroke-width: 2.2;
+  stroke-linejoin: round;
+}
+.tap-hand__line {
+  fill: none;
+  stroke: var(--gold);
+  stroke-width: 1.6;
+  stroke-linecap: round;
 }
 
 @keyframes tap-in {
@@ -955,7 +976,7 @@ html[data-locale="en"] .envelope__hint {
   /* The hand stays, resting on the seal, without moving. */
   .envelope__tap { animation: none; opacity: 1; }
   .tap-ring { display: none; }
-  .tap-hand.v-icon { animation: none; transform: rotate(-12deg); }
+  .tap-hand { animation: none; transform: rotate(-12deg); }
   .envelope.is-open .envelope__stage { transform: none; }
   .envelope.is-open .envelope__moth { opacity: 0; }
 }
