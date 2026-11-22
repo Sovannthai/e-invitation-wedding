@@ -23,6 +23,8 @@
      (bottom). See .screen-layer. */
   --bleed-t: 0px;
   --bleed-b: 0px;
+  /* Empty space above the page on a phone; see .v-main below. */
+  --runway: 0px;
 }
 
 /* ── Full-screen layers on phones ───────────────────────────────
@@ -47,6 +49,17 @@
     :root {
       --bleed-t: 120px;
       --bleed-b: 140px;
+      --runway: 120px;
+    }
+
+    /* The status bar: Safari draws the page under it only once the page
+       has scrolled down a little; at the very top it paints a flat colour.
+       So the page starts with a short empty runway above its content and
+       opens already scrolled past it (toRunway in composables/useRunway.js).
+       The full-screen layers reach up over the runway, so what shows under
+       the status bar is the envelope, the photo or the meadow. */
+    .v-main {
+      padding-top: var(--runway) !important;
     }
 
     .screen-layer {

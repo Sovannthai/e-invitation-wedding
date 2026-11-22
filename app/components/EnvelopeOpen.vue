@@ -122,6 +122,9 @@ function onKeydown(e) {
 }
 
 function lockScroll() {
+  // On a phone, park the page just past its runway first, so Safari draws
+  // the envelope under the status bar (see composables/useRunway.js).
+  toRunway();
   document.documentElement.style.overflow = "hidden";
 }
 
@@ -386,25 +389,30 @@ onBeforeUnmount(() => {
 
 /* Phones: Safari on iOS 26 never draws a fixed layer under its status bar
    or toolbar, only a flat colour, so there the envelope and its ground are
-   laid out as page content that reaches down under the toolbar and holds
-   still on screen through a scroll-driven animation (see .screen-layer in
-   main.scss for the why). The envelope starts at the top of the page so its
-   names stay where they are; the words anchored to its foot are lifted by
-   the same amount it grows, so they stay clear of the toolbar. */
+   laid out as page content that reaches up under the status bar and down
+   under the toolbar, and holds still on screen through a scroll-driven
+   animation (see .screen-layer and --runway in main.scss for the why). */
 @supports (animation-timeline: scroll()) {
   @media (hover: none) and (pointer: coarse) and (max-width: 600px) {
     .envelope,
     .envelope-ground {
       position: absolute;
-      top: 0;
+      top: calc(-1 * var(--bleed-t));
       bottom: auto;
-      height: calc(100lvh + var(--bleed-b));
+      height: calc(100lvh + var(--bleed-t) + var(--bleed-b));
       animation: screen-follow linear both;
       animation-timeline: scroll(root);
       animation-range: 0px 100000px;
     }
 
-    /* Prefixed with .envelope to outrank the base rules further down. */
+    /* Prefixed with .envelope to outrank the base rules further down. The
+       envelope reaches --bleed-t above the screen and --bleed-b below it,
+       so the words pinned to its top and foot move in by as much. */
+    .envelope .envelope__to {
+      top: calc(clamp(2.5rem, 9vh, 4rem) + var(--bleed-t));
+    }
+
+
     .envelope .envelope__hint {
       bottom: calc(clamp(2.5rem, 9vh, 4.5rem) + var(--bleed-b));
     }

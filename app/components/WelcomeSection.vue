@@ -94,8 +94,10 @@ function onScroll() {
   if (!frame) {
     frame = requestAnimationFrame(() => {
       frame = 0;
-      const h = root.value?.offsetHeight || window.innerHeight;
-      progress.value = Math.min(1, Math.max(0, window.scrollY / h));
+      // Measured from the runway (phones), where the cover sits at rest.
+      const r = runwayPx();
+      const h = (root.value?.offsetHeight || window.innerHeight) - r;
+      progress.value = Math.min(1, Math.max(0, (window.scrollY - r) / h));
     });
   }
 
@@ -351,12 +353,20 @@ onBeforeUnmount(() => {
   color: #fff;
 }
 
-/* Phones: Safari on iOS 26 draws page content under its floating toolbar,
-   so the cover reaches that far down too (--bleed-b, set in main.scss) and
-   the photo runs to the very bottom of the screen. The text and controls
-   keep to the visible height (--app-h below), clear of the toolbar. */
+/* Phones: Safari on iOS 26 draws page content under its status bar and
+   floating toolbar, so the cover reaches up over the page's runway
+   (--runway) and down under the toolbar (--bleed-b), both set in main.scss,
+   and the photo runs from the very top of the screen to the very bottom.
+   The text and controls are moved down past the runway and keep to the
+   visible height (--app-h below). Both are 0 on desktop. */
 .welcome {
-  height: calc(100lvh + var(--bleed-b, 0px));
+  margin-top: calc(-1 * var(--runway, 0px));
+  height: calc(100lvh + var(--runway, 0px) + var(--bleed-b, 0px));
+}
+
+.welcome-content,
+.welcome-cue {
+  margin-top: var(--runway, 0px);
 }
 
 /* ---- Slideshow: cross-fade with a slow push-in ---- */

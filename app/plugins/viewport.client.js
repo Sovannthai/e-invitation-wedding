@@ -7,7 +7,7 @@
 // in-app browsers (opened from a chat app) get it wrong in the same way.
 // window.innerHeight is right everywhere, so sections use
 // var(--app-h, 100dvh).
-export default defineNuxtPlugin(() => {
+export default defineNuxtPlugin((nuxtApp) => {
   const root = document.documentElement;
   let frame = 0;
 
@@ -25,4 +25,13 @@ export default defineNuxtPlugin(() => {
   // Toolbars sliding in and out resize the visual viewport without always
   // firing a window resize.
   window.visualViewport?.addEventListener("resize", queue, { passive: true });
+
+  // Phones: open the page just past its runway, so Safari draws the page
+  // under the status bar (see composables/useRunway.js).
+  // Safari puts the page back at the top when it finishes loading, so it is
+  // done again after the load event.
+  nuxtApp.hook("app:mounted", () => requestAnimationFrame(toRunway));
+  const afterLoad = () => setTimeout(toRunway, 60);
+  if (document.readyState === "complete") afterLoad();
+  else window.addEventListener("load", afterLoad, { once: true });
 });
