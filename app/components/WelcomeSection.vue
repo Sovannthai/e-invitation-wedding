@@ -44,6 +44,9 @@ let frame = 0;
 let settleTimer = null;
 /* Set once the guest steps through the photos by hand. */
 let steered = false;
+/* A change the guest asked for fades quickly, so a swipe or tap answers at
+   once; the autoplay keeps its slow, unhurried cross-fade. */
+const quick = ref(false);
 
 /* Plays through once. After the last photo has had its turn, the page
    glides on to the invitation by itself — unless the guest has taken over
@@ -56,6 +59,7 @@ function advance() {
     if (!steered) scrollOn();
     return;
   }
+  quick.value = false;
   show(current.value + 1);
 }
 
@@ -77,6 +81,7 @@ function go(dir) {
 function goTo(i) {
   if (i === current.value) return;
   steered = true;
+  quick.value = true;
   show(i);
   clearInterval(timer);
   timer = setInterval(advance, HOLD_MS);
@@ -145,8 +150,10 @@ const BLOCKED_KEYS = [...SCROLL_KEYS, "ArrowUp", "PageUp", "Home"];
 
 let touchY = null;
 let touchX = null;
+/* One gesture does one thing: once it has turned the photo or sent the page
+   on, the rest of that touch is ignored. */
 let swiped = false;
-const SIDE_SWIPE_PX = 50;
+const SIDE_SWIPE_PX = 36;
 
 function onWelcome() {
   const h = root.value?.offsetHeight || window.innerHeight;
@@ -165,32 +172,33 @@ function onTouchStart(e) {
   swiped = false;
 }
 
-/* A sideways swipe flips the photo; an upward one still goes on to the
-   invitation (handled in onTouchMove). */
-function onTouchEnd(e) {
-  if (!onWelcome() || swiped || touchX === null) return;
-  const t = e.changedTouches[0];
-  if (!t) return;
-  const dx = t.clientX - touchX;
-  const dy = touchY === null ? 0 : t.clientY - touchY;
-  if (Math.abs(dx) > SIDE_SWIPE_PX && Math.abs(dx) > Math.abs(dy) * 1.2) {
-    go(dx < 0 ? 1 : -1);
-  }
-  touchX = null;
-}
-
+/* A sideways swipe turns the photo as soon as the finger has travelled far
+   enough — no waiting for it to lift — and an upward one goes on to the
+   invitation. Whichever direction the finger has moved furthest decides. */
 function onTouchMove(e) {
   if (!onWelcome()) return;
   e.preventDefault();
-  const y = e.touches[0]?.clientY;
-  const x = e.touches[0]?.clientX;
-  const sideways = touchX !== null && touchY !== null && x !== undefined && Math.abs(x - touchX) > Math.abs(touchY - y);
-  // Finger moving up the screen = scrolling down the page.
-  if (touchY !== null && y !== undefined && !sideways && touchY - y > SWIPE_PX) {
-    touchY = null;
+  if (swiped || touchX === null || touchY === null) return;
+  const t = e.touches[0];
+  if (!t) return;
+  const dx = t.clientX - touchX;
+  const dy = t.clientY - touchY;
+
+  if (Math.abs(dx) > Math.abs(dy)) {
+    if (Math.abs(dx) > SIDE_SWIPE_PX) {
+      swiped = true;
+      go(dx < 0 ? 1 : -1);
+    }
+  } else if (-dy > SWIPE_PX) {
+    // Finger moving up the screen = scrolling down the page.
     swiped = true;
     scrollOn();
   }
+}
+
+function onTouchEnd() {
+  touchX = null;
+  touchY = null;
 }
 
 function onKeydown(e) {
@@ -224,6 +232,7 @@ onMounted(() => {
   window.addEventListener("touchstart", onTouchStart, { passive: true });
   window.addEventListener("touchmove", onTouchMove, { passive: false });
   window.addEventListener("touchend", onTouchEnd, { passive: true });
+  window.addEventListener("touchcancel", onTouchEnd, { passive: true });
   window.addEventListener("keydown", onKeydown);
 });
 
@@ -238,6 +247,7 @@ onBeforeUnmount(() => {
   window.removeEventListener("touchstart", onTouchStart);
   window.removeEventListener("touchmove", onTouchMove);
   window.removeEventListener("touchend", onTouchEnd);
+  window.removeEventListener("touchcancel", onTouchEnd);
   window.removeEventListener("keydown", onKeydown);
 });
 </script>
@@ -250,7 +260,7 @@ onBeforeUnmount(() => {
     :class="{ 'is-bare': slides[current].fit === 'contain' }"
     :style="{ '--p': progress }"
   >
-    <div class="welcome-slides" aria-hidden="true">
+    <div class="welcome-slides" :class="{ 'is-quick': quick }" aria-hidden="true">
       <img
         v-for="(s, i) in slides"
         :key="s.src"
@@ -355,6 +365,11 @@ onBeforeUnmount(() => {
   transform: scale(1);
 }
 
+/* A photo the guest chose themselves fades in fast. */
+.welcome-slides.is-quick .welcome-slide {
+  transition: opacity 0.45s ease, transform 7.5s linear;
+}
+
 /* Dark at the top and bottom for the text, clear through the middle so
    the photo still carries the page. */
 .welcome-shade {
@@ -414,6 +429,9 @@ onBeforeUnmount(() => {
   justify-content: space-between;
   height: 100vh;
   height: 100dvh;
+  /* The visible height as measured by plugins/viewport.client.js, for
+     browsers and in-app browsers whose dvh is missing or wrong. */
+  height: var(--app-h, 100dvh);
   /* Clear of the notch / status bar above and the home indicator below,
      and of the camera cut-out at the sides when a phone is turned. */
   padding:
@@ -558,11 +576,13 @@ onBeforeUnmount(() => {
   outline-offset: 3px;
 }
 
-/* Phones and tablets flip the photos by swiping, so the arrows only show on
-   large screens (lg, 1024px and up), where there's a mouse to click with. */
+/* Phones and tablets can swipe, but the arrows stay as well: a button is
+   the obvious thing to tap, and it works where a browser keeps sideways
+   swipes for itself. A touch smaller there, still a full-size target. */
 @media (max-width: 1023.98px) {
   .welcome-arrow {
-    display: none;
+    width: 42px;
+    height: 42px;
   }
 }
 
@@ -626,6 +646,7 @@ onBeforeUnmount(() => {
   left: 50%;
   top: calc(100vh - 54px - clamp(10px, 2.5vh, 24px));
   top: calc(100dvh - 54px - clamp(10px, 2.5vh, 24px) - env(safe-area-inset-bottom));
+  top: calc(var(--app-h, 100dvh) - 54px - clamp(10px, 2.5vh, 24px) - env(safe-area-inset-bottom));
   display: inline-flex;
   padding: 6px;
   border: none;
