@@ -87,6 +87,11 @@ export default defineNuxtConfig({
         { name: "theme-color", content: "#eef0e9" },
       ],
       link: [
+        // The gold wax seal from the envelope, as the tab and home-screen icon.
+        { rel: "icon", href: "/favicon.ico", sizes: "48x48" },
+        { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
+        { rel: "icon", href: "/icon-192.png", type: "image/png", sizes: "192x192" },
+        { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
         {
           rel: "stylesheet",
           href: "https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css",
