@@ -223,6 +223,15 @@ onBeforeUnmount(() => {
         <button class="envelope__seal" type="button" :aria-label="t('envelope.hint')">
           <img src="/svg/wax-seal.svg" alt="" width="200" height="200" />
         </button>
+
+        <!-- A hand that keeps tapping the seal, with a ring spreading from
+             each tap, so guests see the seal is what opens the invitation.
+             Taps pass straight through it to the seal. -->
+        <div class="envelope__tap" aria-hidden="true">
+          <span class="tap-ring"></span>
+          <span class="tap-ring tap-ring--late"></span>
+          <v-icon class="tap-hand">mdi-hand-pointing-up</v-icon>
+        </div>
       </div>
 
       <header class="envelope__to">
@@ -561,6 +570,79 @@ onBeforeUnmount(() => {
   50%      { transform: translate(-50%, -50%) translateZ(60px) scale(1.018); }
 }
 
+/* ---- tap cue ----
+   Same size and place as the seal, a little nearer the viewer. The hand's
+   fingertip rests on the seal's centre; it drifts in from below-right,
+   presses, and lifts away, and a ring spreads from the seal at each press. */
+.envelope__tap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 5;
+  width: clamp(128px, 33vw, 168px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%) translateZ(64px);
+  pointer-events: none;
+  opacity: 0;
+  animation: tap-in 600ms ease 1.2s forwards;
+  transition: opacity 200ms ease;
+}
+
+.tap-ring {
+  position: absolute;
+  inset: 8%;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.95);
+  box-shadow: 0 0 16px rgba(255, 244, 210, 0.8), inset 0 0 10px rgba(255, 244, 210, 0.5);
+  opacity: 0;
+  animation: tap-ring 2.4s ease-out 1.2s infinite;
+}
+.tap-ring--late {
+  animation-delay: 1.45s;
+}
+
+.tap-hand.v-icon {
+  position: absolute;
+  /* the glyph's fingertip sits ~40% across its top edge */
+  top: 50%;
+  left: 50%;
+  margin: -8px 0 0 -30px;
+  font-size: clamp(62px, 17vw, 80px);
+  width: auto;
+  height: auto;
+  color: #fff;
+  filter: drop-shadow(0 4px 8px rgba(30, 24, 10, 0.5));
+  transform-origin: 40% 0;
+  animation: tap-hand 2.4s ease-in-out 1.2s infinite;
+}
+
+@keyframes tap-in {
+  to { opacity: 1; }
+}
+
+/* 0–30% approach, 30–40% press, 40–55% lift, rest away. */
+@keyframes tap-hand {
+  0%   { transform: translate(34%, 40%) rotate(-12deg); opacity: 0; }
+  14%  { opacity: 1; }
+  30%  { transform: translate(0, 0) rotate(-12deg) scale(1); }
+  36%  { transform: translate(0, 4%) rotate(-12deg) scale(0.88); }
+  44%  { transform: translate(0, 0) rotate(-12deg) scale(1); opacity: 1; }
+  62%  { transform: translate(22%, 26%) rotate(-12deg); opacity: 0; }
+  100% { transform: translate(34%, 40%) rotate(-12deg); opacity: 0; }
+}
+
+@keyframes tap-ring {
+  0%, 33% { transform: scale(0.55); opacity: 0; }
+  36%     { transform: scale(0.6);  opacity: 1; }
+  75%     { transform: scale(1.45); opacity: 0; }
+  100%    { transform: scale(1.45); opacity: 0; }
+}
+
+.envelope.is-open .envelope__tap {
+  opacity: 0;
+  animation: none;
+}
+
 .envelope__hint {
   position: absolute;
   z-index: 5;
@@ -818,7 +900,8 @@ html[data-locale="en"] .envelope__hint {
     margin: auto;
   }
 
-  .envelope__seal { width: clamp(140px, 17vw, 176px); }
+  .envelope__seal,
+  .envelope__tap { width: clamp(140px, 17vw, 176px); }
   .envelope__to { top: clamp(1.25rem, 3.5vh, 2.25rem); }
   .envelope__guest { bottom: clamp(4.5rem, 15vh, 6.5rem); }
   .envelope__hint { bottom: clamp(2rem, 7vh, 3.25rem); }
@@ -841,14 +924,16 @@ html[data-locale="en"] .envelope__hint {
 /* short viewports: a phone held sideways, or a small laptop */
 @media (max-height: 560px) and (min-width: 600px) {
   .envelope { height: 94vh; }
-  .envelope__seal { width: clamp(96px, 20vh, 132px); }
+  .envelope__seal,
+  .envelope__tap { width: clamp(96px, 20vh, 132px); }
   .envelope__to { top: 1.25rem; }
   .envelope__guest { bottom: 3.25rem; }
   .envelope__hint { bottom: 1.25rem; }
 }
 
 @media (max-height: 460px) {
-  .envelope__seal { width: clamp(84px, 22vh, 116px); }
+  .envelope__seal,
+  .envelope__tap { width: clamp(84px, 22vh, 116px); }
   .mono-art { width: min(100%, 52vh); }
   .mono-latin-line { font-size: clamp(17px, 5.6vh, 23px); }
   .monogram { margin-bottom: 0.5rem; }
@@ -867,6 +952,10 @@ html[data-locale="en"] .envelope__hint {
   .envelope__seal { transition-duration: 1ms; }
 
   .envelope__seal { animation: none; }
+  /* The hand stays, resting on the seal, without moving. */
+  .envelope__tap { animation: none; opacity: 1; }
+  .tap-ring { display: none; }
+  .tap-hand.v-icon { animation: none; transform: rotate(-12deg); }
   .envelope.is-open .envelope__stage { transform: none; }
   .envelope.is-open .envelope__moth { opacity: 0; }
 }
