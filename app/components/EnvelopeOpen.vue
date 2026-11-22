@@ -222,6 +222,10 @@ onBeforeUnmount(() => {
         </button>
       </div>
 
+      <!-- Melts the top and bottom of the envelope into the phone's status
+           bar and browser toolbar strips; see .envelope__edge. -->
+      <div class="envelope__edge" aria-hidden="true"></div>
+
       <header class="envelope__to">
         <!-- The couple's names as one piece of gold Khmer calligraphy,
              with the Latin reading set in script beneath it. The artwork is
@@ -296,6 +300,14 @@ onBeforeUnmount(() => {
   transition: opacity 500ms ease;
 }
 
+/* On a phone the envelope fills the whole screen, so the ground is never
+   seen — but the browser may still take its bar colour from it. */
+@media (max-width: 480px) {
+  .envelope-ground {
+    background: var(--olive);
+  }
+}
+
 /* The olive ground starts lifting the moment the seal is released, so the
    invitation is already showing through while the flaps are still opening.
    It has to lighten in step with the envelope: fading only the envelope would
@@ -346,7 +358,11 @@ onBeforeUnmount(() => {
   max-width: var(--card-w);
   margin-inline: auto;
   place-items: center;
-  background: var(--olive-deep);
+  /* The flap olive, not the darker ground: Safari on iPhone colours the
+     status bar strip and the strip round its toolbar from the background of
+     whatever fixed layer fills the screen, and a darker tone there shows as
+     two bands above and below the envelope. */
+  background: var(--olive);
   overflow: hidden;
   perspective: 1400px;
   perspective-origin: 50% 50%;
@@ -370,6 +386,34 @@ onBeforeUnmount(() => {
   inset: 0;
   transform-style: preserve-3d;
   transition: transform 700ms cubic-bezier(0.4, 0, 0.2, 1) 300ms;
+}
+
+/* A phone's browser paints its status bar strip and toolbar strip in one
+   flat colour — the page cannot draw its pattern there. So the envelope
+   meets them halfway: its top and bottom edges fade into that same flat
+   olive, and the screen reads as one sheet from the very top to the very
+   bottom instead of a card between two bands. Phones only; on wider screens
+   the envelope is a card standing on a darker ground and keeps its edges. */
+.envelope__edge {
+  display: none;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, var(--olive) 0, rgba(111, 110, 89, 0) 64px),
+    linear-gradient(to top, var(--olive) 0, rgba(111, 110, 89, 0) 64px);
+  transition: opacity 250ms ease;
+}
+
+@media (max-width: 480px) {
+  .envelope__edge {
+    display: block;
+  }
+}
+
+/* Gone as soon as the flaps start to open, so it never veils the page. */
+.envelope.is-open .envelope__edge {
+  opacity: 0;
 }
 
 /* What the opening flaps reveal, and what the camera pushes into: the same
