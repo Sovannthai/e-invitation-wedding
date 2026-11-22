@@ -92,22 +92,25 @@ async function copy(key, text) {
 }
 
 /* ---- Send straight to a chat app ----
-   Telegram takes the whole message: on a phone its app opens with the text
-   ready to send (tg://msg); on a computer t.me/share opens Telegram with the
-   link and the text. Messenger can't be handed text by a link, so the text
-   is copied first and Messenger opens to paste it into a chat. */
+   Telegram takes the whole message straight into its app (phone or
+   computer), ready to pick a chat and send. Not through t.me/share: that
+   web page answers "Bad Request" once the link passes ~4,000 characters,
+   and Khmer text encodes to ~9 characters a letter, so the Khmer message
+   (~4,800) never got through.
+   Messenger can't be handed text by a link, so the text is copied first and
+   Messenger opens to paste it into a chat. */
 const isPhone = () =>
   /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
   (navigator.maxTouchPoints > 1 && /Mac/.test(navigator.platform));
 
-// On a phone the app link opens in place; a new tab would be left blank.
 const phone = isPhone();
 
 function telegramUrl(text) {
   if (phone) return `tg://msg?text=${encodeURIComponent(text)}`;
-  // t.me/share puts the link first on its own, so it is left out of the text.
+  // Telegram Desktop takes msg_url: the link goes first on its own, so it
+  // is left out of the text.
   const rest = text.replace(`${link}\n`, "").replace(link, "");
-  return `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(rest)}`;
+  return `tg://msg_url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(rest)}`;
 }
 
 /* Which message was last copied for Messenger, to show the paste hint. */
@@ -173,7 +176,7 @@ useHead({
         ></textarea>
 
         <div class="share-apps">
-          <a class="app-btn app-btn--telegram" :href="telegramUrl(m.text)" :target="phone ? undefined : '_blank'" rel="noopener">
+          <a class="app-btn app-btn--telegram" :href="telegramUrl(m.text)">
             <i class="ri-telegram-fill" aria-hidden="true"></i>Telegram
           </a>
           <button class="app-btn app-btn--messenger" type="button" @click="shareMessenger(m.key, m.text)">
