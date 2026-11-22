@@ -18,7 +18,7 @@ const link = `${window.location.origin}/${id}`;
 function khmer(name) {
   return `សូមគោរពអញ្ជើញ ${name}
 
-យើងខ្ញុំ សុវណ្ណថៃ និង សុហេង ព្រមទាំងមាតាបិតាទាំងសងខាង មានកិត្តិយសសូមគោរពអញ្ជើញ លោកអ្នក ចូលរួមជាអធិបតី និងជាភ្ញៀវកិត្តិយស ដើម្បីប្រសិទ្ធពរជ័យ សិរីមង្គល ក្នុងពិធីរៀបអាពាហ៍ពិពាហ៍របស់យើងខ្ញុំ ដែលនឹងប្រព្រឹត្តទៅនៅ៖
+យើងខ្ញុំ នាង សុវណ្ណថៃ និង ឈុំ សុហេង ព្រមទាំងមាតាបិតាទាំងសងខាង មានកិត្តិយសសូមគោរពអញ្ជើញ លោកអ្នក ចូលរួមជាអធិបតី និងជាភ្ញៀវកិត្តិយស ដើម្បីប្រសិទ្ធពរជ័យ សិរីមង្គល ក្នុងពិធីរៀបអាពាហ៍ពិពាហ៍របស់យើងខ្ញុំ ដែលនឹងប្រព្រឹត្តទៅនៅ៖
 
 ថ្ងៃសៅរ៍ ទី១៩ ខែធ្នូ ឆ្នាំ២០២៦
 វេលាម៉ោង ៥:០០ ល្ងាច
@@ -37,7 +37,7 @@ ${link}
 function english(name) {
   return `Dear ${name},
 
-Together with our families, we, Sovannthai and Soheng, have the honour of inviting you to join us as our honoured guest and to bless us at our wedding ceremony, which will be held on:
+Together with our families, we, NEANG Sovannthai and CHHUM Soheng, have the honour of inviting you to join us as our honoured guest and to bless us at our wedding ceremony, which will be held on:
 
 Saturday, 19 December 2026
 at 5:00 PM
