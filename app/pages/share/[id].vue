@@ -91,6 +91,43 @@ async function copy(key, text) {
   copiedTimer = setTimeout(() => (copied.value = ""), 2000);
 }
 
+/* ---- Send straight to a chat app ----
+   Telegram takes the whole message: on a phone its app opens with the text
+   ready to send (tg://msg); on a computer t.me/share opens Telegram with the
+   link and the text. Messenger can't be handed text by a link, so the text
+   is copied first and Messenger opens to paste it into a chat. */
+const isPhone = () =>
+  /Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
+  (navigator.maxTouchPoints > 1 && /Mac/.test(navigator.platform));
+
+// On a phone the app link opens in place; a new tab would be left blank.
+const phone = isPhone();
+
+function telegramUrl(text) {
+  if (phone) return `tg://msg?text=${encodeURIComponent(text)}`;
+  // t.me/share puts the link first on its own, so it is left out of the text.
+  const rest = text.replace(`${link}\n`, "").replace(link, "");
+  return `https://t.me/share/url?url=${encodeURIComponent(link)}&text=${encodeURIComponent(rest)}`;
+}
+
+/* Which message was last copied for Messenger, to show the paste hint. */
+const pasteHint = ref("");
+let pasteTimer = null;
+
+function shareMessenger(key, text) {
+  // Copy first, without waiting, so opening the app still counts as part of
+  // the tap and isn't blocked.
+  copy(`${key}-ms`, text);
+  pasteHint.value = key;
+  clearTimeout(pasteTimer);
+  pasteTimer = setTimeout(() => (pasteHint.value = ""), 8000);
+  if (phone) {
+    window.location.href = "fb-messenger://";
+  } else {
+    window.open("https://www.messenger.com/", "_blank", "noopener");
+  }
+}
+
 useHead({
   title: "Invitation text",
   meta: [{ name: "robots", content: "noindex" }],
@@ -134,6 +171,18 @@ useHead({
           :aria-label="`${m.label} invitation text`"
           rows="18"
         ></textarea>
+
+        <div class="share-apps">
+          <a class="app-btn app-btn--telegram" :href="telegramUrl(m.text)" :target="phone ? undefined : '_blank'" rel="noopener">
+            <i class="ri-telegram-fill" aria-hidden="true"></i>Telegram
+          </a>
+          <button class="app-btn app-btn--messenger" type="button" @click="shareMessenger(m.key, m.text)">
+            <i class="ri-messenger-fill" aria-hidden="true"></i>Messenger
+          </button>
+        </div>
+        <p v-if="pasteHint === m.key" class="share-hint" role="status">
+          Text copied. Choose a chat in Messenger and paste it.
+        </p>
       </section>
 
       <p class="share-note">You can edit a text before copying. Edits are not saved.</p>
@@ -243,6 +292,47 @@ useHead({
   outline: none;
   border-color: #d8ae46;
   box-shadow: 0 0 0 3px rgba(216, 174, 70, 0.2);
+}
+
+.share-apps {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.app-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 14px;
+  border: none;
+  border-radius: 12px;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  text-decoration: none;
+  cursor: pointer;
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+.app-btn:hover { filter: brightness(1.06); }
+.app-btn:active { transform: scale(0.98); }
+.app-btn i { font-size: 20px; line-height: 1; }
+
+.app-btn--telegram { background: #229ed9; }
+.app-btn--messenger { background: linear-gradient(135deg, #0a7cff, #a033ff 70%, #ff5c87); }
+
+.share-hint {
+  margin: 10px 0 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(79, 138, 91, 0.12);
+  color: #3d6f48;
+  font-size: 14px;
+  text-align: center;
 }
 
 .share-note {
