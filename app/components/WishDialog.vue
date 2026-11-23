@@ -171,7 +171,14 @@ watch(open, (isOpen) => isOpen && load(), { immediate: true });
   position: relative;
   display: flex;
   flex-direction: column;
+  /* dvh follows the visible area on phones (address bar, keyboard), and the
+     card scrolls as a whole so the form and Send button stay reachable on a
+     short screen. */
   max-height: 90vh;
+  max-height: 90dvh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
   padding: clamp(22px, 4vw, 36px);
   border-radius: 28px;
   background: #fff;
@@ -228,9 +235,9 @@ watch(open, (isOpen) => isOpen && load(), { immediate: true });
 
 /* ---- List ---- */
 .wish-list {
-  flex: 1 1 auto;
+  flex: 0 0 auto;
   min-height: 80px;
-  max-height: 260px;
+  max-height: min(260px, 32dvh);
   overflow-y: auto;
   display: flex;
   flex-direction: column;
@@ -435,7 +442,7 @@ watch(open, (isOpen) => isOpen && load(), { immediate: true });
     grid-template-columns: minmax(0, 1fr);
   }
   .wish-list {
-    max-height: 200px;
+    max-height: min(200px, 28dvh);
   }
 }
 </style>
