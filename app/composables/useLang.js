@@ -65,6 +65,7 @@ const messages = {
     "gallery.more": "មើលរូបភាពបន្ថែម",
     "gallery.less": "បង្ហាញតិចវិញ",
     "location.title": "ទីតាំង",
+    "location.address": "ភូមិព្រៃរំដេង ឃុំអង្គតាសោម ស្រុកត្រាំកក់ ខេត្តតាកែវ",
     "location.hint": "ចុចប៊ូតុងខាងក្រោម ដើម្បីបើកផែនទីទៅកាន់ទីតាំងកម្មវិធី",
     "location.open": "បើកក្នុង Google Maps",
 
@@ -171,6 +172,7 @@ const messages = {
     "gallery.more": "See more photos",
     "gallery.less": "Show less",
     "location.title": "Location",
+    "location.address": "Prey Romdeng Village, Angk Ta Saom Commune, Tram Kak District, Takeo Province",
     "location.hint": "Tap below for directions to the venue",
     "location.open": "Open in Google Maps",
 

@@ -4,6 +4,13 @@ const { t } = useLang();
 /* Opens the Google Maps app on phones, the website on desktop.
    Paste the venue's share link (maps.app.goo.gl/…) here. */
 const MAP_URL = "https://maps.app.goo.gl/3crTcagyMq4ckK9F8";
+
+/* Split the address into village / commune / district / province so each
+   name wraps as a whole (Khmer has no spaces inside words to break on). */
+const addressParts = computed(() =>
+  t("location.address")
+    .split(/(?<=,)\s+|\s+(?=ឃុំ|ស្រុក|ខេត្ត)/)
+);
 </script>
 
 <template>
@@ -14,6 +21,10 @@ const MAP_URL = "https://maps.app.goo.gl/3crTcagyMq4ckK9F8";
       <span class="location-pin" aria-hidden="true">
         <v-icon>mdi-map-marker-radius</v-icon>
       </span>
+
+      <address class="location-address">
+        <span v-for="(part, i) in addressParts" :key="i">{{ part }}</span>
+      </address>
 
       <p class="location-hint">{{ t("location.hint") }}</p>
 
@@ -69,6 +80,22 @@ const MAP_URL = "https://maps.app.goo.gl/3crTcagyMq4ckK9F8";
 .location-pin :deep(.v-icon) {
   font-size: 30px;
   color: #d9475b;
+}
+
+.location-address {
+  margin: 0;
+  max-width: 30ch;
+  font-style: normal;
+  font-family: "Kantumruy Pro", "Lexend", sans-serif;
+  font-size: clamp(15px, 3.9vw, 17px);
+  font-weight: 600;
+  line-height: 1.8;
+  color: var(--ink, #3a3a2e);
+}
+.location-address span {
+  display: inline-block;
+  white-space: nowrap;
+  margin: 0 0.2em;
 }
 
 .location-hint {
