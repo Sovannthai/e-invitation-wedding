@@ -6,21 +6,27 @@
    edits are not saved. */
 import { ref, watch } from "vue";
 
+/* /share/hometown/<guest id> gives the same text for the hometown
+   celebration: its date, and a link to /hometown/<guest id>. */
+definePageMeta({ alias: "/share/hometown/:id" });
+
 const route = useRoute();
 const id = String(route.params.id);
+const event = useWeddingEvent().value;
+const hometown = event.key === "hometown";
 
 const { data: guest, error } = await useFetch(`/api/guests/${id}`, {
   key: `guest-${id}`,
 });
 
-const link = `${window.location.origin}/${id}`;
+const link = `${window.location.origin}${event.prefix}/${id}`;
 
 function khmer(name) {
   return `សូមគោរពអញ្ជើញ ${name}
 
 យើងខ្ញុំ នាង សុវណ្ណថៃ និង ឈុំ សុហេង ព្រមទាំងមាតាបិតាទាំងសងខាង មានកិត្តិយសសូមគោរពអញ្ជើញ លោកអ្នក ចូលរួមជាអធិបតី និងជាភ្ញៀវកិត្តិយស ដើម្បីប្រសិទ្ធពរជ័យ សិរីមង្គល ក្នុងពិធីរៀបអាពាហ៍ពិពាហ៍របស់យើងខ្ញុំ ដែលនឹងប្រព្រឹត្តទៅនៅ៖
 
-ថ្ងៃសៅរ៍ ទី១៩ ខែធ្នូ ឆ្នាំ២០២៦
+ថ្ងៃសៅរ៍ ទី${hometown ? "១២" : "១៩"} ខែធ្នូ ឆ្នាំ២០២៦
 វេលាម៉ោង ៥:០០ ល្ងាច
 
 សូមចុចតំណខាងក្រោម ដើម្បីមើលលិខិតអញ្ជើញ កម្មវិធី និងផែនទីទីតាំង៖
@@ -39,7 +45,7 @@ function english(name) {
 
 Together with our families, we, NEANG Sovannthai and CHHUM Soheng, have the honour of inviting you to join us as our honoured guest and to bless us at our wedding ceremony, which will be held on:
 
-Saturday, 19 December 2026
+Saturday, ${hometown ? "12" : "19"} December 2026
 at 5:00 PM
 
 Please open the link below for your invitation, the programme and the map to the venue:

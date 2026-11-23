@@ -24,6 +24,8 @@ const slides = [
    mounted by opening the envelope, so it greets a guest once per visit. */
 const emit = defineEmits(["done"]);
 
+const event = useWeddingEvent();
+
 const HOLD_MS = 5500;
 /* How long the page must sit still, once the cover is off screen, before it
    is taken out. Removing it mid-fling would cut the momentum short. */
@@ -299,7 +301,7 @@ onBeforeUnmount(() => {
         </h1>
         <p class="welcome-date">
           <span class="welcome-rule" aria-hidden="true"></span>
-          19-December-2026
+          {{ event.dateLabel }}
           <span class="welcome-rule" aria-hidden="true"></span>
         </p>
       </div>

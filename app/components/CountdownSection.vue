@@ -14,8 +14,10 @@ const { t, locale } = useLang()
    downloads it and opens it in the phone's calendar app. A guest on their
    personal link gets that link in the event's notes. */
 const route = useRoute()
+const event = useWeddingEvent()
 const icsUrl = computed(() => {
   const q = new URLSearchParams({ lang: locale.value })
+  if (event.value.key !== "main") q.set("e", event.value.key)
   if (typeof route.params.id === "string") q.set("g", route.params.id)
   return `/wedding.ics?${q}`
 })
@@ -35,14 +37,12 @@ const units = computed(() => [
   { key: "countdown.seconds", value: localizeDigits(seconds.value), photo: "/img/countdown/groom-details.jpg" },
 ])
 
-// Sat 19 Dec 2026, 5:00 PM (hero.time) in Cambodia, so guests abroad count
-// down to the same moment.
-const weddingDate = new Date("2026-12-19T17:00:00+07:00")
-
+/* The moment this page's celebration starts (shared/utils/weddingEvent.js):
+   19 Dec at the main link, 12 Dec under /hometown. */
 function updateCountdown() {
 
   const now = new Date()
-  const diff = weddingDate - now
+  const diff = new Date(event.value.date) - now
 
   if (diff <= 0) return
 

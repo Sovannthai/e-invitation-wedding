@@ -1,9 +1,9 @@
 <script setup>
 const { t } = useLang();
 
-/* Opens the Google Maps app on phones, the website on desktop.
-   Paste the venue's share link (maps.app.goo.gl/…) here. */
-const MAP_URL = "https://maps.app.goo.gl/3crTcagyMq4ckK9F8";
+/* Opens the Google Maps app on phones, the website on desktop. Each
+   celebration's link is in shared/utils/weddingEvent.js. */
+const event = useWeddingEvent();
 
 /* Split the address into village / commune / district / province so each
    name wraps as a whole (Khmer has no spaces inside words to break on). */
@@ -30,7 +30,7 @@ const addressParts = computed(() =>
 
       <a
         class="location-btn"
-        :href="MAP_URL"
+        :href="event.mapUrl"
         target="_blank"
         rel="noopener"
       >

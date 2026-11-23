@@ -236,7 +236,31 @@ if (typeof document !== "undefined") {
   watch(locale, syncDocumentLocale);
 }
 
+/* Texts that differ for the hometown celebration (/hometown/…), laid over
+   the ones above. Date and map live in shared/utils/weddingEvent.js. */
+const EVENT_MESSAGES = {
+  hometown: {
+    km: {
+      "hero.day": "១២",
+      // 12 Dec 2026 is seven days before the 19th (១០កើត), same month.
+      "agenda.dateLunar": "ថ្ងៃសៅរ៍ «៣កើត ខែមិគសិរ» ឆ្នាំមមី អដ្ឋស័ក",
+      "agenda.dateGregorian": "ព.ស. ២៥៧០ ត្រូវនឹងថ្ងៃទី១២ ខែធ្នូ ឆ្នាំ២០២៦",
+      "location.address": "ភូមិជ្រៃរលើង ឃុំពានរោង ស្រុកស្វាយអន្ទរ ខេត្តព្រៃវែង",
+    },
+    en: {
+      "hero.day": "12",
+      "agenda.dateLunar": "Saturday, 3rd waxing day of Migasira, Year of the Horse, Atthasak",
+      "agenda.dateGregorian": "BE 2570, corresponding to 12 December 2026",
+      "location.address":
+        "Chrey Roleung Village, Pean Roung Commune, Svay Antor District, Prey Veng Province",
+    },
+  },
+};
+
 export function useLang() {
+  // Which celebration this page is for, so t() can pick its texts.
+  const event = useWeddingEvent();
+
   function setLocale(l) {
     locale.value = l;
     if (typeof window !== "undefined") localStorage.setItem("locale", l);
@@ -247,7 +271,14 @@ export function useLang() {
   }
 
   function t(key) {
-    return messages[locale.value]?.[key] ?? messages.en[key] ?? key;
+    const own = EVENT_MESSAGES[event.value.key];
+    return (
+      own?.[locale.value]?.[key] ??
+      messages[locale.value]?.[key] ??
+      own?.en?.[key] ??
+      messages.en[key] ??
+      key
+    );
   }
 
   return { locale, t, setLocale, toggle };

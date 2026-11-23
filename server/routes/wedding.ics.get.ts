@@ -3,7 +3,8 @@
    alike (and Mac or Outlook on a computer).
 
    ?lang=en|km picks the language (Khmer by default); ?g=<guest id> puts the
-   guest's own invitation link in the notes. */
+   guest's own invitation link in the notes; ?e=hometown is the hometown
+   celebration instead of the main one. */
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -39,8 +40,9 @@ export default defineEventHandler((event) => {
   const guest = typeof query.g === "string" && UUID.test(query.g) ? query.g : "";
 
   const origin = getRequestURL(event, { xForwardedHost: true, xForwardedProto: true }).origin;
-  const invite = guest ? `${origin}/${guest}` : origin;
-  const e = WEDDING_EVENT;
+  const e = query.e === "hometown" ? WEDDING_EVENTS.hometown : WEDDING_EVENTS.main;
+  const base = `${origin}${e.prefix}`;
+  const invite = guest ? `${base}/${guest}` : base;
   const stamp = new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "");
 
   const lines = [
@@ -50,7 +52,7 @@ export default defineEventHandler((event) => {
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
     "BEGIN:VEVENT",
-    `UID:wedding-20261219@${new URL(origin).hostname}`,
+    `UID:wedding-${e.start.slice(0, 8)}@${new URL(origin).hostname}`,
     `DTSTAMP:${stamp}`,
     `DTSTART:${e.start}`,
     `DTEND:${e.end}`,
