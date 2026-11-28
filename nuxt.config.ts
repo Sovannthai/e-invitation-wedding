@@ -11,6 +11,10 @@ export default defineNuxtConfig({
   runtimeConfig: {
     directusUrl: "http://localhost:8055",
     directusToken: "",
+    // Public address of the site, e.g. https://wedding.example.com, for the
+    // link-preview image (server/plugins/link-preview.ts). Optional: when
+    // empty, the address the request came in on is used. NUXT_SITE_URL.
+    siteUrl: "",
   },
 
   build: {
